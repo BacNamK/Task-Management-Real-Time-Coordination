@@ -11,3 +11,145 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id      BigInt  @id @default(autoincrement())
+  uuid    String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name    String  @unique @db.VarChar
+  password_hash String @db.Text
+  email   String  @unique @db.VarChar
+  image   String? @db.Text
+
+  sessions               Session[]
+  workspaceMembers       WorkspaceMember[]
+  createdTasks           Task[]                @relation("CreatedTasks")
+  assignedTasks          Task[]                @relation("AssignedTasks")
+  messages               Message[]
+  chatRoomParticipants   ChatRoomParticipant[]
+
+  @@map("user")
+}
+
+model Session {
+  id           BigInt    @id @default(autoincrement())
+  userId       BigInt    @map("user_id")
+  refreshToken String?   @map("refresh_token") @db.Text
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  expiredAt    DateTime? @map("expired_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Workspace {
+  id   BigInt @id @default(autoincrement())
+  uuid String @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name String @db.VarChar
+  slug String @unique @db.VarChar
+
+  members   WorkspaceMember[]
+  boards    Board[]
+  chatRooms ChatRoom[]
+
+  @@map("workspace")
+}
+
+model WorkspaceMember {
+  id          BigInt @id @default(autoincrement())
+  uuid        String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  workspaceId BigInt @map("workspace_id")
+  userId      BigInt  @map("user_id")
+  role        Role   @default(MEMBER)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([workspaceId, userId])
+  @@map("workspace_member")
+}
+
+model Board {
+  id          BigInt @id @default(autoincrement())
+  name        String?
+  workspaceId BigInt @map("workspace_id")
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  columns   Column[]
+
+  @@map("board")
+}
+
+model Column {
+  id      BigInt @id @default(autoincrement())
+  name    String?
+  order   Int?
+  boardId BigInt @map("board_id")
+
+  board Board  @relation(fields: [boardId], references: [id])
+  tasks Task[]
+
+  @@map("column")
+}
+
+model Task {
+  id          BigInt    @id @default(autoincrement())
+  title       String    @db.VarChar
+  description String?   @db.Text
+  order       Int?
+  dueDate     DateTime? @map("due_date") @db.Timestamp(6)
+  columnId    BigInt    @map("column_id")
+  creatorId   BigInt    @map("creator_id")
+  assigneeId  BigInt    @map("assignee_id")
+
+  column   Column @relation(fields: [columnId], references: [id])
+  creator  User   @relation("CreatedTasks", fields: [creatorId], references: [id])
+  assignee User   @relation("AssignedTasks", fields: [assigneeId], references: [id])
+
+  @@map("task")
+}
+
+model ChatRoom {
+  id          BigInt  @id @default(autoincrement())
+  uuid        String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name        String? @db.VarChar
+  isDirect    Boolean @default(false) @map("is_direct")
+  workspaceId BigInt  @map("workspace_id")
+
+  workspace    Workspace             @relation(fields: [workspaceId], references: [id])
+  messages     Message[]
+  participants ChatRoomParticipant[]
+
+  @@map("chat_room")
+}
+
+model Message {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  content   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  senderId  BigInt   @map("sender_id")
+  roomId    BigInt   @map("room_id")
+
+  sender User     @relation(fields: [senderId], references: [id])
+  room   ChatRoom @relation(fields: [roomId], references: [id])
+
+  @@map("message")
+}
+
+model ChatRoomParticipant {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  chatRoomId BigInt @map("chat_room_id")
+  userId     BigInt @map("user_id")
+
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([chatRoomId, userId])
+  @@map("chat_room_participant")
+}
