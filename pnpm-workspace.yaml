@@ -2,6 +2,7 @@ allowBuilds:
   '@prisma/engines': false
   esbuild: false
   msgpackr-extract: false
+  node-base64: true
   prisma: false
   sharp: false
   unrs-resolver: false

@@ -13,39 +13,49 @@ datasource db {
 }
 
 
-enum Role {
+enum EnumRole {
   ADMIN
+  MODER
   MEMBER
 }
 
 model User {
-  id      BigInt  @id @default(autoincrement())
-  uuid    String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
-  name    String  @unique @db.VarChar
+  id           BigInt  @id @default(autoincrement())
+  uuid         String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name         String  @unique @db.VarChar
   password_hash String @db.Text
-  email   String  @unique @db.VarChar
-  image   String? @db.Text
+  email        String  @unique @db.VarChar
+  image        String? @db.Text
 
-  sessions               Session[]
+  roleUsers              RoleUser[]
   workspaceMembers       WorkspaceMember[]
   createdTasks           Task[]                @relation("CreatedTasks")
   assignedTasks          Task[]                @relation("AssignedTasks")
   messages               Message[]
   chatRoomParticipants   ChatRoomParticipant[]
 
-  @@map("user")
+  @@map("users")
 }
 
-model Session {
-  id           BigInt    @id @default(autoincrement())
-  userId       BigInt    @map("user_id")
-  refreshToken String?   @map("refresh_token") @db.Text
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  expiredAt    DateTime? @map("expired_at") @db.Timestamptz(6)
+model RoleUser {
+  id          BigInt @id @default(autoincrement())
+  userId      BigInt @unique @map("user_id")
+  roleId      Int  @map("role_id")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  @@map("session")
+  @@map("role_user")
+}
+
+model Role {
+  id          Int @id @default(autoincrement())
+  roleName    EnumRole   @map("role_name")
+  description String @map("descrition") @db.Text
+
+  roleUsers RoleUser[]
+
+  @@map("role")
 }
 
 model Workspace {
@@ -66,7 +76,7 @@ model WorkspaceMember {
   uuid        String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   workspaceId BigInt @map("workspace_id")
   userId      BigInt  @map("user_id")
-  role        Role   @default(MEMBER)
+  role        EnumRole   @default(MEMBER)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
