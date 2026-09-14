@@ -10,6 +10,7 @@ declare module 'next-auth' {
     }
     interface Session {
         user: {
+            id: string;
             role?: string;
         } & DefaultSession['user'];
         accessToken?: string;
@@ -24,6 +25,7 @@ declare module 'next-auth/jwt' {
         accessTokenExpires?: number;
         error?: 'RefreshAccessTokenError';
         role?: string;
+        id?: string;
     }
 }
 
@@ -81,12 +83,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             if (
                 token.accessToken &&
                 token.accessTokenExpires &&
-                Date.now() < token.accessTokenExpires - 60_000
+                Date.now() >= token.accessTokenExpires - 60_000 &&
+                token.refreshToken
             ) {
-                return token;
-            }
-
-            if (token.refreshToken) {
                 token = await refreshAccessToken(token);
             }
 
@@ -102,6 +101,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 });
 
                 if (dbUser) {
+                    token.id = dbUser.id.toString();
+
                     const roleUser = await prisma.roleUser.findFirst({
                         where: { userId: dbUser.id },
                         select: {
@@ -122,6 +123,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         async session({ session, token }) {
             session.accessToken = token.accessToken;
             session.error = token.error;
+            if (token.id) {
+                session.user.id = token.id;
+            }
             if (token.role) {
                 session.user.role = token.role;
             }

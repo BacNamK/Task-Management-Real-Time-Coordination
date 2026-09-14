@@ -1,7 +1,11 @@
+import { FormCreateWorkspace } from '@/src/components/forms/createWorkspace';
+import ListWorkspace from '@/src/components/ui/ListWorkspace';
+
 const Page = () => {
     return (
-        <div>
-            <h2>Page</h2>
+        <div className="w-full h-full">
+            <FormCreateWorkspace />
+            <ListWorkspace />
         </div>
     );
 };

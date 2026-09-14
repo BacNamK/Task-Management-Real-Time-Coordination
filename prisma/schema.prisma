@@ -78,7 +78,7 @@ model WorkspaceMember {
   userId      BigInt  @map("user_id")
   role        EnumRole   @default(MEMBER)
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id])
 
   @@unique([workspaceId, userId])
@@ -90,7 +90,7 @@ model Board {
   name        String?
   workspaceId BigInt @map("workspace_id")
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   columns   Column[]
 
   @@map("board")
@@ -102,7 +102,7 @@ model Column {
   order   Int?
   boardId BigInt @map("board_id")
 
-  board Board  @relation(fields: [boardId], references: [id])
+  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
   tasks Task[]
 
   @@map("column")
@@ -118,7 +118,7 @@ model Task {
   creatorId   BigInt    @map("creator_id")
   assigneeId  BigInt    @map("assignee_id")
 
-  column   Column @relation(fields: [columnId], references: [id])
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
   creator  User   @relation("CreatedTasks", fields: [creatorId], references: [id])
   assignee User   @relation("AssignedTasks", fields: [assigneeId], references: [id])
 
@@ -132,7 +132,7 @@ model ChatRoom {
   isDirect    Boolean @default(false) @map("is_direct")
   workspaceId BigInt  @map("workspace_id")
 
-  workspace    Workspace             @relation(fields: [workspaceId], references: [id])
+  workspace    Workspace             @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   messages     Message[]
   participants ChatRoomParticipant[]
 
@@ -147,7 +147,7 @@ model Message {
   roomId    BigInt   @map("room_id")
 
   sender User     @relation(fields: [senderId], references: [id])
-  room   ChatRoom @relation(fields: [roomId], references: [id])
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   @@map("message")
 }
@@ -157,7 +157,7 @@ model ChatRoomParticipant {
   chatRoomId BigInt @map("chat_room_id")
   userId     BigInt @map("user_id")
 
-  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
   user     User     @relation(fields: [userId], references: [id])
 
   @@unique([chatRoomId, userId])

@@ -22,6 +22,7 @@ export default async function LoginPage() {
                     name: session.user.name ?? '',
                     email: session.user.email ?? '',
                     password_hash: '',
+                    image: session.user.image ?? '',
                 },
             });
 
@@ -39,7 +40,7 @@ export default async function LoginPage() {
     // Nếu chưa đăng nhập, hiển thị nút Đăng nhập bằng Google
     return (
         <div className="min-h-screen w-full relative bg-black items-center flex">
-              {/* X Organizations Black Background with Top Glow */} {' '}
+            {/* X Organizations Black Background with Top Glow */}{' '}
             <div
                 className="absolute inset-0 z-0"
                 style={{
