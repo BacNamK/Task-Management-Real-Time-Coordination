@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 const navItems = [
     { label: 'Home', href: '/home', id: 1 },
     { label: 'Workspace', href: '/workspace', id: 2 },
-    { label: 'Notifications', href: '/notifications', id: 3 },
-    { label: 'Settings', href: '/settings', id: 4 },
+    // { label: 'Notifications', href: '/notifications', id: 3 },
+    // { label: 'Settings', href: '/settings', id: 4 },
 ];
 
 type NavbarProps = {

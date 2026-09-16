@@ -3,35 +3,24 @@ import { auth, signIn } from '@/src/lib/auth';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 
-import prisma from '@/src/lib/prisma';
 import googleIcon from '@/public/google.png';
+import { createUser, findUserByName } from '@/src/server/users/users.Repository';
 
 export default async function LoginPage() {
     const session = await auth();
 
     // Nếu đã đăng nhập, hiển thị thông tin User
     if (session?.user) {
-        const check = await prisma.user.findUnique({
-            where: { name: session.user.name || undefined },
-            select: { name: true },
-        });
+        if (!session.user.name) {
+            return;
+        }
+        const check = await findUserByName(session.user.name);
 
         if (check == null) {
-            const user = await prisma.user.create({
-                data: {
-                    name: session.user.name ?? '',
-                    email: session.user.email ?? '',
-                    password_hash: '',
-                    image: session.user.image ?? '',
-                },
-            });
-
-            await prisma.roleUser.create({
-                data: {
-                    userId: user.id,
-                    roleId: 1,
-                },
-            });
+            if (!session.user.email || !session.user.image || !session.user.name) {
+                return;
+            }
+            await createUser(session.user.name, session.user.email, session.user.image, '');
         }
 
         redirect('/home');

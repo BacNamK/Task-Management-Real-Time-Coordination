@@ -13,8 +13,8 @@ interface workspace {
 }
 
 export interface workspaceRp {
-    own: [userType[], workspace];
-    mem: [userType[], workspace];
+    yourOwn: onwType[];
+    yourMem: onwType[];
 }
 
 export interface onwType {

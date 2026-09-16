@@ -26,6 +26,7 @@ model User {
   password_hash String @db.Text
   email        String  @unique @db.VarChar
   image        String? @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   roleUsers              RoleUser[]
   workspaceMembers       WorkspaceMember[]
@@ -63,6 +64,7 @@ model Workspace {
   uuid String @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   name String @db.VarChar
   slug String @unique @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   members   WorkspaceMember[]
   boards    Board[]
@@ -77,6 +79,7 @@ model WorkspaceMember {
   workspaceId BigInt @map("workspace_id")
   userId      BigInt  @map("user_id")
   role        EnumRole   @default(MEMBER)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id])
@@ -89,6 +92,7 @@ model Board {
   id          BigInt @id @default(autoincrement())
   name        String?
   workspaceId BigInt @map("workspace_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   columns   Column[]
@@ -113,6 +117,7 @@ model Task {
   title       String    @db.VarChar
   description String?   @db.Text
   order       Int?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime? @map("due_date") @db.Timestamp(6)
   columnId    BigInt    @map("column_id")
   creatorId   BigInt    @map("creator_id")
@@ -142,9 +147,9 @@ model ChatRoom {
 model Message {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
   content   String?  @db.Text
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   senderId  BigInt   @map("sender_id")
   roomId    BigInt   @map("room_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   sender User     @relation(fields: [senderId], references: [id])
   room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)

@@ -1,8 +1,9 @@
 'use client';
 
+import { createWorkspace } from '@/src/server/actions/workspace.action';
 import { useState } from 'react';
 
-export const FormCreateWorkspace = () => {
+export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) => void }) => {
     const [isOpen, setIsopen] = useState(false);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -11,12 +12,12 @@ export const FormCreateWorkspace = () => {
         const formData = new FormData(event.currentTarget);
 
         try {
-            const res = await fetch('/api/workspace', {
-                method: 'POST',
-                body: formData,
-            });
+            const res = await createWorkspace(formData);
 
-            console.log(await res.json());
+            console.log(res);
+
+            setIsopen(false);
+            onCreate(res);
         } catch (e) {
             console.log(e);
         }
