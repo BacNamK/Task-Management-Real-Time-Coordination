@@ -4,7 +4,6 @@ import { auth } from '@/src/lib/auth';
 
 import { getWorkspaceRepository } from '../workspace/workspace.Repository';
 import { createWorkspaceService } from '../workspace/workspace.Service';
-import { workspaceRp } from '@/src/types/listWorkspace';
 
 export const createWorkspace = async (formData: FormData) => {
     const session = await auth();

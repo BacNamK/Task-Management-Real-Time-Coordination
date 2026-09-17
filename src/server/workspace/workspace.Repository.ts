@@ -1,5 +1,5 @@
 import prisma from '@/src/lib/prisma';
-import { onwType, workspaceRp } from '@/src/types/listWorkspace';
+import { onwType } from '@/src/types/listWorkspace.Type';
 
 export const createWorkspaceRepository = async (
     workspaceName: string,
@@ -13,7 +13,7 @@ export const createWorkspaceRepository = async (
         },
     });
 
-    const workspaceMember = await prisma.workspaceMember.create({
+    await prisma.workspaceMember.create({
         data: {
             workspaceId: workspace.id,
             userId: BigInt(userId),
@@ -36,6 +36,7 @@ export const getWorkspaceRepository = async (userId: bigint) => {
                     uuid: true,
                     name: true,
                     slug: true,
+                    createdAt: true,
                     members: {
                         select: {
                             role: true,
@@ -61,6 +62,7 @@ export const getWorkspaceRepository = async (userId: bigint) => {
                     uuid: membership.workspace.uuid,
                     name: membership.workspace.name,
                     slug: membership.workspace.slug,
+                    createdAt: membership.workspace.createdAt,
                 },
                 user: membership.workspace.members.map(({ user, role }) => ({
                     id: user.id.toString(),

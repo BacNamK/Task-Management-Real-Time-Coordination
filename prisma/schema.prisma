@@ -92,38 +92,28 @@ model Board {
   id          BigInt @id @default(autoincrement())
   name        String?
   workspaceId BigInt @map("workspace_id")
+
+  columnsConfig Json   @default("[]") @map("columns_config")
+  
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  columns   Column[]
 
   @@map("board")
-}
-
-model Column {
-  id      BigInt @id @default(autoincrement())
-  name    String?
-  order   Int?
-  boardId BigInt @map("board_id")
-
-  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  tasks Task[]
-
-  @@map("column")
 }
 
 model Task {
   id          BigInt    @id @default(autoincrement())
   title       String    @db.VarChar
   description String?   @db.Text
-  order       Int?
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime? @map("due_date") @db.Timestamp(6)
-  columnId    BigInt    @map("column_id")
+
   creatorId   BigInt    @map("creator_id")
   assigneeId  BigInt    @map("assignee_id")
 
-  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId String @map("column_id") 
+
   creator  User   @relation("CreatedTasks", fields: [creatorId], references: [id])
   assignee User   @relation("AssignedTasks", fields: [assigneeId], references: [id])
 

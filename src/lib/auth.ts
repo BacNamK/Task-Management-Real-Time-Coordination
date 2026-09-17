@@ -1,8 +1,9 @@
 import NextAuth, { type DefaultSession } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
-import { prisma } from './prisma';
 import authConfig from './auth.config';
+import { findUserByEmail } from '../server/users/users.Repository';
+import { findRoleUser } from '../server/users/roleUser.Repository';
 
 declare module 'next-auth' {
     interface User {
@@ -95,25 +96,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             if (token.email) {
                 //
-                const dbUser = await prisma.user.findUnique({
-                    where: { email: token.email },
-                    select: { id: true },
-                });
+                const dbUser = await findUserByEmail(token.email);
 
                 if (dbUser) {
                     token.id = dbUser.id.toString();
 
-                    const roleUser = await prisma.roleUser.findFirst({
-                        where: { userId: dbUser.id },
-                        select: {
-                            role: {
-                                select: { roleName: true },
-                            },
-                        },
-                    });
+                    const roleUser = await findRoleUser(Number(dbUser.id));
 
                     if (roleUser) {
-                        token.role = roleUser.role.roleName;
+                        token.role = roleUser.roleId.toString();
                     }
                 }
             }

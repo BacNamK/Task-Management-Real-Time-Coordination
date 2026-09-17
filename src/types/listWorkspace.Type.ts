@@ -5,11 +5,12 @@ export interface userType {
     role: string;
 }
 
-interface workspace {
+export interface workspace {
     id: string;
     name: string;
     slug: string;
     uuid: string;
+    createdAt: Date | null;
 }
 
 export interface workspaceRp {

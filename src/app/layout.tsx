@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-import { Navbar } from '../components/ui/Navbar';
+import { Navbar } from '../components/shared/Navbar';
 import { getSessionUser } from '../lib/session';
 
 export const metadata: Metadata = {
