@@ -31,11 +31,11 @@ model User {
   roleUsers              RoleUser[]
   workspaceMembers       WorkspaceMember[]
   createdTasks           Task[]                @relation("CreatedTasks")
-  assignedTasks          Task[]                @relation("AssignedTasks")
+  assigneeds             Assigneeds[]       @relation("Assigneeds")
   messages               Message[]
   chatRoomParticipants   ChatRoomParticipant[]
 
-  @@map("users")
+  @@map("user")
 }
 
 model RoleUser {
@@ -108,16 +108,24 @@ model Task {
   description String?   @db.Text
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime? @map("due_date") @db.Timestamp(6)
-
   creatorId   BigInt    @map("creator_id")
-  assigneeId  BigInt    @map("assignee_id")
-
   columnId String @map("column_id") 
 
+  assigneeds  Assigneeds[]
   creator  User   @relation("CreatedTasks", fields: [creatorId], references: [id])
-  assignee User   @relation("AssignedTasks", fields: [assigneeId], references: [id])
 
   @@map("task")
+}
+
+model Assigneeds {
+  id     BigInt @id @default(autoincrement())
+  taskId BigInt @map("task_id")
+  userId BigInt @map("user_id")
+  
+  task      Task      @relation(fields :[taskId], references :[id])
+  user      User      @relation("Assigneeds",fields: [userId], references: [id])
+@@unique([taskId,userId])
+@@map("assigneeds")
 }
 
 model ChatRoom {
