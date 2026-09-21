@@ -31,5 +31,6 @@ export const createboardService = async (formData: FormData) => {
 };
 
 export const getBoardService = async (workspaceUuid: string) => {
-    return await getBoardsRepository(workspaceUuid);
+    const boards = await getBoardsRepository(workspaceUuid);
+    return boards;
 };

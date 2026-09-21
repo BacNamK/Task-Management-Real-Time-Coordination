@@ -1,16 +1,24 @@
+'use client';
+
+import { useItemsStore } from '@/src/hooks/workspaceHook';
 import { userType } from '@/src/types/listWorkspace.Type';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type item =  {
+type item = {
     workspace: any;
     user: userType[];
-}
+};
 
 export const Item = ({ item }: { item: item }) => {
-    console.log(item);
+    const setSelectedItem = useItemsStore((state) => state.setSelectedItem);
+
+    const handleItemClick = () => {
+        setSelectedItem(item);
+    };
     return (
         <Link
+            onClick={handleItemClick}
             href={{
                 pathname: `/workspace/${item.workspace.slug}`,
                 query: { uuid: item.workspace.uuid },

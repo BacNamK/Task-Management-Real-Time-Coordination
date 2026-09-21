@@ -10,13 +10,15 @@ export default async function WorkspaceDetail({ searchParams }: Props) {
 
     const board = await getBoard(uuid ?? '');
 
+    console.dir(board, { depth: null });
+
     return (
         <div>
             <FormCreateBoard workspaceUuid={uuid ?? ''} />
             <div className="p-4">
-                {board.map((items: any, index: number) => (
+                {/* {board.map((items: any, index: number) => (
                     <Model key={index} board={items} />
-                ))}
+                ))} */}
             </div>
         </div>
     );

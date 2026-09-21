@@ -98,21 +98,25 @@ model Board {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  task          Task[]
 
   @@map("board")
 }
 
 model Task {
-  id          BigInt    @id @default(autoincrement())
-  title       String    @db.VarChar
-  description String?   @db.Text
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  dueDate     DateTime? @map("due_date") @db.Timestamp(6)
-  creatorId   BigInt    @map("creator_id")
-  columnId String @map("column_id") 
+  id          BigInt      @id @default(autoincrement())
+  title       String      @db.VarChar
+  description String?     @db.Text
+  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  dueDate     DateTime?   @map("due_date") @db.Timestamp(6)
+  creatorId   BigInt      @map("creator_id")
+  columnId    String?     @map("column_id") 
+  boardId     BigInt      @map("borad_id")
 
   assigneeds  Assigneeds[]
-  creator  User   @relation("CreatedTasks", fields: [creatorId], references: [id])
+  board       Board       @relation(fields : [boardId] , references : [id])
+  creator     User        @relation("CreatedTasks", fields: [creatorId], references: [id])
 
   @@map("task")
 }

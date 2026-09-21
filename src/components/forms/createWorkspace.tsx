@@ -14,8 +14,6 @@ export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) =
         try {
             const res = await createWorkspace(formData);
 
-            console.log(res);
-
             setIsopen(false);
             onCreate(res);
         } catch (e) {
