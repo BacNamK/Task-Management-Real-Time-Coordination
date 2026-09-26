@@ -1,25 +1,50 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { userType } from '../types/listWorkspace.Type';
 
-// 1. Định nghĩa Kiểu dữ liệu (TypeScript) nếu cần
 interface ItemType {
     workspace: any;
     user: userType[];
-    // ... các thuộc tính khác của item
 }
 
 interface ItemsState {
     items: ItemType[] | null;
-    selectedItem: ItemType | null; // Nơi lưu Object đang được click
+    selectedItem: ItemType | null;
+    workspace: any | null;
+
     setItems: (items: ItemType[]) => void;
-    setSelectedItem: (item: ItemType | null) => void; // Hàm để cập nhật Object
+    setSelectedItem: (item: ItemType | null) => void;
+    setWorkspace: (workspace: any | null) => void;
+    reset: () => void;
 }
 
-// 2. Tạo Store duy nhất và export thẳng Hook này ra ngoài
-export const useItemsStore = create<ItemsState>((set) => ({
-    items: null,
-    selectedItem: null, // Mặc định chưa có item nào được chọn
+export const useItemsStore = create<ItemsState>()(
+    persist(
+        (set) => ({
+            items: null,
+            selectedItem: null,
+            workspace: null,
 
-    setItems: (items) => set({ items: items }),
-    setSelectedItem: (item) => set({ selectedItem: item }), // Hàm cập nhật Object
-}));
+            setItems: (items) => set({ items }),
+
+            setSelectedItem: (item) => set({ selectedItem: item }),
+
+            setWorkspace: (workspace) =>
+                set({
+                    workspace,
+                    items: null,
+                    selectedItem: null,
+                }),
+
+            reset: () =>
+                set({
+                    items: null,
+                    selectedItem: null,
+                    workspace: null,
+                }),
+        }),
+        {
+            name: 'items-storage',
+        }
+    )
+);

@@ -8,12 +8,12 @@ const ListWorkspace = ({ workspaces }: { workspaces: any }) => {
     const mem = workspaces.yourMem;
 
     return (
-        <div className="h-full justify-items-center">
-            <div className="w-full p-2 justify-items-center">
+        <div className="h-full grid gap-y-4">
+            <div className="w-full p-2">
                 {own?.length == 0 ? (
-                    <p>No thing here</p>
+                    <p className="text-sm text-gray-500 text-center p-2">No thing here</p>
                 ) : (
-                    <div className="w-[80%] grid grid-cols-2 gap-4 p-2">
+                    <div className="w-full justify-center grid grid-cols-2 gap-4 p-2">
                         {own?.map((items: onwType, index: number) => (
                             <Item
                                 item={{ workspace: items.workspace, user: items.user }}
@@ -23,12 +23,14 @@ const ListWorkspace = ({ workspaces }: { workspaces: any }) => {
                     </div>
                 )}
             </div>
-            <hr className="w-[80%] my-4 opacity-20" />
-            <div className="w-full p-2">
+            <div className="w-full">
+                <h3 className="text-md border-b-2 border-orange-300 ml-5 p-1 inline-block">
+                    You Member
+                </h3>
                 {mem?.length == 0 ? (
-                    <p>No thing here</p>
+                    <p className="text-sm text-gray-500 text-center p-2">No thing here</p>
                 ) : (
-                    <div className="grid grid-cols-2 justify-items-start gap-4 p-2">
+                    <div className="grid grid-cols-2 justify-items-start gap-4 p-4">
                         {mem?.map((items: onwType, index: number) => (
                             <Item
                                 item={{ workspace: items.workspace, user: items.user }}

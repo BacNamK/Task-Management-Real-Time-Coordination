@@ -3,7 +3,7 @@
 import { auth } from '@/src/lib/auth';
 
 import { getWorkspaceRepository } from '../workspace/workspace.Repository';
-import { createWorkspaceService } from '../workspace/workspace.Service';
+import { createWorkspaceService, getBoardService } from '../workspace/workspace.Service';
 
 export const createWorkspace = async (formData: FormData) => {
     const session = await auth();
@@ -39,4 +39,8 @@ export const workspaceOwn = async () => {
     } catch (error) {
         return { success: false, message: 'Lấy workspace thất bại' };
     }
+};
+
+export const getBoard = async (workspaceUuid: string) => {
+    return await getBoardService(workspaceUuid);
 };

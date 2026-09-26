@@ -2,6 +2,7 @@
 
 import { createWorkspace } from '@/src/server/actions/workspace.action';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) => void }) => {
     const [isOpen, setIsopen] = useState(false);
@@ -21,12 +22,13 @@ export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) =
         }
     }
     return (
-        <div className="w-full justify-items-end p-2">
+        <div className="w-full flex items-center pl-5 gap-2">
+            <h3 className="text-md border-b-2 border-green-300 p-1">You Own</h3>
             {isOpen ? (
                 <div className="flex gap-2">
                     <button
                         onClick={() => setIsopen(!isOpen)}
-                        className="block p-2 w-20 rounded-xl bg-red-300"
+                        className="block p-2 w-20 rounded-[5px] bg-red-300"
                     >
                         Hủy
                     </button>
@@ -37,7 +39,7 @@ export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) =
                             placeholder="Name ..."
                             className="p-2 bg-gray-200 rounded-xl"
                         />
-                        <button type="submit" className="block w-20 rounded-xl bg-green-300 p-2">
+                        <button type="submit" className="block w-20 rounded-[5px] bg-green-300 p-2">
                             Tạo
                         </button>
                     </form>
@@ -45,9 +47,9 @@ export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) =
             ) : (
                 <button
                     onClick={() => setIsopen(!isOpen)}
-                    className="block w-20 rounded-xl bg-green-300 p-2"
+                    className="block bg-green-100 rounded-full p-1"
                 >
-                    Tạo
+                    <Image src="/add.png" alt="add" width={20} height={20} />
                 </button>
             )}
         </div>

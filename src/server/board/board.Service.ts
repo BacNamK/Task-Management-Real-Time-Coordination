@@ -1,4 +1,8 @@
-import { createboardRepository, getBoardsRepository } from './board.Repository';
+import {
+    createboardRepository,
+    findboardRepository,
+    updateboardRepository,
+} from './board.Repository';
 import { BoardService } from './board.Type';
 
 export const createboardService = async (formData: FormData) => {
@@ -15,10 +19,11 @@ export const createboardService = async (formData: FormData) => {
     const columnsDefautl = [
         {
             id: 'l1',
+            name: 'Default',
             item: [
-                { id: 'item1', name: 'To Do' },
-                { id: 'item2', name: 'In Progress' },
-                { id: 'item3', name: 'Done' },
+                { id: '0', name: 'To Do' },
+                { id: '1', name: 'In Progress' },
+                { id: '2', name: 'Done' },
             ],
         },
     ];
@@ -30,7 +35,14 @@ export const createboardService = async (formData: FormData) => {
     return await createboardRepository(boardService, workspaceUuid);
 };
 
-export const getBoardService = async (workspaceUuid: string) => {
-    const boards = await getBoardsRepository(workspaceUuid);
-    return boards;
+export const findboardService = async (boardId: bigint, workspaceUuid: string) => {
+    return await findboardRepository(boardId, workspaceUuid);
+};
+
+export const updateboardService = async (
+    boardId: bigint,
+    workspaceUuid: string,
+    data: any
+) => {
+    return await updateboardRepository(boardId, workspaceUuid, data);
 };

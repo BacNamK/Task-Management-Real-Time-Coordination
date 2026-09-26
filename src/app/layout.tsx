@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
+
 import './globals.css';
 
-import { Navbar } from '../components/shared/Navbar';
-import { getSessionUser } from '../lib/session';
+// import { WorkspaceStateSync } from '../components/shared/WorkspaceStateSync';
+import { Geist } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '../components/shared/AppSidebar';
+import { SidebarController } from '../components/shared/SidebarControll';
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
     title: {
@@ -13,15 +20,14 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const { userName, userImage } = await getSessionUser();
-
     return (
-        <html lang="en">
+        <html lang="en" className={cn('font-sans', geist.variable)}>
             <body className="min-h-screen w-full">
-                <nav className="fixed left-0 top-0 h-screen w-65 bg-white">
-                    <Navbar userName={userName} userImage={userImage} />
-                </nav>
-                <main className="ml-65 min-h-screen">{children}</main>
+                <SidebarProvider>
+                    <SidebarController />
+                    <AppSidebar />
+                    <main className="w-full h-full">{children}</main>
+                </SidebarProvider>
             </body>
         </html>
     );

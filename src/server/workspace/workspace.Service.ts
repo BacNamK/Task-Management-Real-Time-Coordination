@@ -1,4 +1,4 @@
-import { createWorkspaceRepository } from './workspace.Repository';
+import { createWorkspaceRepository, getBoardsRepository } from './workspace.Repository';
 
 const geneSlug = (string: string) => {
     return string
@@ -14,4 +14,9 @@ const geneSlug = (string: string) => {
 export const createWorkspaceService = async (workspaceName: string, userId: bigint) => {
     const slug = geneSlug(workspaceName);
     return await createWorkspaceRepository(workspaceName, userId, slug);
+};
+
+export const getBoardService = async (workspaceUuid: string) => {
+    const boards = await getBoardsRepository(workspaceUuid);
+    return boards;
 };

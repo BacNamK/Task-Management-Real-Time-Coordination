@@ -5,6 +5,7 @@ type ColumnItem = {
 
 type ColumnConfig = {
     id: string;
+    name: string;
     item: ColumnItem[];
 };
 type Board = {

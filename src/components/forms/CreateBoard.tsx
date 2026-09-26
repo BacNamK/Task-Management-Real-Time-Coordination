@@ -2,6 +2,7 @@
 
 import { createboard } from '@/src/server/actions/board.action';
 import { useState } from 'react';
+import Image from 'next/image';
 
 type props = {
     workspaceUuid: string;
@@ -24,7 +25,7 @@ export const FormCreateBoard = ({ workspaceUuid }: props) => {
 
     return (
         <div>
-            <div className="w-full flex justify-end items-center p-2">
+            <div className="w-full flex justify-end items-center p-2  pr-2">
                 {isOpen ? (
                     <div className="flex gap-2">
                         <button
@@ -52,9 +53,10 @@ export const FormCreateBoard = ({ workspaceUuid }: props) => {
                 ) : (
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="bg-green-300 px-4 py-2 rounded-md"
+                        className="flex border p-2 rounded-md bg-green-300 shadow"
                     >
-                        Tạo
+                        <span className="text-black/70 text-sm font-medium">Board</span>
+                        <Image src="/add.png" alt="board" width={20} height={20} />
                     </button>
                 )}
             </div>

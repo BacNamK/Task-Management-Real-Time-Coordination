@@ -17,7 +17,7 @@ const WorkspacePageClient = ({ initialWorkspaces }: Props) => {
     const [workspaces, setWorkspaces] = useState<workspaceRp>(initialWorkspaces);
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full mt-8">
             <FormCreateWorkspace
                 onCreate={(workspace) =>
                     setWorkspaces((prev) => ({
@@ -26,9 +26,7 @@ const WorkspacePageClient = ({ initialWorkspaces }: Props) => {
                     }))
                 }
             />
-            <WorkspaceContext.Provider value={workspaces}>
-                <ListLayout workspaces={workspaces} />
-            </WorkspaceContext.Provider>
+            <ListLayout workspaces={workspaces} />
         </div>
     );
 };
