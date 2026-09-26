@@ -1,6 +1,7 @@
 'use server';
 
 import {
+    addCycleBoardService,
     createboardService,
     findboardService,
     updateboardService,
@@ -16,4 +17,8 @@ export const findBoard = async (boardId: bigint, workspaceUuid: string) => {
 
 export const updateBoard = async (boardId: bigint, workspaceUuid: string, data: any) => {
     return await updateboardService(boardId, workspaceUuid, data);
+};
+
+export const addCycleBoard = async (boardId: bigint, workspaceUuid: string, data: any) => {
+    return await addCycleBoardService(boardId, workspaceUuid, data);
 };

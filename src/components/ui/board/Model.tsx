@@ -10,6 +10,9 @@ import { CreateTask } from '../../forms/CreateTask';
 import { useItemsStore } from '@/src/hooks/workspaceHook';
 import EditColumnsBoard from '../../forms/EditColumnsBoard';
 
+import { addCycleBoard } from '@/src/server/actions/board.action';
+import { useWorkspaceUuid } from '../workspace/hook';
+
 export const Model = ({ board }: any) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -18,6 +21,19 @@ export const Model = ({ board }: any) => {
     const tasks = Object.values(board.task ?? {}).flat();
 
     const selectedItem = useItemsStore((state) => state.selectedItem);
+
+    const [columnId, setColumnId] = useState<any>(null);
+
+    const getColumnId = (columnId: any) => {
+        setIsEditColumnsOpen(!isEditColumnsOpen);
+        setColumnId(columnId);
+    };
+
+    const workspaceUuid = useWorkspaceUuid();
+
+    const addCycle = async () => {
+        await addCycleBoard(board.id, workspaceUuid, board.columnsConfig);
+    };
 
     return (
         <div className="w-full h-auto bg-white p-4 shadow">
@@ -36,14 +52,24 @@ export const Model = ({ board }: any) => {
                 </div>
 
                 {/* Add task */}
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center gap-2 rounded-md border border-gray-200 bg-green-300 px-3 py-2 shadow-sm transition hover:bg-green-400"
-                >
-                    <span className="text-sm font-medium text-gray-700">Task</span>
+                <div className="flex gap-10">
+                    <button
+                        onClick={addCycle}
+                        className="flex items-center gap-2 rounded-md border-2 border-orange-200  px-3 py-2 shadow-sm transition hover:bg-green-400"
+                    >
+                        <span className="text-sm font-medium text-gray-700">Cycle</span>
 
-                    <Image src={addIcon} alt="Add task" width={18} height={18} />
-                </button>
+                        <Image src={addIcon} alt="Add task" width={18} height={18} />
+                    </button>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="flex items-center gap-2 rounded-md border-2 bg-green-300 border-gray-200 px-3 py-2 shadow-sm transition hover:bg-green-400"
+                    >
+                        <span className="text-sm font-medium text-gray-700">Task</span>
+
+                        <Image src={addIcon} alt="Add task" width={18} height={18} />
+                    </button>
+                </div>
             </div>
 
             {/* Create task */}
@@ -63,7 +89,7 @@ export const Model = ({ board }: any) => {
                                 <h4 className="text-lg font-semibold text-gray-700/70">
                                     Cycle {column.name}
                                 </h4>
-                                <button onClick={() => setIsEditColumnsOpen(!isEditColumnsOpen)}>
+                                <button onClick={() => getColumnId(column.id)}>
                                     <img
                                         src="/pen.png"
                                         alt="Edit"
@@ -74,11 +100,16 @@ export const Model = ({ board }: any) => {
 
                             {/* Columns */}
                             <div
-                                className="grid w-full"
+                                className="grid w-full row-auto gap-y-2"
                                 style={{
-                                    gridTemplateColumns: `repeat(${column.item.length}, minmax(0, 1fr))`,
+                                    gridTemplateColumns: `repeat(${column.item?.length > 5 ? 5 : column.item.length}, minmax(0, 1fr))`,
                                 }}
                             >
+                                {column.item.length === 0 ? (
+                                    <p className="w-full text-sm text-center p-2 text-gray-500">
+                                        No Columns
+                                    </p>
+                                ) : null}
                                 {column.item.map((item: ColumnItem) => {
                                     const itemTasks = tasks.filter(
                                         (task: any) => task.columnId === item.id
@@ -122,6 +153,8 @@ export const Model = ({ board }: any) => {
                     columns={board.columnsConfig}
                     setIsEditColumnsOpen={setIsEditColumnsOpen}
                     boardId={board.id}
+                    columnId={Number(columnId)}
+                    setDataColumn={() => setColumnId}
                 />
             )}
         </div>

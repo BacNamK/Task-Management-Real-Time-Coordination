@@ -39,10 +39,21 @@ export const findboardService = async (boardId: bigint, workspaceUuid: string) =
     return await findboardRepository(boardId, workspaceUuid);
 };
 
-export const updateboardService = async (
-    boardId: bigint,
-    workspaceUuid: string,
-    data: any
-) => {
+export const updateboardService = async (boardId: bigint, workspaceUuid: string, data: any) => {
+    return await updateboardRepository(boardId, workspaceUuid, data);
+};
+
+export const addCycleBoardService = async (boardId: bigint, workspaceUuid: string, data: any) => {
+    const rawData: any = {
+        id: String(data.length),
+        name: 'Default',
+        item: [
+            { id: '0', name: 'To Do' },
+            { id: '1', name: 'In Progress' },
+            { id: '2', name: 'Done' },
+        ],
+    };
+
+    data.push(rawData);
     return await updateboardRepository(boardId, workspaceUuid, data);
 };
