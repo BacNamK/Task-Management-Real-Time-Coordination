@@ -89,35 +89,65 @@ model WorkspaceMember {
 }
 
 model Board {
-  id          BigInt @id @default(autoincrement())
+  id          BigInt   @id @default(autoincrement())
   name        String?
-  workspaceId BigInt @map("workspace_id")
+  workspaceId BigInt   @map("workspace_id")
 
-  columnsConfig Json   @default("[]") @map("columns_config")
-  
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  
-  task          Task[]
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  tasks       Task[]
+  cycles      Cycle[]
 
   @@map("board")
 }
 
+model Cycle {
+  id           BigInt         @id @default(autoincrement())
+  title        String         @db.VarChar
+  position     Int            @default(0)
+  boardId      BigInt         @map("board_id")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  board        Board          @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cycleColumns CycleColumns[]
+
+  @@index([boardId, position])
+  @@map("cycle")
+}
+
+model CycleColumns {
+  id       String @id @default(uuid())
+  name     String
+  position Int    @default(0)
+  cycleId  BigInt @map("cycle_id")
+
+  cycle    Cycle  @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+
+  @@index([cycleId, position])
+  @@map("cycle_columns")
+}
+
 model Task {
-  id          BigInt      @id @default(autoincrement())
-  title       String      @db.VarChar
-  description String?     @db.Text
-  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
-  dueDate     DateTime?   @map("due_date") @db.Timestamp(6)
-  creatorId   BigInt      @map("creator_id")
-  columnId    String?     @map("column_id") 
-  boardId     BigInt      @map("borad_id")
+  id          BigInt       @id @default(autoincrement())
+  title       String       @db.VarChar
+  position    Int
+  description String?      @db.Text
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
+  dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
+  creatorId   BigInt       @map("creator_id")
+  columnId    String?      @map("column_id")
+  boardId     BigInt       @map("board_id")
 
   assigneeds  Assigneeds[]
-  board       Board       @relation(fields : [boardId] , references : [id])
-  creator     User        @relation("CreatedTasks", fields: [creatorId], references: [id])
+  column      CycleColumns? @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id])
 
+  @@index([columnId, position])
   @@map("task")
 }
 
