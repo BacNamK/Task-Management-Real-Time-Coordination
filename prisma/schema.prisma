@@ -19,6 +19,12 @@ enum EnumRole {
   MEMBER
 }
 
+enum EnumStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
 model User {
   id           BigInt  @id @default(autoincrement())
   uuid         String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
@@ -94,11 +100,12 @@ model Board {
   workspaceId BigInt   @map("workspace_id")
 
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   tasks       Task[]
-  cycles      Cycle[]
+  cycle       Cycle[]
 
   @@map("board")
 }
@@ -107,28 +114,17 @@ model Cycle {
   id           BigInt         @id @default(autoincrement())
   title        String         @db.VarChar
   position     Int            @default(0)
+  status       Boolean        @default(true)
+  columns      Json[]          
   boardId      BigInt         @map("board_id")
   createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt    DateTime       @updatedAt @map("updated_at")
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
 
   board        Board          @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  cycleColumns CycleColumns[]
+  task         Task[]
 
   @@index([boardId, position])
   @@map("cycle")
-}
-
-model CycleColumns {
-  id       String @id @default(uuid())
-  name     String
-  position Int    @default(0)
-  cycleId  BigInt @map("cycle_id")
-
-  cycle    Cycle  @relation(fields: [cycleId], references: [id], onDelete: Cascade)
-  tasks    Task[]
-
-  @@index([cycleId, position])
-  @@map("cycle_columns")
 }
 
 model Task {
@@ -138,16 +134,17 @@ model Task {
   description String?      @db.Text
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
   creatorId   BigInt       @map("creator_id")
-  columnId    String?      @map("column_id")
+  cycleId     BigInt?      @map("cycle_id")  
   boardId     BigInt       @map("board_id")
 
   assigneeds  Assigneeds[]
-  column      CycleColumns? @relation(fields: [columnId], references: [id], onDelete: Cascade)
   board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
   creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id])
+  cycle       Cycle?        @relation(fields : [cycleId] , references : [id])
 
-  @@index([columnId, position])
+  @@index([position])
   @@map("task")
 }
 
@@ -182,6 +179,7 @@ model Message {
   senderId  BigInt   @map("sender_id")
   roomId    BigInt   @map("room_id")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
 
   sender User     @relation(fields: [senderId], references: [id])
   room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)

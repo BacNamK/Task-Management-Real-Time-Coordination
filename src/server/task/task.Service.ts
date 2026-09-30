@@ -11,6 +11,8 @@ export async function createTaskService(dataRequest: assignTask) {
         ...dataRequest,
         creatorId: Number(id),
     };
+
+    console.log(data);
     await createTaskRepository(data);
 }
 

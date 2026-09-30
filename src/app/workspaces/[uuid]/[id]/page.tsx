@@ -14,18 +14,7 @@ export default async function Page({ params }: { params: Promise<{ uuid: string;
 
     return (
         <div className="relative h-screen w-full">
-            <Model
-                board={{
-                    ...board,
-                    id: board.id.toString(),
-                    task: board.task.map((task) => ({
-                        ...task,
-                        id: task.id.toString(),
-                        boardId: task.boardId.toString(),
-                        creatorId: task.creatorId.toString(),
-                    })),
-                }}
-            />
+            <Model board={board} />
         </div>
     );
 }

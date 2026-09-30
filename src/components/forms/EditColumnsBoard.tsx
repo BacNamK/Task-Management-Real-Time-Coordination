@@ -1,75 +1,61 @@
-import { useItemsStore } from '@/src/hooks/workspaceHook';
-import { updateBoard } from '@/src/server/actions/board.action';
+import { updateTaskAc } from '@/src/server/actions/task.action';
 import { useEffect, useState } from 'react';
 
 type prop = {
-    columns: ColumnConfig[];
-    setIsEditColumnsOpen: (value: boolean) => void;
+    cycle: any;
     boardId: string;
-    columnId: number;
-    setDataColumn: () => void;
+    setIsEditColumnsOpen: (value: boolean) => void;
 };
 
-const EditColumnsBoard = ({ columns, setIsEditColumnsOpen, boardId, columnId }: prop) => {
-    const [column, setColumn] = useState<any[]>([]);
+const EditColumnsBoard = ({ cycle, setIsEditColumnsOpen }: prop) => {
+    // Nhận prop từ chacha
+    const [item, setItem] = useState<any>(cycle.columns);
 
-    const setValue = (columnId: number, name: string) => {
-        setColumn((prev) =>
-            prev.map((column, index) => {
-                if (index !== columnId) return column;
-
-                const newItems = [
-                    ...column.item,
-                    {
-                        id: '',
-                        name,
-                    },
-                ].map((item, index) => ({
-                    ...item,
-                    id: String(index),
-                }));
-
-                return {
-                    ...column,
-                    item: newItems,
-                };
-            })
-        );
-    };
-
-    useEffect(() => {
-        const newColumn = columns.map((column) => ({
-            ...column,
-            item: [...column.item],
-        }));
-
-        setColumn(newColumn);
-    }, [columns]);
+    useEffect(() => {}, [cycle]); // Bắt buộc phải có [cycle] ở đây
 
     const addNewColumns = (e: any) => {
         e.preventDefault();
 
         const newColumnsName = e.target.newColumnsName.value;
 
-        setValue(columnId, newColumnsName);
+        const position = item.length;
+
+        setValue(position, newColumnsName);
 
         e.target.reset();
     };
 
-    const workspaceUuid = useItemsStore((state) => state.selectedItem?.workspace.uuid);
+    const setValue = (position: number, name: string) => {
+        // prev là dữ liệu trước đó
+        // thêm dữ liệu mới vào
+        setItem((prev: any) => {
+            return [
+                ...prev,
+                {
+                    name,
+                    position,
+                },
+            ];
+        });
+    };
 
     const updateColumns = async (e: any) => {
         e.preventDefault();
-        const parseColumns = column.flat();
-        await updateBoard(BigInt(boardId), workspaceUuid, parseColumns);
+        await updateTaskAc(cycle.id, item);
+        // đóng modelmodel
         setIsEditColumnsOpen(false);
     };
 
-    const clearColumn = (columnId: number) => {
-        console.log(column[columnId]);
-
-        setColumn((prev: any[]) => prev.filter((_, index) => index !== columnId));
+    const clearAllColumn = () => {
+        setItem([]);
     };
+
+    const clearolumn = (e: any, p: number) => {
+        e.preventDefault();
+        setItem((prev: any) => prev.filter((i: any) => i.position !== p));
+    };
+
+    console.log(item);
 
     return (
         <div className="absolute z-20 top-0 left-0 w-full h-full bg-black/20 shadow backdrop-blur-md flex items-center justify-center">
@@ -82,24 +68,30 @@ const EditColumnsBoard = ({ columns, setIsEditColumnsOpen, boardId, columnId }: 
                                 type="text"
                                 name="cycleName"
                                 className="w-5/6 p-2"
-                                placeholder={`${columns?.[columnId]?.name}`}
+                                placeholder={`${cycle.title}`}
                             />
                         </div>
                     </div>
                     <div className="mt-4 grid grid-cols-5 gap-2 row-auto items-center justify-center">
-                        {column?.[columnId]?.item?.map((column: ColumnConfig) => (
+                        {item?.map((column: any, index: number) => (
                             <div
-                                key={column.id}
-                                className="w-full h-12 border border-gray-300 flex items-center justify-center"
+                                key={index}
+                                className="relative group w-full h-12 border border-gray-300 flex items-center justify-center"
                             >
-                                {column.name}
+                                <p>{column.name}</p>
+                                <button
+                                    onClick={(e) => clearolumn(e, index)}
+                                    className="absolute right-2 bg-red-400 text-white size-5 flex justify-center items-center rounded-full group-hover:visible invisible"
+                                >
+                                    x
+                                </button>
                             </div>
                         ))}
                     </div>
                 </form>
                 <div className="w-full flex pl-8 items-center justify-center">
                     <button
-                        onClick={() => clearColumn(columnId)}
+                        onClick={clearAllColumn}
                         className="border-b-2 p-2 border-red-400 text-red-400"
                     >
                         Clear all columns

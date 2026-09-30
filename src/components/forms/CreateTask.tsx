@@ -10,8 +10,18 @@ type user = {
     image: string;
 };
 
-export const CreateTask = ({ user, board }: { user: any; board: string }) => {
+export const CreateTask = ({
+    user,
+    cycleInfor,
+    boardId,
+}: {
+    user: any;
+    cycleInfor: any;
+    boardId: any;
+}) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    console.log(cycleInfor);
 
     const [User, setUser] = useState<user[]>([]);
 
@@ -25,8 +35,9 @@ export const CreateTask = ({ user, board }: { user: any; board: string }) => {
                 description: formData.get('description') as string,
                 createdAt: new Date(formData.get('createdAt') as string),
                 dueDate: new Date(formData.get('dueDate') as string),
-                columnId: '0',
-                boardId: BigInt(board),
+                position: 0,
+                cycleId: null,
+                boardId: boardId,
             },
             assigneeds: [
                 {

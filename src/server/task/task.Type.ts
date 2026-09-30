@@ -3,8 +3,9 @@ export interface Task {
     description: string;
     createdAt: Date;
     dueDate: Date;
-    columnId: string;
-    boardId: bigint;
+    position: Number;
+    cycleId: bigint | null;
+    boardId: any;
 }
 
 export interface TaskData extends Task {

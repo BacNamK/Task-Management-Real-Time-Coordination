@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import addIcon from '@/public/add.png';
 import infoIcon from '@/public/info-sign.png';
@@ -11,29 +11,29 @@ import { useItemsStore } from '@/src/hooks/workspaceHook';
 import EditColumnsBoard from '../../forms/EditColumnsBoard';
 
 import { addCycleBoard } from '@/src/server/actions/board.action';
-import { useWorkspaceUuid } from '../workspace/hook';
 
 export const Model = ({ board }: any) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const [isEditColumnsOpen, setIsEditColumnsOpen] = useState(false);
 
-    const tasks = Object.values(board.task ?? {}).flat();
-
     const selectedItem = useItemsStore((state) => state.selectedItem);
 
-    const [columnId, setColumnId] = useState<any>(null);
+    const [cycleItem, setCycleItem] = useState<{ columns: []; title: string; id: any }>();
 
-    const getColumnId = (columnId: any) => {
+    // lấy thông in cycle
+    const getCycleycle = (columns: any, title: string, id: any) => {
         setIsEditColumnsOpen(!isEditColumnsOpen);
-        setColumnId(columnId);
+        setCycleItem({ columns, title, id });
     };
-
-    const workspaceUuid = useWorkspaceUuid();
 
     const addCycle = async () => {
-        await addCycleBoard(board.id, workspaceUuid, board.columnsConfig);
+        await addCycleBoard(board.id);
     };
+
+    useEffect(() => {}, [board.cycle]);
+
+    const tasks = board.cycle;
 
     return (
         <div className="w-full h-auto bg-white p-4 shadow">
@@ -75,21 +75,29 @@ export const Model = ({ board }: any) => {
             {/* Create task */}
             {isOpen && (
                 <div className="mt-4">
-                    <CreateTask user={selectedItem?.user} board={board.id} />
+                    <CreateTask
+                        user={selectedItem?.user}
+                        cycleInfor={cycleItem}
+                        boardId={board.id}
+                    />
                 </div>
             )}
 
             {/* Board columns */}
             <div className="mt-4 w-full space-y-4">
-                {(Array.isArray(board.columnsConfig) ? board.columnsConfig : []).map(
-                    (column: ColumnConfig) => (
-                        <div key={column.id} className="overflow-hidden">
+                {(Array.isArray(board.cycle) ? board.cycle : []).map(
+                    (cycle: any, cycleIndex: number) => (
+                        <div key={cycle.id} className="overflow-hidden">
                             {/* Progress header */}
                             <div className="px-2 py-1 border-b-2 flex items-center gap-3 border-orange-300 ">
                                 <h4 className="text-lg font-semibold text-gray-700/70">
-                                    Cycle {column.name}
+                                    Cycle {cycle.title}
                                 </h4>
-                                <button onClick={() => getColumnId(column.id)}>
+                                <button
+                                    onClick={() =>
+                                        getCycleycle(cycle.columns, cycle.title, cycle.id)
+                                    }
+                                >
                                     <img
                                         src="/pen.png"
                                         alt="Edit"
@@ -102,22 +110,22 @@ export const Model = ({ board }: any) => {
                             <div
                                 className="grid w-full row-auto gap-y-2"
                                 style={{
-                                    gridTemplateColumns: `repeat(${column.item?.length > 5 ? 5 : column.item.length}, minmax(0, 1fr))`,
+                                    gridTemplateColumns: `repeat(${cycle.columns.length > 4 ? 4 : cycle.columns.length}, minmax(0, 1fr))`,
                                 }}
                             >
-                                {column.item.length === 0 ? (
+                                {cycle.columns.length === 0 ? (
                                     <p className="w-full text-sm text-center p-2 text-gray-500">
                                         No Columns
                                     </p>
                                 ) : null}
-                                {column.item.map((item: ColumnItem) => {
-                                    const itemTasks = tasks.filter(
-                                        (task: any) => task.columnId === item.id
+                                {cycle.columns.map((item: any) => {
+                                    const itemTasks = tasks[cycleIndex].task.filter(
+                                        (task: any) => task.position === item.position
                                     );
 
                                     return (
                                         <div
-                                            key={item.id}
+                                            key={item?.position}
                                             className="min-w-0 border border-gray-200"
                                         >
                                             {/* Column title */}
@@ -130,12 +138,12 @@ export const Model = ({ board }: any) => {
                                             {/* Tasks */}
                                             <div className="min-h-16 bg-gray-100/70 p-2">
                                                 {itemTasks.map((task: any, taskIndex: number) => (
-                                                    <span
+                                                    <div
                                                         key={task.id ?? taskIndex}
-                                                        className="w-full cursor-pointer rounded-md border border-gray-200 bg-white p-2 m-1 text-sm shadow-sm transition hover:border-gray-300 hover:shadow"
+                                                        className="w-full cursor-pointer rounded-[5px] border border-gray-200 bg-white p-2 text-sm shadow-sm transition hover:border-gray-300 hover:shadow"
                                                     >
                                                         {task.title}
-                                                    </span>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </div>
@@ -150,11 +158,9 @@ export const Model = ({ board }: any) => {
             {/* Edit columns */}
             {isEditColumnsOpen && (
                 <EditColumnsBoard
-                    columns={board.columnsConfig}
+                    cycle={cycleItem}
                     setIsEditColumnsOpen={setIsEditColumnsOpen}
                     boardId={board.id}
-                    columnId={Number(columnId)}
-                    setDataColumn={() => setColumnId}
                 />
             )}
         </div>
