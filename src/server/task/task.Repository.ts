@@ -25,3 +25,18 @@ export async function getTaskRepository(boardId: bigint) {
         },
     });
 }
+export async function changePositionRp(data: {
+    taskId: bigint;
+    cycleId: bigint;
+    position: number;
+}) {
+    return await prisma.task.update({
+        where: {
+            id: data.taskId,
+        },
+        data: {
+            cycleId: data.cycleId,
+            position: data.position,
+        },
+    });
+}

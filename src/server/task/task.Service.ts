@@ -1,5 +1,5 @@
 import { assignTask } from './task.Type';
-import { createTaskRepository, getTaskRepository } from './task.Repository';
+import { changePositionRp, createTaskRepository, getTaskRepository } from './task.Repository';
 import { auth } from '@/src/lib/auth';
 
 export async function createTaskService(dataRequest: assignTask) {
@@ -12,10 +12,17 @@ export async function createTaskService(dataRequest: assignTask) {
         creatorId: Number(id),
     };
 
-    console.log(data);
     await createTaskRepository(data);
 }
 
 export async function getTaskService(boardId: bigint) {
     return await getTaskRepository(boardId);
+}
+
+export async function changePositionService(data: {
+    taskId: bigint;
+    cycleId: bigint;
+    position: number;
+}) {
+    return await changePositionRp(data);
 }

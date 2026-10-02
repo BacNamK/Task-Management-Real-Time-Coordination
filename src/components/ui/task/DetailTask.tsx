@@ -3,7 +3,6 @@ import Image from 'next/image';
 
 const DetailTask = ({ task, close }: { task: any; close: () => void }) => {
     const [taskDetail, setTaskDetail] = useState<any>(task);
-    console.log(task);
     return (
         <div className="absolute z-20 top-0 left-0 w-full h-full bg-black/20 shadow backdrop-blur-md flex items-center justify-center">
             <main className="relative w-2/3 h-auto bg-white rounded-md flex flex-col p-6 gap-y-4">

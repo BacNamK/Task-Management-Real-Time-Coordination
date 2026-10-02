@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import addIcon from '@/public/add.png';
 import infoIcon from '@/public/info-sign.png';
@@ -15,6 +15,7 @@ import { addCycleBoard } from '@/src/server/actions/board.action';
 import { DragDropProvider } from '@dnd-kit/react';
 import DroppableColumn from './DroppableColumn';
 import DraggableTask from './DraggableTask';
+import { changePositionAc } from '@/src/server/actions/task.action';
 
 export const Model = ({ board }: any) => {
     const [tasks, setTasks] = useState<any>(board.tasks);
@@ -31,7 +32,20 @@ export const Model = ({ board }: any) => {
                     : item
             )
         );
+
+        console.log('changePositionTask', taskId, cycleId, position);
+        setTaskChange({ taskId, cycleId, position });
     };
+
+    const [taskChange, setTaskChange] = useState<any>();
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (!taskChange) return;
+            changePositionAc(taskChange);
+        }, 500);
+        return () => clearTimeout(timeout);
+    }, [taskChange]);
 
     const [isOpen, setIsOpen] = useState(false);
 

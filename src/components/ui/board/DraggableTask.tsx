@@ -24,9 +24,8 @@ function DraggableTask({ task }: { task: any }) {
             <Image
                 src={detailIcon}
                 alt="Task Icon"
-                width={20}
-                height={20}
-                className="scale-75"
+                width={16}
+                height={16}
                 onClick={() => setShowTaskDetail(!showTaskDetail)}
             />
             <p className="text-sm text-gray-700 truncate">{task.title}</p>

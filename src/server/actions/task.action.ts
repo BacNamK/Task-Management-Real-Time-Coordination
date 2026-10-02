@@ -1,7 +1,7 @@
 'use server';
 
 import { assignTask } from '../task/task.Type';
-import { createTaskService } from '../task/task.Service';
+import { changePositionService, createTaskService } from '../task/task.Service';
 import { getTaskRepository } from '../task/task.Repository';
 import { updateCycleColumnsRp } from '../cycle/cycleRepository';
 
@@ -15,4 +15,13 @@ export async function getTask(boardId: bigint) {
 
 export async function updateTaskAc(id: any, rawdData: any) {
     return updateCycleColumnsRp(id, rawdData);
+}
+
+export async function changePositionAc(data: {
+    taskId: bigint;
+    cycleId: bigint;
+    position: number;
+}) {
+    console.log('changePositionAc', data);
+    return await changePositionService(data);
 }
