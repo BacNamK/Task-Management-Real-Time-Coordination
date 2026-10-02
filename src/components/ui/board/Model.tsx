@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import addIcon from '@/public/add.png';
 import infoIcon from '@/public/info-sign.png';
@@ -12,7 +12,27 @@ import EditColumnsBoard from '../../forms/EditColumnsBoard';
 
 import { addCycleBoard } from '@/src/server/actions/board.action';
 
+import { DragDropProvider } from '@dnd-kit/react';
+import DroppableColumn from './DroppableColumn';
+import DraggableTask from './DraggableTask';
+
 export const Model = ({ board }: any) => {
+    const [tasks, setTasks] = useState<any>(board.tasks);
+
+    const changePositionTask = (target: any, taskId: bigint) => {
+        const cycleId = target.data?.cycleId;
+        const position = target.data?.position;
+        if (cycleId == null || position == null) return;
+
+        setTasks((prev: any) =>
+            prev.map((item: any) =>
+                item.id === taskId
+                    ? { ...item, cycleId: BigInt(cycleId), position: Number(position) }
+                    : item
+            )
+        );
+    };
+
     const [isOpen, setIsOpen] = useState(false);
 
     const [isEditColumnsOpen, setIsEditColumnsOpen] = useState(false);
@@ -22,7 +42,7 @@ export const Model = ({ board }: any) => {
     const [cycleItem, setCycleItem] = useState<{ columns: []; title: string; id: any }>();
 
     // lấy thông in cycle
-    const getCycleycle = (columns: any, title: string, id: any) => {
+    const getCycley = (columns: any, title: string, id: any) => {
         setIsEditColumnsOpen(!isEditColumnsOpen);
         setCycleItem({ columns, title, id });
     };
@@ -31,36 +51,46 @@ export const Model = ({ board }: any) => {
         await addCycleBoard(board.id);
     };
 
-    useEffect(() => {}, [board.cycle]);
-
-    const tasks = board.cycle;
+    const taskQueue = tasks.filter((task: any) => task.cycleId === null);
 
     return (
-        <div className="w-full h-auto bg-white p-4 shadow">
-            {/* Board header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-semibold text-gray-800">{board.name}</h3>
+        <div className="w-full h-full bg-gray-100 p-4 shadow">
+            <DragDropProvider
+                onDragEnd={(event) => {
+                    const { source, target } = event.operation;
 
-                    <Image
-                        src={infoIcon}
-                        alt="Info"
-                        width={18}
-                        height={18}
-                        className="cursor-pointer opacity-50"
-                    />
+                    if (event.canceled || !source || !target) return;
+                    changePositionTask(target, BigInt(source.id));
+                }}
+            >
+                {/* Board header */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-xl font-semibold text-gray-800">{board.name}</h3>
+                        <Image
+                            src={infoIcon}
+                            alt="Info"
+                            width={18}
+                            height={18}
+                            className="cursor-pointer opacity-50"
+                        />
+                    </div>
+
+                    {/* Add cycle */}
+                    <div className="flex gap-10">
+                        <button
+                            onClick={addCycle}
+                            className="flex items-center gap-2 rounded-md border-2 border-orange-200  px-3 py-2 shadow-sm transition hover:bg-green-400"
+                        >
+                            <span className="text-sm font-medium text-gray-700">Cycle</span>
+
+                            <Image src={addIcon} alt="Add task" width={18} height={18} />
+                        </button>
+                    </div>
                 </div>
 
-                {/* Add task */}
-                <div className="flex gap-10">
-                    <button
-                        onClick={addCycle}
-                        className="flex items-center gap-2 rounded-md border-2 border-orange-200  px-3 py-2 shadow-sm transition hover:bg-green-400"
-                    >
-                        <span className="text-sm font-medium text-gray-700">Cycle</span>
-
-                        <Image src={addIcon} alt="Add task" width={18} height={18} />
-                    </button>
+                <div className="w-full flex gap-2 bg-white rounded-md shadow p-2 mt-5">
+                    {/* Add task */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="flex items-center gap-2 rounded-md border-2 bg-green-300 border-gray-200 px-3 py-2 shadow-sm transition hover:bg-green-400"
@@ -69,34 +99,37 @@ export const Model = ({ board }: any) => {
 
                         <Image src={addIcon} alt="Add task" width={18} height={18} />
                     </button>
-                </div>
-            </div>
 
-            {/* Create task */}
-            {isOpen && (
-                <div className="mt-4">
-                    <CreateTask
-                        user={selectedItem?.user}
-                        cycleInfor={cycleItem}
-                        boardId={board.id}
-                    />
+                    {/* Task queue */}
+                    <div className="w-full h-10 grid grid-cols-6 row-auto gap-2">
+                        {taskQueue.map((task: any, index: number) => (
+                            <DraggableTask key={task.id ?? index} task={task} />
+                        ))}
+                    </div>
                 </div>
-            )}
 
-            {/* Board columns */}
-            <div className="mt-4 w-full space-y-4">
-                {(Array.isArray(board.cycle) ? board.cycle : []).map(
-                    (cycle: any, cycleIndex: number) => (
+                {/* Create task */}
+                {isOpen && (
+                    <div className="mt-4">
+                        <CreateTask
+                            user={selectedItem?.user}
+                            cycleInfor={cycleItem}
+                            boardId={board.id}
+                        />
+                    </div>
+                )}
+
+                {/* Cycle */}
+                <div className="mt-4 w-full space-y-4 bg-white shadow rounded-md">
+                    {board.cycle?.map((cycle: any) => (
                         <div key={cycle.id} className="overflow-hidden">
-                            {/* Progress header */}
+                            {/* Cycle header */}
                             <div className="px-2 py-1 border-b-2 flex items-center gap-3 border-orange-300 ">
-                                <h4 className="text-lg font-semibold text-gray-700/70">
+                                <h4 className="text-lg font-semibold text-gray-700/70 pt-2 pb-2">
                                     Cycle {cycle.title}
                                 </h4>
                                 <button
-                                    onClick={() =>
-                                        getCycleycle(cycle.columns, cycle.title, cycle.id)
-                                    }
+                                    onClick={() => getCycley(cycle.columns, cycle.title, cycle.id)}
                                 >
                                     <img
                                         src="/pen.png"
@@ -108,61 +141,62 @@ export const Model = ({ board }: any) => {
 
                             {/* Columns */}
                             <div
-                                className="grid w-full row-auto gap-y-2"
+                                className="grid w-full"
                                 style={{
                                     gridTemplateColumns: `repeat(${cycle.columns.length > 4 ? 4 : cycle.columns.length}, minmax(0, 1fr))`,
                                 }}
                             >
+                                {/* No columns */}
                                 {cycle.columns.length === 0 ? (
                                     <p className="w-full text-sm text-center p-2 text-gray-500">
                                         No Columns
                                     </p>
                                 ) : null}
-                                {cycle.columns.map((item: any) => {
-                                    const itemTasks = tasks[cycleIndex].task.filter(
-                                        (task: any) => task.position === item.position
+                                {/* Has columns */}
+                                {cycle.columns.map((item: any, index: number) => {
+                                    const itemTasks = tasks.filter(
+                                        (task: any) =>
+                                            task.cycleId === cycle.id &&
+                                            task.position === item.position
                                     );
 
                                     return (
                                         <div
                                             key={item?.position}
-                                            className="min-w-0 border border-gray-200"
+                                            className="min-w-0 min-h-40 border border-gray-200"
                                         >
                                             {/* Column title */}
                                             <div className="border-b border-gray-200 px-3 py-2">
-                                                <div className="truncate text-sm font-medium text-gray-700 text-center">
-                                                    {item.name}
+                                                <div className="truncate text-sm font-medium text-gray-700 flex gap-2 items-center justify-center">
+                                                    <p className="opacity-40">{index + 1}.</p>
+                                                    <p>{item.name} </p>
                                                 </div>
                                             </div>
 
                                             {/* Tasks */}
-                                            <div className="min-h-16 bg-gray-100/70 p-2">
-                                                {itemTasks.map((task: any, taskIndex: number) => (
-                                                    <div
-                                                        key={task.id ?? taskIndex}
-                                                        className="w-full cursor-pointer rounded-[5px] border border-gray-200 bg-white p-2 text-sm shadow-sm transition hover:border-gray-300 hover:shadow"
-                                                    >
-                                                        {task.title}
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            <DroppableColumn
+                                                key={item?.position}
+                                                cycle={cycle}
+                                                id={item.position}
+                                                task={itemTasks}
+                                            />
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
-                    )
-                )}
-            </div>
+                    ))}
+                </div>
 
-            {/* Edit columns */}
-            {isEditColumnsOpen && (
-                <EditColumnsBoard
-                    cycle={cycleItem}
-                    setIsEditColumnsOpen={setIsEditColumnsOpen}
-                    boardId={board.id}
-                />
-            )}
+                {/* Edit columns */}
+                {isEditColumnsOpen && (
+                    <EditColumnsBoard
+                        cycle={cycleItem}
+                        setIsEditColumnsOpen={setIsEditColumnsOpen}
+                        boardId={board.id}
+                    />
+                )}
+            </DragDropProvider>
         </div>
     );
 };

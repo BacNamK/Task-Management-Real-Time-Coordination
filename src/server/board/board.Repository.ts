@@ -66,7 +66,7 @@ export const getBoardsRepository = async (workspaceUuid: string) => {
     return workspaceData;
 };
 
-export const findboardRepository = async (boardId: bigint, workspaceUuid: string) => {
+export const findboardRepository = async (boardId: bigint) => {
     return await prisma.board.findFirst({
         where: { id: boardId },
         select: {
@@ -80,24 +80,29 @@ export const findboardRepository = async (boardId: bigint, workspaceUuid: string
                     position: true,
                     columns: true,
                     createdAt: true,
-                    task: {
+                },
+            },
+            tasks: {
+                where: {
+                    boardId: boardId,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    position: true,
+                    description: true,
+                    createdAt: true,
+                    dueDate: true,
+                    cycleId: true,
+                    boardId: true,
+                    assigneeds: {
                         select: {
                             id: true,
-                            title: true,
-                            position: true,
-                            description: true,
-                            createdAt: true,
-                            dueDate: true,
-                            assigneeds: {
+                            user: {
                                 select: {
                                     id: true,
-                                    user: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            image: true,
-                                        },
-                                    },
+                                    name: true,
+                                    image: true,
                                 },
                             },
                         },

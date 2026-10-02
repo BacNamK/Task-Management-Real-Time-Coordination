@@ -1,7 +1,6 @@
 export interface Task {
     title: string;
     description: string;
-    createdAt: Date;
     dueDate: Date;
     position: Number;
     cycleId: bigint | null;

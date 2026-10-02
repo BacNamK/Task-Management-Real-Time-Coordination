@@ -6,7 +6,6 @@ const Page = async () => {
     // Tầng query đầu lấy danh sách Workspacce - Member
     const result = await workspaceOwn();
 
-    console.dir(result, { depth: null });
     const workspaces: workspaceRp =
         result && 'yourOwn' in result && 'yourMem' in result
             ? result

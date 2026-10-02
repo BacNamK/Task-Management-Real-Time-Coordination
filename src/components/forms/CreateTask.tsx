@@ -33,7 +33,6 @@ export const CreateTask = ({
             task: {
                 title: formData.get('title') as string,
                 description: formData.get('description') as string,
-                createdAt: new Date(formData.get('createdAt') as string),
                 dueDate: new Date(formData.get('dueDate') as string),
                 position: 0,
                 cycleId: null,
@@ -106,23 +105,12 @@ export const CreateTask = ({
                         className="block w-1/3 border border-gray-300 rounded-md p-2"
                     />
                     <div className="flex gap-5 justify-center w-full">
-                        <div className="flex w-[30%] justify-center items-center gap-2 border border-green-300 shadow rounded-full">
-                            <label className="text-sm bg-green-400 text-white  p-2 w-1/3 h-full text-center content-center rounded-full">
-                                Bắt đầu{' '}
-                            </label>
-                            <input
-                                name="startDate"
-                                type="date"
-                                placeholder="Thời gian bắt đầu"
-                                className="w-2/3 p-2 mr-2 outline-none"
-                            />
-                        </div>
                         <div className="flex w-[30%] justify-center items-center gap-2 border border-red-300 shadow rounded-full">
                             <label className="text-sm bg-red-400 text-white  p-2 w-1/3 h-full text-center content-center rounded-full">
                                 kết thúc{' '}
                             </label>
                             <input
-                                name="endDate"
+                                name="dueDate"
                                 type="date"
                                 placeholder="Thời gian kết thúc"
                                 className="w-2/3 p-2 mr-2 outline-none"

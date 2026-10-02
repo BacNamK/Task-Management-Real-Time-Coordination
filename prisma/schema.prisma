@@ -134,7 +134,7 @@ model Task {
   description String?      @db.Text
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+  updatedAt DateTime?      @map("updated_at") @db.Timestamp(6)
   creatorId   BigInt       @map("creator_id")
   cycleId     BigInt?      @map("cycle_id")  
   boardId     BigInt       @map("board_id")
