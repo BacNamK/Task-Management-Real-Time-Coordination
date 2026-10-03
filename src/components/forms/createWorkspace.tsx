@@ -22,32 +22,36 @@ export const FormCreateWorkspace = ({ onCreate }: { onCreate: (workspace: any) =
         }
     }
     return (
-        <div className="w-full flex items-center pl-5 gap-2">
-            <h3 className="text-md border-b-2 border-green-300 p-1">You Own</h3>
+        <div className="w-full h-13 flex items-center bg-green-300">
+            <h3 className="text-white p-4 w-1/12">You Own</h3>
             {isOpen ? (
-                <div className="flex gap-2">
+                <div className="flex gap-2 bg-white w-full h-full text-sm pl-5">
                     <button
                         onClick={() => setIsopen(!isOpen)}
-                        className="block p-2 w-20 rounded-[5px] bg-red-300"
+                        className="block p-2 w-20 border-b-2 border-red-300 text-red-500"
                     >
-                        Hủy
+                        Cancel
                     </button>
                     <form onSubmit={handleSubmit} className="flex gap-2">
                         <input
                             type="text"
                             name="workspaceName"
-                            placeholder="Name ..."
-                            className="p-2 bg-gray-200 rounded-xl"
+                            placeholder="Name Workspace"
+                            required
+                            className="p-2 border-b-2 border-gray-200 outline-none"
                         />
-                        <button type="submit" className="block w-20 rounded-[5px] bg-green-300 p-2">
-                            Tạo
+                        <button
+                            type="submit"
+                            className="block w-20 border-b-2 border-green-300 text-green-500"
+                        >
+                            Create
                         </button>
                     </form>
                 </div>
             ) : (
                 <button
                     onClick={() => setIsopen(!isOpen)}
-                    className="block bg-green-100 rounded-full p-1"
+                    className="block bg-white rounded-full p-1 scale-80"
                 >
                     <Image src="/add.png" alt="add" width={20} height={20} />
                 </button>

@@ -6,12 +6,7 @@ const Page = async () => {
     // Tầng query đầu lấy danh sách Workspacce - Member
     const result = await workspaceOwn();
 
-    const workspaces: workspaceRp =
-        result && 'yourOwn' in result && 'yourMem' in result
-            ? result
-            : { yourOwn: [], yourMem: [] };
-
-    return <WorkspacePageClient initialWorkspaces={workspaces} />;
+    return <WorkspacePageClient initialWorkspaces={result} />;
 };
 
 export default Page;

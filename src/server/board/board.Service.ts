@@ -38,8 +38,8 @@ export const getBoardService = async (workspaceUuid: string) => {
     return boards;
 };
 
-export const findboardService = async (boardId: bigint, workspaceUuid: string) => {
-    return await findboardRepository(boardId, workspaceUuid);
+export const findboardService = async (boardId: bigint) => {
+    return await findboardRepository(boardId);
 };
 
 export const updateboardService = async (boardId: bigint, data: any) => {

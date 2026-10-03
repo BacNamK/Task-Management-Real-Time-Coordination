@@ -55,8 +55,6 @@ const EditColumnsBoard = ({ cycle, setIsEditColumnsOpen }: prop) => {
         setItem((prev: any) => prev.filter((i: any) => i.position !== p));
     };
 
-    console.log(item);
-
     return (
         <div className="absolute z-20 top-0 left-0 w-full h-full bg-black/20 shadow backdrop-blur-md flex items-center justify-center">
             <main className="relative w-2/3 h-2/3 bg-white rounded-md">

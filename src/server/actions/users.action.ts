@@ -2,6 +2,6 @@
 
 import { findUserByName } from '../users/users.Repository';
 
-export const getUsers = async (name: string) => {
+export const getUsersByNameAc = async (name: string) => {
     return await findUserByName(name);
 };

@@ -22,6 +22,5 @@ export async function changePositionAc(data: {
     cycleId: bigint;
     position: number;
 }) {
-    console.log('changePositionAc', data);
     return await changePositionService(data);
 }

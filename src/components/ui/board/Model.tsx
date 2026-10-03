@@ -33,7 +33,6 @@ export const Model = ({ board }: any) => {
             )
         );
 
-        console.log('changePositionTask', taskId, cycleId, position);
         setTaskChange({ taskId, cycleId, position });
     };
 
@@ -51,7 +50,9 @@ export const Model = ({ board }: any) => {
 
     const [isEditColumnsOpen, setIsEditColumnsOpen] = useState(false);
 
-    const selectedItem = useItemsStore((state) => state.selectedItem);
+    const selectedUser = useItemsStore((state) => state.members);
+
+    console.log(selectedUser);
 
     const [cycleItem, setCycleItem] = useState<{ columns: []; title: string; id: any }>();
 
@@ -96,7 +97,7 @@ export const Model = ({ board }: any) => {
                             onClick={addCycle}
                             className="flex items-center gap-2 rounded-md border-2 border-orange-200  px-3 py-2 shadow-sm transition hover:bg-green-400"
                         >
-                            <span className="text-sm font-medium text-gray-700">Cycle</span>
+                            <span className="text-sm  text-gray-700">Cycle</span>
 
                             <Image src={addIcon} alt="Add task" width={18} height={18} />
                         </button>
@@ -125,11 +126,7 @@ export const Model = ({ board }: any) => {
                 {/* Create task */}
                 {isOpen && (
                     <div className="mt-4">
-                        <CreateTask
-                            user={selectedItem?.user}
-                            cycleInfor={cycleItem}
-                            boardId={board.id}
-                        />
+                        <CreateTask users={selectedUser} boardId={board.id} />
                     </div>
                 )}
 

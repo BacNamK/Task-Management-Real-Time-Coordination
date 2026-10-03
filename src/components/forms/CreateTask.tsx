@@ -5,28 +5,16 @@ import { useState } from 'react';
 import { createTask } from '@/src/server/actions/task.action';
 
 type user = {
-    id: string;
     name: string;
     image: string;
 };
 
-export const CreateTask = ({
-    user,
-    cycleInfor,
-    boardId,
-}: {
-    user: any;
-    cycleInfor: any;
-    boardId: any;
-}) => {
+export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => {
     const [isOpen, setIsOpen] = useState(false);
-
-    console.log(cycleInfor);
-
-    const [User, setUser] = useState<user[]>([]);
+    const [User, setUser] = useState<any>(users);
 
     const handleSubmit = async (e: any) => {
-        const userId = User.map((item: user) => item.id).join(',');
+        const userId = User.map((item: user) => item.name).join(',');
         e.preventDefault();
         const formData = new FormData(e.target);
         await createTask({
@@ -58,8 +46,8 @@ export const CreateTask = ({
                         <Image src={addIcon} alt="add" width={24} height={24} />
                     </button>
                     <div className="flex gap-2 w-[70%]">
-                        {User.map((item: user) => (
-                            <div key={item.id} className="flex items-center gap-2">
+                        {User.map((item: any, index: number) => (
+                            <div key={index} className="flex items-center gap-2">
                                 <Image
                                     src={item.image}
                                     alt={item.name}
@@ -78,10 +66,10 @@ export const CreateTask = ({
                             : 'hidden'
                     }
                 >
-                    {user.map((item: user) => (
+                    {users.map((item: user, index: number) => (
                         <div
                             onClick={() => setUser([...User, item])}
-                            key={item.id}
+                            key={index}
                             className="flex w-full gap-2 bg-white items-center hover:bg-gray-100 p-2"
                         >
                             <Image

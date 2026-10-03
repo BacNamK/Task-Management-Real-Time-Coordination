@@ -3,7 +3,7 @@ import prisma from '@/src/lib/prisma';
 export const findUserByName = async (name: string) => {
     return await prisma.user.findUnique({
         where: { name },
-        select: { name: true },
+        select: { name: true, image: true, id: true },
     });
 };
 

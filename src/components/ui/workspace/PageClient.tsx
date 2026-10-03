@@ -8,21 +8,21 @@ import { createContext } from 'react';
 import { useState } from 'react';
 
 type Props = {
-    initialWorkspaces: workspaceRp;
+    initialWorkspaces: any;
 };
 
 export const WorkspaceContext = createContext<workspaceRp>({} as workspaceRp);
 
 const WorkspacePageClient = ({ initialWorkspaces }: Props) => {
-    const [workspaces, setWorkspaces] = useState<workspaceRp>(initialWorkspaces);
+    const [workspaces, setWorkspaces] = useState<any>(initialWorkspaces);
 
     return (
-        <div className="w-full h-full mt-8">
+        <div className="w-full h-screen p-4">
             <FormCreateWorkspace
                 onCreate={(workspace) =>
-                    setWorkspaces((prev) => ({
+                    setWorkspaces((prev: any) => ({
                         ...prev,
-                        yourOwn: [{ workspace, user: [] }, ...prev.yourOwn],
+                        yourOwn: [{ workspace, owner: {} }, ...prev.yourOwn],
                     }))
                 }
             />

@@ -39,19 +39,25 @@ export const getBoardsRepository = async (workspaceUuid: string) => {
         select: {
             uuid: true,
             name: true,
-            slug: true,
-            createdAt: true,
-
             boards: {
                 select: {
                     id: true,
                     name: true,
-                    cycle: {
+                    _count: {
                         select: {
-                            title: true,
-                            position: true,
-                            columns: true,
-                            createdAt: true,
+                            cycle: true,
+                            tasks: true,
+                        },
+                    },
+                },
+            },
+            members: {
+                select: {
+                    role: true,
+                    user: {
+                        select: {
+                            name: true,
+                            image: true,
                         },
                     },
                 },

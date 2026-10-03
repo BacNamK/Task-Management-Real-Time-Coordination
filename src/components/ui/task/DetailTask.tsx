@@ -55,7 +55,7 @@ const DetailTask = ({ task, close }: { task: any; close: () => void }) => {
                                         alt={item.user?.name || ''}
                                         width={28}
                                         height={28}
-                                        className="w-8 h-8 rounded-full"
+                                        className="rounded-full"
                                     />
                                     <p>{item.user?.name || 'No assignee'}</p>
                                 </div>

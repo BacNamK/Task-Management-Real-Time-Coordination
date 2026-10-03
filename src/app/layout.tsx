@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <SidebarProvider>
                     <SidebarController />
                     <AppSidebar />
-                    <main className="w-full h-full">{children}</main>
+                    <main className="w-full h-screen">{children}</main>
                 </SidebarProvider>
             </body>
         </html>

@@ -1,11 +1,7 @@
 import prisma from '@/src/lib/prisma';
-import { onwType } from '@/src/types/listWorkspace.Type';
+import { findUserByName } from '../users/users.Repository';
 
-export const createWorkspaceRepository = async (
-    workspaceName: string,
-    userId: bigint,
-    slug: string
-) => {
+export const createWorkspaceRp = async (workspaceName: string, userId: bigint, slug: string) => {
     const workspace = await prisma.workspace.create({
         data: {
             name: workspaceName.trim(),
@@ -23,31 +19,35 @@ export const createWorkspaceRepository = async (
     return workspace;
 };
 
-export const getWorkspaceRepository = async (userId: bigint) => {
+export const getWorkspaceRp = async (userId: bigint) => {
     const memberships = await prisma.workspaceMember.findMany({
         where: {
-            userId: BigInt(userId),
+            userId,
         },
         select: {
             role: true,
             workspace: {
                 select: {
-                    id: true,
                     uuid: true,
                     name: true,
                     slug: true,
                     createdAt: true,
                     members: {
+                        where: {
+                            role: 'ADMIN',
+                        },
+                        take: 1,
                         select: {
-                            role: true,
                             user: {
                                 select: {
-                                    id: true,
                                     name: true,
                                     image: true,
                                 },
                             },
                         },
+                    },
+                    _count: {
+                        select: { members: true, boards: true },
                     },
                 },
             },
@@ -56,33 +56,84 @@ export const getWorkspaceRepository = async (userId: bigint) => {
 
     return memberships.reduce(
         (result, membership) => {
-            const workspace = {
+            const admin = membership.workspace.members[0]?.user;
+
+            const item = {
                 workspace: {
-                    id: membership.workspace.id.toString(),
                     uuid: membership.workspace.uuid,
                     name: membership.workspace.name,
                     slug: membership.workspace.slug,
                     createdAt: membership.workspace.createdAt,
+                    _count: membership.workspace._count,
                 },
-                user: membership.workspace.members.map(({ user, role }) => ({
-                    id: user.id.toString(),
-                    name: user.name,
-                    image: user.image,
-                    role,
-                })),
+                owner: {
+                    name: admin?.name ?? null,
+                    image: admin?.image ?? null,
+                },
             };
 
             if (membership.role === 'ADMIN') {
-                result.yourOwn.push(workspace);
+                result.yourOwn.push(item);
             } else {
-                result.yourMem.push(workspace);
+                result.yourMem.push(item);
             }
 
             return result;
         },
         {
-            yourOwn: [] as onwType[],
-            yourMem: [] as onwType[],
+            yourOwn: [] as any[],
+            yourMem: [] as any[],
         }
     );
+};
+
+export const checkWorkspaceMemberRp = async (workspaceUuid: string, userName: string) => {
+    if (!workspaceUuid || !userName) {
+        return;
+    }
+    const user = await findUserByName(userName);
+    if (!user) {
+        return { message: 'User not found' };
+    }
+
+    const user_Id = user.id;
+
+    const workspace = await prisma.workspace.findUnique({
+        where: {
+            uuid: workspaceUuid,
+        },
+        select: {
+            id: true,
+            name: true,
+        },
+    });
+
+    if (!workspace) {
+        throw new Error('Workspace not found');
+    }
+
+    const checkMember = await prisma.workspaceMember.findUnique({
+        where: {
+            workspaceId_userId: {
+                workspaceId: workspace.id,
+                userId: user_Id,
+            },
+        },
+    });
+
+    if (checkMember) {
+        return { message: 'User already in workspace' };
+    }
+
+    return { user, workspaceId: workspace.id };
+};
+
+export const addWorkspaceMemberRp = async (workspaceId: any, userId: any) => {
+    await prisma.workspaceMember.create({
+        data: {
+            workspaceId,
+            userId: BigInt(userId),
+            role: 'MEMBER',
+        },
+    });
 };

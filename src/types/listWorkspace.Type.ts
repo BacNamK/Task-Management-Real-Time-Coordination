@@ -20,5 +20,5 @@ export interface workspaceRp {
 
 export interface onwType {
     workspace: workspace;
-    user: userType[];
+    owner: userType;
 }
