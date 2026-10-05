@@ -1,11 +1,10 @@
 'use server';
 
-import { assignTask } from '../task/task.Type';
 import { changePositionService, createTaskService } from '../task/task.Service';
 import { getTaskRepository } from '../task/task.Repository';
 import { updateCycleColumnsRp } from '../cycle/cycleRepository';
 
-export async function createTask(data: assignTask) {
+export async function createTask(data: any) {
     await createTaskService(data);
 }
 

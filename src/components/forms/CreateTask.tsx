@@ -11,10 +11,12 @@ type user = {
 
 export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [User, setUser] = useState<any>(users);
+    const [user, setUser] = useState<any[]>([]);
+
+    console.log(users);
 
     const handleSubmit = async (e: any) => {
-        const userId = User.map((item: user) => item.name).join(',');
+        const userId = user.map((item: any) => item.user.name).join(',');
         e.preventDefault();
         const formData = new FormData(e.target);
         await createTask({
@@ -46,11 +48,11 @@ export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => 
                         <Image src={addIcon} alt="add" width={24} height={24} />
                     </button>
                     <div className="flex gap-2 w-[70%]">
-                        {User.map((item: any, index: number) => (
+                        {user?.map((item: any, index: number) => (
                             <div key={index} className="flex items-center gap-2">
                                 <Image
-                                    src={item.image}
-                                    alt={item.name}
+                                    src={item.user.image}
+                                    alt={item.user.name}
                                     width={30}
                                     height={30}
                                     className="rounded-full object-cover size-8"
@@ -66,20 +68,20 @@ export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => 
                             : 'hidden'
                     }
                 >
-                    {users.map((item: user, index: number) => (
+                    {users.map((item: any, index: number) => (
                         <div
-                            onClick={() => setUser([...User, item])}
+                            onClick={() => setUser([...user, item])}
                             key={index}
                             className="flex w-full gap-2 bg-white items-center hover:bg-gray-100 p-2"
                         >
                             <Image
-                                src={item.image}
-                                alt={item.name}
+                                src={item.user.image}
+                                alt={item.user.name}
                                 width={30}
                                 height={30}
                                 className="rounded-full object-cover size-8"
                             />
-                            <div className=" p-2 rounded-md">{item.name}</div>
+                            <div className=" p-2 rounded-md">{item.user.name}</div>
                         </div>
                     ))}
                 </div>
@@ -105,7 +107,6 @@ export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => 
                             />
                         </div>
                     </div>
-                    <input type="text" placeholder="Người Tạo" value={user.name} hidden />
                 </div>
                 <input
                     type="text"
