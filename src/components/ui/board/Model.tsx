@@ -42,7 +42,7 @@ export const Model = ({ board }: any) => {
         const timeout = setTimeout(() => {
             if (!taskChange) return;
             changePositionAc(taskChange);
-        }, 500);
+        }, 1000);
         return () => clearTimeout(timeout);
     }, [taskChange]);
 

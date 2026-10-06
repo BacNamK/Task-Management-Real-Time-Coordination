@@ -5,6 +5,7 @@ import { FormCreateBoard } from '../../forms/CreateBoard';
 import BoxMember from './BoxMember';
 import { useEffect, useState } from 'react';
 import { useItemsStore } from '@/src/hooks/workspaceHook';
+import BoxChat from '../chatroom/BoxChat';
 
 type BoardListData = {
     uuid: string;
@@ -25,7 +26,7 @@ const PageClient = ({ data }: { data: BoardListData }) => {
             {/* Main content */}
             <div className="flex min-w-0 flex-1 flex-col p-5">
                 {/* Tabs */}
-                <div className="mb-6 flex h-12 shrink-0 items-center justify-between">
+                <div className="flex h-12 shrink-0 items-center justify-between">
                     <div className="flex h-full items-center gap-2">
                         <button
                             onClick={() => setActiveTab('list')}
@@ -118,7 +119,9 @@ const PageClient = ({ data }: { data: BoardListData }) => {
                             )}
                         </div>
                     ) : (
-                        <div className="h-full overflow-hidden">{/* Chat Room */}</div>
+                        <div className="h-full overflow-hidden">
+                            <BoxChat />
+                        </div>
                     )}
                 </div>
             </div>
