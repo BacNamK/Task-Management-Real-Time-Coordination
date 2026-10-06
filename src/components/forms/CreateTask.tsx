@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import addIcon from '@/public/add.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTask } from '@/src/server/actions/task.action';
 
 type user = {
@@ -23,10 +23,31 @@ export const CreateTask = ({
     const [isOpenBox, setIsOpenBox] = useState(false);
     const [user, setUser] = useState<any[]>([]);
 
+    const [notification, setNotification] = useState({ status: false, message: '' });
+
+    const validate = (formData: any) => {
+        const title = formData.get('title') as string;
+        if (!title) {
+            return false;
+        }
+        return true;
+    };
+
+    const showNotification = (status: boolean, message: string) => {
+        setNotification({ status, message });
+        setTimeout(() => {
+            setNotification({ status: false, message: '' });
+        }, 7000);
+    };
+
     const handleSubmit = async (e: any) => {
-        const userId = user.map((item: any) => item.user.name).join(',');
         e.preventDefault();
         const formData = new FormData(e.target);
+        if (!validate(formData)) {
+            showNotification(false, 'Please fill in title');
+            return;
+        }
+        const userId = user.map((item: any) => item.user.name).join(',');
         await createTask({
             task: {
                 title: formData.get('title') as string,
@@ -42,6 +63,9 @@ export const CreateTask = ({
                 },
             ],
         });
+
+        e.target.reset();
+        showNotification(true, 'Task created successfully');
     };
 
     return (
@@ -114,12 +138,17 @@ export const CreateTask = ({
                         )}
                     </div>
 
-                    {/* Create / Close */}
+                    {/* Create */}
                     <div className="flex items-center gap-3">
                         <button
                             type="submit"
                             form="create-task-form"
-                            className="px-3 py-2 text-sm font-medium text-green-600 border-b-2 border-green-600 hover:bg-green-50"
+                            disabled={notification.status}
+                            className={
+                                notification.status
+                                    ? 'cursor-not-allowed'
+                                    : 'px-3 py-2 text-sm font-medium text-green-600 border-b-2 border-green-600 hover:bg-green-50'
+                            }
                         >
                             Create Task
                         </button>
@@ -172,7 +201,8 @@ export const CreateTask = ({
                         />
                     </div>
                 </form>
-                <div className="flex justify-center p-4">
+                {/* Cancel form create Task and notification */}
+                <div className="flex ml-2 p-4">
                     <button
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
@@ -180,6 +210,14 @@ export const CreateTask = ({
                     >
                         Cancel
                     </button>
+                    {/* Notification */}
+                    {notification && (
+                        <div
+                            className={`text-sm w-full justify-center flex items-center ${notification.status ? 'text-green-600' : 'text-red-600'}`}
+                        >
+                            <p>{notification.message}</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

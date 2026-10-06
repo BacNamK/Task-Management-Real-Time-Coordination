@@ -12,15 +12,15 @@ const DetailTask = ({ task, close }: { task: any; close: () => void }) => {
                         x
                     </button>
                 </div>
-                <div className="flex w-full h-full">
-                    <div className="w-1/2 p-2">
+                <div className="flex w-full h-full text-sm gap-2">
+                    <div className="w-1/2 p-2 bg-gray-50 rounded-md">
                         <p className="text-sm">
                             {taskDetail.description ? taskDetail.description : 'No description'}
                         </p>
                     </div>
-                    <div className="w-1/2 flex flex-col gap-y-2 border-l-2 border-gray-300 p-2">
+                    <div className="w-1/2 flex flex-col gap-y-2">
                         {/* Date */}
-                        <div className="bg-gray-100 border-2 border-gray-100 rounded-md text-sm flex justify-between">
+                        <div className="bg-gray-100 border-2 border-gray-100 rounded-md flex justify-between">
                             <div className="flex w-auto justify-between gap-4 p-2">
                                 <span>{taskDetail.createdAt.toLocaleDateString()}</span>
                                 <span>-&gt;</span>
@@ -46,20 +46,25 @@ const DetailTask = ({ task, close }: { task: any; close: () => void }) => {
                             </div>
                         </div>
                         {/* Assignee */}
-                        <div className="flex justify-between items-center p-2">
-                            <span>Assigneed:</span>
-                            {taskDetail.assigneeds.map((item: any) => (
-                                <div key={item.id} className="flex items-center gap-2">
-                                    <Image
-                                        src={item.user?.image || ''}
-                                        alt={item.user?.name || ''}
-                                        width={28}
-                                        height={28}
-                                        className="rounded-full"
-                                    />
-                                    <p>{item.user?.name || 'No assignee'}</p>
-                                </div>
-                            ))}
+                        <div className="content-center p-2 flex flex-col">
+                            <span className="border-b-2 border-gray-300 p-1">Assigneed </span>
+                            <div className="grid grid-cols-3 items-center gap-2 p-2 w-full">
+                                {taskDetail.assigneeds.map((item: any) => (
+                                    <div key={item.id} className="flex items-center gap-2 p-2">
+                                        <Image
+                                            src={item.user?.image || ''}
+                                            alt={item.user?.name || ''}
+                                            width={28}
+                                            height={28}
+                                            className="rounded-full"
+                                        />
+                                        <p>{item.user?.name || 'No assignee'}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            {taskDetail.assigneeds.length === 0 && (
+                                <p className=" text-center text-gray-500">No assignee</p>
+                            )}
                         </div>
                         <div className="w-full flex justify-end">
                             <button className="w-24 bg-green-400 shadow rounded-md p-4 py-2 text-white">
