@@ -9,11 +9,19 @@ type user = {
     image: string;
 };
 
-export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => {
-    const [isOpen, setIsOpen] = useState(false);
+export const CreateTask = ({
+    users,
+    boardId,
+    setIsOpen,
+    isOpen,
+}: {
+    users: any;
+    boardId: any;
+    isOpen: any;
+    setIsOpen: (edit: any) => void;
+}) => {
+    const [isOpenBox, setIsOpenBox] = useState(false);
     const [user, setUser] = useState<any[]>([]);
-
-    console.log(users);
 
     const handleSubmit = async (e: any) => {
         const userId = user.map((item: any) => item.user.name).join(',');
@@ -37,88 +45,143 @@ export const CreateTask = ({ users, boardId }: { users: any; boardId: any }) => 
     };
 
     return (
-        <div className="w-full grid gap-y-5 border border-gray-300 rounded-md p-4">
-            <div className="relative w-full flex gap-2">
-                <div className="flex items-center w-[85%] p-1 gap-5 border border-gray-300 rounded-md">
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="flex items-center gap-2 bg-amber-50 p-2"
-                    >
-                        <p className="text-sm opacity-70">Người Thực hiện</p>
-                        <Image src={addIcon} alt="add" width={24} height={24} />
-                    </button>
-                    <div className="flex gap-2 w-[70%]">
-                        {user?.map((item: any, index: number) => (
-                            <div key={index} className="flex items-center gap-2">
-                                <Image
-                                    src={item.user.image}
-                                    alt={item.user.name}
-                                    width={30}
-                                    height={30}
-                                    className="rounded-full object-cover size-8"
-                                />
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 backdrop-blur-2xl p-4">
+            <div className="relative w-full max-w-3xl rounded-xl border border-gray-200 bg-white shadow-2xl">
+                {/* Header */}
+                <div className="flex h-20 items-center justify-between px-6">
+                    {/* Assignee */}
+                    <div className="relative flex h-full flex-1 items-center">
+                        <button
+                            type="button"
+                            onClick={() => setIsOpenBox(!isOpenBox)}
+                            className="flex h-10 items-center gap-2 border-b-2 border-gray-200 px-2 text-sm text-gray-600 hover:bg-gray-100"
+                        >
+                            <span>Assignee</span>
+                            <Image
+                                src={addIcon}
+                                alt="add"
+                                width={24}
+                                height={24}
+                                className="rounded-full bg-gray-200 p-1"
+                            />
+                        </button>
+
+                        {/* Selected users */}
+                        <div className="ml-3 flex items-center gap-2">
+                            {user?.map((item: any, index: number) => (
+                                <div key={index}>
+                                    <Image
+                                        src={item.user.image}
+                                        alt={item.user.name}
+                                        width={32}
+                                        height={32}
+                                        className="size-8 rounded-full object-cover ring-2 ring-white"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* User dropdown */}
+                        {isOpenBox && (
+                            <div className="absolute left-0 top-[calc(100%-8px)] z-50 w-105 rounded-lg border border-gray-200 bg-white p-2 shadow-xl">
+                                <div className="mb-2 px-2 py-1 text-xs font-medium text-gray-500">
+                                    Select assignees
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-1">
+                                    {users.map((item: any, index: number) => (
+                                        <button
+                                            type="button"
+                                            onClick={() => setUser([...user, item])}
+                                            key={index}
+                                            className="flex items-center gap-3 rounded-md p-2 text-left hover:bg-gray-100"
+                                        >
+                                            <Image
+                                                src={item.user.image}
+                                                alt={item.user.name}
+                                                width={32}
+                                                height={32}
+                                                className="size-8 rounded-full object-cover"
+                                            />
+
+                                            <span className="truncate text-sm text-gray-700">
+                                                {item.user.name}
+                                            </span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
+                        )}
+                    </div>
+
+                    {/* Create / Close */}
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="submit"
+                            form="create-task-form"
+                            className="px-3 py-2 text-sm font-medium text-green-600 border-b-2 border-green-600 hover:bg-green-50"
+                        >
+                            Create Task
+                        </button>
                     </div>
                 </div>
-                <div
-                    className={
-                        isOpen
-                            ? 'absolute w-full top-full right-0 grid grid-cols-4 gap-2 bg-white p-2 shadow'
-                            : 'hidden'
-                    }
-                >
-                    {users.map((item: any, index: number) => (
-                        <div
-                            onClick={() => setUser([...user, item])}
-                            key={index}
-                            className="flex w-full gap-2 bg-white items-center hover:bg-gray-100 p-2"
-                        >
-                            <Image
-                                src={item.user.image}
-                                alt={item.user.name}
-                                width={30}
-                                height={30}
-                                className="rounded-full object-cover size-8"
-                            />
-                            <div className=" p-2 rounded-md">{item.user.name}</div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <form onSubmit={handleSubmit} className="grid gap-4">
-                <div className="flex justify-between w-full ">
-                    <input
-                        name="title"
-                        type="text"
-                        placeholder="Tên công việc"
-                        className="block w-1/3 border border-gray-300 rounded-md p-2"
-                    />
-                    <div className="flex gap-5 justify-center w-full">
-                        <div className="flex w-[30%] justify-center items-center gap-2 border border-red-300 shadow rounded-full">
-                            <label className="text-sm bg-red-400 text-white  p-2 w-1/3 h-full text-center content-center rounded-full">
-                                kết thúc{' '}
+
+                {/* Form */}
+                <form id="create-task-form" onSubmit={handleSubmit} className="space-y-6 p-6 pb-0">
+                    {/* Task name + due date */}
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                        {/* Task name */}
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-600">
+                                Task name
                             </label>
+
+                            <input
+                                name="title"
+                                type="text"
+                                placeholder="Enter task name"
+                                className="h-11 w-full border-b-2 border-gray-300 px-3 text-sm outline-none transition focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
+                            />
+                        </div>
+
+                        {/* Due date */}
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-600">
+                                Due date
+                            </label>
+
                             <input
                                 name="dueDate"
                                 type="date"
-                                placeholder="Thời gian kết thúc"
-                                className="w-2/3 p-2 mr-2 outline-none"
+                                className="h-11 w-full border-b-2 border-gray-300 px-3 text-sm outline-none transition focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
                             />
                         </div>
                     </div>
-                </div>
-                <input
-                    type="text"
-                    placeholder="Ghi chú"
-                    className="block w-full border border-gray-300 bg-gray-100 rounded-md p-2"
-                />
-                <div className="w-[15%] flex justify-end">
-                    <button className="border-2 p-2 rounded-md text-green-500 bg-green-100 text-center">
-                        Tạo công việc
+
+                    {/* Description */}
+                    <div>
+                        <label className="mb-2 block text-sm font-medium text-gray-600">
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            placeholder="Add a description..."
+                            rows={5}
+                            className="w-full resize-none border-b-2 border-gray-300 bg-gray-50 px-3 py-3 text-sm outline-none transition focus:border-gray-500 focus:bg-white focus:ring-1 focus:ring-gray-300"
+                        />
+                    </div>
+                </form>
+                <div className="flex justify-center p-4">
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen(!isOpen)}
+                        className=" px-3 p-2 text-red-500 hover:bg-red-50 border-b-2 border-red-500"
+                    >
+                        Cancel
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     );
 };

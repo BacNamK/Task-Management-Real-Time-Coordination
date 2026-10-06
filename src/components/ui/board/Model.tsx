@@ -126,7 +126,12 @@ export const Model = ({ board }: any) => {
                 {/* Create task */}
                 {isOpen && (
                     <div className="mt-4">
-                        <CreateTask users={selectedUser} boardId={board.id} />
+                        <CreateTask
+                            users={selectedUser}
+                            boardId={board.id}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                        />
                     </div>
                 )}
 
