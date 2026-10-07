@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, Box, ChevronRight, HomeIcon, PenIcon, PiIcon, Settings } from 'lucide-react';
+import { BookOpen, Box, ChevronRight, HomeIcon, Settings } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -14,10 +14,8 @@ import {
 } from '../../../components/ui/sidebar';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
-import { useSidebar } from '@/components/ui/sidebar';
 
-export function AppSidebar() {
+export function AppSidebar({ user }: { user?: any }) {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -86,7 +84,20 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter>{/* User */}</SidebarFooter>
+            <SidebarFooter>
+                <div className="flex gap-2 ">
+                    <img
+                        src={user?.image}
+                        alt={user?.name || ''}
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                    />
+                    <span className="text-sm font-medium group-data-[collapsible=icon]:hidden ">
+                        {user?.name || ''}
+                    </span>
+                </div>
+            </SidebarFooter>
         </Sidebar>
     );
 }

@@ -5,7 +5,6 @@ import Image from 'next/image';
 
 import googleIcon from '@/public/google.png';
 import { createUser, findUserByName } from '@/src/server/users/users.Repository';
-
 export default async function LoginPage() {
     const session = await auth();
 
@@ -20,7 +19,7 @@ export default async function LoginPage() {
             if (!session.user.email || !session.user.image || !session.user.name) {
                 return;
             }
-            await createUser(session.user.name, session.user.email, session.user.image, '');
+            await createUser(session.user.name, session.user.email, session.user.image);
         }
 
         redirect('/home');

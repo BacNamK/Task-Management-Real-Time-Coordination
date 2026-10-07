@@ -14,17 +14,12 @@ export const findUserByEmail = async (email: string) => {
     });
 };
 
-export const createUser = async (
-    name: string,
-    email: string,
-    image: string,
-    password_hash: string
-) => {
+export const createUser = async (name: string, email: string, image: string) => {
     const user = await prisma.user.create({
         data: {
             name,
             email,
-            password_hash,
+            password_hash: '',
             image,
         },
     });
