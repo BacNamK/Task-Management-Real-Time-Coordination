@@ -3,6 +3,9 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 
+import { UsersModule } from './users/user.Module.js';
+import { WorkspaceModule } from './workspace/workspace.Module.js';
+
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -14,6 +17,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: 'YOUR_APP_SECRET',
       serviceId: 'NestJs',
     }),
+    UsersModule,
+    WorkspaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

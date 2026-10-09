@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EnumRole {
+  ADMIN
+  MODER
+  MEMBER
+}
+
+enum EnumStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model User {
+  id           BigInt  @id @default(autoincrement())
+  uuid         String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name         String  @unique @db.VarChar
+  password_hash String @db.Text
+  email        String  @unique @db.VarChar
+  image        String? @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  roleUsers              RoleUser[]
+  workspaceMembers       WorkspaceMember[]
+  createdTasks           Task[]                @relation("CreatedTasks")
+  assigneeds             Assigneeds[]       @relation("Assigneeds")
+  messages               Message[]
+  chatRoomParticipants   ChatRoomParticipant[]
+
+  @@map("user")
+}
+
+model RoleUser {
+  id          BigInt @id @default(autoincrement())
+  userId      BigInt @unique @map("user_id")
+  roleId      Int  @map("role_id")
+
+  role Role @relation(fields: [roleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("role_user")
+}
+
+model Role {
+  id          Int @id @default(autoincrement())
+  roleName    EnumRole   @map("role_name")
+  description String @map("descrition") @db.Text
+
+  roleUsers RoleUser[]
+
+  @@map("role")
+}
+
+model Workspace {
+  id   BigInt @id @default(autoincrement())
+  uuid String @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name String @db.VarChar
+  slug String @unique @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  members   WorkspaceMember[]
+  boards    Board[]
+  chatRooms ChatRoom[]
+
+  @@map("workspace")
+}
+
+model WorkspaceMember {
+  id          BigInt @id @default(autoincrement())
+  uuid        String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  workspaceId BigInt @map("workspace_id")
+  userId      BigInt  @map("user_id")
+  role        EnumRole   @default(MEMBER)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([workspaceId, userId])
+  @@map("workspace_member")
+}
+
+model Board {
+  id          BigInt   @id @default(autoincrement())
+  name        String?
+  workspaceId BigInt   @map("workspace_id")
+
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  tasks       Task[]
+  cycle       Cycle[]
+
+  @@map("board")
+}
+
+model Cycle {
+  id           BigInt         @id @default(autoincrement())
+  title        String         @db.VarChar
+  position     Int            @default(0)
+  status       Boolean        @default(true)
+  columns      Json[]          
+  boardId      BigInt         @map("board_id")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+
+  board        Board          @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  task         Task[]
+
+  @@index([boardId, position])
+  @@map("cycle")
+}
+
+model Task {
+  id          BigInt       @id @default(autoincrement())
+  title       String       @db.VarChar
+  position    Int
+  description String?      @db.Text
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
+  dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
+  updatedAt DateTime?      @map("updated_at") @db.Timestamp(6)
+  creatorId   BigInt       @map("creator_id")
+  cycleId     BigInt?      @map("cycle_id")  
+  boardId     BigInt       @map("board_id")
+
+  assigneeds  Assigneeds[]
+  board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id])
+  cycle       Cycle?        @relation(fields : [cycleId] , references : [id])
+
+  @@index([position])
+  @@map("task")
+}
+
+model Assigneeds {
+  id     BigInt @id @default(autoincrement())
+  taskId BigInt @map("task_id")
+  userId BigInt @map("user_id")
+  
+  task      Task      @relation(fields :[taskId], references :[id])
+  user      User      @relation("Assigneeds",fields: [userId], references: [id])
+@@unique([taskId,userId])
+@@map("assigneeds")
+}
+
+model ChatRoom {
+  id          BigInt  @id @default(autoincrement())
+  uuid        String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name        String? @db.VarChar
+  isDirect    Boolean @default(false) @map("is_direct")
+  workspaceId BigInt  @map("workspace_id")
+
+  workspace    Workspace             @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  messages     Message[]
+  participants ChatRoomParticipant[]
+
+  @@map("chat_room")
+}
+
+model Message {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  content   String?  @db.Text
+  senderId  BigInt   @map("sender_id")
+  roomId    BigInt   @map("room_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+
+  sender User     @relation(fields: [senderId], references: [id])
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@map("message")
+}
+
+model ChatRoomParticipant {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  chatRoomId BigInt @map("chat_room_id")
+  userId     BigInt @map("user_id")
+
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([chatRoomId, userId])
+  @@map("chat_room_participant")
+}
