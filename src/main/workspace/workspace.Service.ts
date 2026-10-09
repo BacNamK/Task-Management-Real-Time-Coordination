@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { WorkspaceRp } from './workspace.Repository.js';
+import { WorkspaceRepository } from './workspace.Repository.js';
+import { serializeBigInt } from '../../common/utils/bigint.util.js';
 
 const geneSlug = (string: string) => {
   return string
@@ -14,14 +15,19 @@ const geneSlug = (string: string) => {
 
 @Injectable()
 export class WorkspaceService {
-  constructor(private readonly workspaceRepository: WorkspaceRp) {}
+  constructor(private readonly workspaceRepository: WorkspaceRepository) {}
   async create(workspaceName: string, userId: bigint) {
     const slug = geneSlug(workspaceName);
     return await this.workspaceRepository.create(workspaceName, userId, slug);
   }
 
   async checkMember(workspaceUuid: string, userName: string) {
-    return await this.workspaceRepository.checkMember(workspaceUuid, userName);
+    const member = await this.workspaceRepository.checkMember(
+      workspaceUuid,
+      userName,
+    );
+
+    return member;
   }
 
   async addMember(workspaceId: any, userId: any) {

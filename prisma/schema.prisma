@@ -40,6 +40,8 @@ model User {
   messages               Message[]
   chatRoomParticipants   ChatRoomParticipant[]
 
+  accounts  OAuthAccount[]
+
   @@map("user")
 }
 
@@ -62,6 +64,17 @@ model Role {
   roleUsers RoleUser[]
 
   @@map("role")
+}
+
+model OAuthAccount {
+  id                String   @id @default(uuid())
+  provider          String
+  providerAccountId String
+  userId            String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Workspace {

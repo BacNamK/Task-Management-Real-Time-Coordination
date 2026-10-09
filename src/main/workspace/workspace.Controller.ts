@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { WorkspaceService } from './workspace.Service.js';
-import { WorkspaceRp } from './workspace.Repository.js';
+import { WorkspaceRepository } from './workspace.Repository.js';
 
 @Controller('/workspaces')
 export class WorkspaceController {
   constructor(
     private readonly workspaceService: WorkspaceService,
-    private readonly workspaceRepository: WorkspaceRp,
+    private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
   @Get()

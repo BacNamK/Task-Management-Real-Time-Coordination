@@ -1,11 +1,11 @@
-import { prisma } from '../lib/prisma.Client.js';
+import { prisma } from '../../lib/prisma.Client.js';
 import { CycleRp } from '../cycle/cycleRepository.js';
-import { WorkspaceRp } from '../workspace/workspace.Repository.js';
+import { WorkspaceRepository } from '../workspace/workspace.Repository.js';
 
 export class BoardRepository {
   constructor(
     private readonly cycleRepository: CycleRp,
-    private readonly workspaceRepository: WorkspaceRp,
+    private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
   async create(rData: any, workspaceUuid: string) {

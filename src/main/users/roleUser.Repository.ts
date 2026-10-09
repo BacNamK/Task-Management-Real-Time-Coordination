@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma.Client.js';
+import { prisma } from '../../lib/prisma.Client.js';
 
 export class RoleUserRp {
   constructor() {}

@@ -3,8 +3,8 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 
-import { UsersModule } from './users/user.Module.js';
-import { WorkspaceModule } from './workspace/workspace.Module.js';
+import { UsersModule } from './main/users/user.Module.js';
+import { WorkspaceModule } from './main/workspace/workspace.Module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 

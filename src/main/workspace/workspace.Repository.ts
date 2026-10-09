@@ -1,8 +1,8 @@
-import { prisma } from '../lib/prisma.Client.js';
-import { UsersRp } from '../users/users.Repository.js';
+import { prisma } from '../../lib/prisma.Client.js';
+import { UsersRepository } from '../users/users.Repository.js';
 
-export class WorkspaceRp {
-  constructor(private readonly usersRepository: UsersRp) {}
+export class WorkspaceRepository {
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async create(workspaceName: string, userId: bigint, slug: string) {
     const workspace = await prisma.workspace.create({
@@ -101,8 +101,6 @@ export class WorkspaceRp {
       return { message: 'User not found' };
     }
 
-    const user_Id = user.id;
-
     const workspace = await prisma.workspace.findUnique({
       where: {
         uuid: workspaceUuid,
@@ -121,7 +119,7 @@ export class WorkspaceRp {
       where: {
         workspaceId_userId: {
           workspaceId: workspace.id,
-          userId: user_Id,
+          userId: BigInt(user.id),
         },
       },
     });
