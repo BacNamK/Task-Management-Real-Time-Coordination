@@ -1,10 +1,10 @@
 // app/login/page.tsx
-import { auth, signIn } from '@/src/lib/auth';
+import { auth, signIn } from '../../../lib/auth/clientNextjs/auth';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 
 import googleIcon from '@/public/google.png';
-import { createUser, findUserByName } from '@/src/server/users/users.Repository';
+import { authClient } from '../../../lib/auth/client.nestjs';
 export default async function LoginPage() {
     const session = await auth();
 
@@ -13,13 +13,13 @@ export default async function LoginPage() {
         if (!session.user.name) {
             return;
         }
-        const check = await findUserByName(session.user.name);
+        const check = await authClient.findUserByEmail(session.user.email);
 
         if (check == null) {
             if (!session.user.email || !session.user.image || !session.user.name) {
                 return;
             }
-            await createUser(session.user.name, session.user.email, session.user.image);
+            await authClient.createUser(session.user.name, session.user.email, session.user.image);
         }
 
         redirect('/home');

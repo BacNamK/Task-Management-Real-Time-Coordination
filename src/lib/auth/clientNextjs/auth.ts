@@ -1,10 +1,9 @@
 import NextAuth, { type DefaultSession } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
+import { authService } from '../../servive/auth.service';
 
-import authConfig from './auth.config';
-import { findUserByEmail } from '../server/users/users.Repository';
-import { findRoleUser } from '../server/users/roleUser.Repository';
-
+import authConfig from './client/auth.config';
+import { UserType } from '../../types/user.type';
 declare module 'next-auth' {
     interface User {
         role?: string;
@@ -16,6 +15,8 @@ declare module 'next-auth' {
         } & DefaultSession['user'];
         accessToken?: string;
         error?: 'RefreshAccessTokenError';
+        provider?: string;
+        providerAccountId?: string;
     }
 }
 
@@ -27,6 +28,8 @@ declare module 'next-auth/jwt' {
         error?: 'RefreshAccessTokenError';
         role?: string;
         id?: string;
+        provider?: string;
+        providerAccountId?: string;
     }
 }
 
@@ -79,6 +82,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token.accessTokenExpires = account.expires_at
                     ? account.expires_at * 1000
                     : undefined;
+
+                token.providerAccountId = account.providerAccountId;
+                token.provider = account.provider;
             }
 
             if (
@@ -95,16 +101,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
 
             if (token.email) {
-                //
-                const dbUser = await findUserByEmail(token.email);
+                const user: UserType = await authService.findUserByEmail(token.email);
 
-                if (dbUser) {
-                    token.id = dbUser.id.toString();
+                if (user) {
+                    token.id = user.id;
 
-                    const roleUser = await findRoleUser(Number(dbUser.id));
-
-                    if (roleUser) {
-                        token.role = roleUser.roleId.toString();
+                    if (user.role) {
+                        token.role = user.role;
                     }
                 }
             }
@@ -114,6 +117,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         async session({ session, token }) {
             session.accessToken = token.accessToken;
             session.error = token.error;
+            session.provider = token.provider;
+            session.providerAccountId = token.providerAccountId;
             if (token.id) {
                 session.user.id = token.id;
             }

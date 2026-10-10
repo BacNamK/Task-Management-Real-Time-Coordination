@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '../components/shared/AppSidebar';
 import { SidebarController } from '../components/shared/SidebarControll';
-import { auth } from '../lib/auth';
+import { auth } from '../lib/auth/auth';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -22,7 +22,6 @@ export const metadata: Metadata = {
 
 const session = await auth();
 const user = session?.user;
-
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
