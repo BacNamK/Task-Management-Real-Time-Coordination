@@ -1,10 +1,10 @@
 // app/login/page.tsx
-import { auth, signIn } from '../../../lib/auth/clientNextjs/auth';
+import { auth, signIn } from '../../../lib/auth/auth';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 
-import googleIcon from '@/public/google.png';
-import { authClient } from '../../../lib/auth/client.nestjs';
+import googleIcon from '../../../../public/google.png';
+import { authClient } from '../../../service/nestjs/auth.api';
 export default async function LoginPage() {
     const session = await auth();
 

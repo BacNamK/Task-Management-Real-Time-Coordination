@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useSidebar } from '@/components/ui/sidebar';
+import { useSidebar } from '../../../components/ui/sidebar';
 
 export function SidebarController() {
     const pathname = usePathname();

@@ -4,8 +4,8 @@ import './globals.css';
 
 // import { WorkspaceStateSync } from '../components/shared/WorkspaceStateSync';
 import { Geist } from 'next/font/google';
-import { cn } from '@/lib/utils';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { cn } from '../../lib/utils';
+import { SidebarProvider } from '../../components/ui/sidebar';
 import { AppSidebar } from '../components/shared/AppSidebar';
 import { SidebarController } from '../components/shared/SidebarControll';
 import { auth } from '../lib/auth/auth';

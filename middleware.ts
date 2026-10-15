@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
 
-import authConfig from './src/lib/auth/clientNextjs/auth.config';
+import authConfig from './src/lib/auth/auth.config';
 
 const { auth } = NextAuth(authConfig);
 

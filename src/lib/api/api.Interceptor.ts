@@ -1,8 +1,14 @@
+import { createServiceToken } from '../../service/token.service';
+import { getSessionUser } from './auth.session';
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type RequestOptions = Omit<RequestInit, 'body'> & {
     body?: unknown;
 };
+
+const session = await getSessionUser();
+const userId = session?.user?.id;
 
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
     const { body, headers, ...rest } = options;
@@ -11,6 +17,8 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
         ...rest,
         headers: {
             'Content-Type': 'application/json',
+            'User-Id': userId,
+            Authorization: `Bearer ${createServiceToken()}`,
             ...headers,
         },
         body: body === undefined ? undefined : JSON.stringify(body),
