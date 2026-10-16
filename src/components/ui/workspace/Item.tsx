@@ -1,6 +1,6 @@
 'use client';
 
-import { useItemsStore } from '@/src/hooks/workspaceHook';
+import { useItemsStore } from '../../../hooks/workspaceHook';
 import Image from 'next/image';
 import Link from 'next/link';
 

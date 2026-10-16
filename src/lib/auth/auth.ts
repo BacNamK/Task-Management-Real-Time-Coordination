@@ -2,8 +2,8 @@ import NextAuth, { type DefaultSession } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
 import authConfig from './auth.config';
-import { UserType } from '../../types/user.type';
-import { authClient } from '../../service/nestjs/auth.api';
+import { UserType } from '../../service/user/user.type';
+import { authClient } from '../../nestjs/authClient.api';
 declare module 'next-auth' {
     interface User {
         role?: string;
@@ -115,7 +115,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return token;
         },
         async session({ session, token }) {
-            session.accessToken = token.accessToken;
             session.error = token.error;
             session.provider = token.provider;
             session.providerAccountId = token.providerAccountId;

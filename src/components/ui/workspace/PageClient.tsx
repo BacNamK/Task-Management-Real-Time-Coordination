@@ -1,8 +1,7 @@
 'use client';
 
-import { FormCreateWorkspace } from '@/src/components/forms/CreateWorkspace';
-import ListLayout from '@/src/components/ui/workspace/ListLayout';
-import { workspaceRp } from '@/src/types/listWorkspace.Type';
+import { FormCreateWorkspace } from '../../forms/CreateWorkspace';
+import ListLayout from './ListLayout';
 import { createContext } from 'react';
 
 import { useState } from 'react';
@@ -11,7 +10,7 @@ type Props = {
     initialWorkspaces: any;
 };
 
-export const WorkspaceContext = createContext<workspaceRp>({} as workspaceRp);
+export const WorkspaceContext = createContext<any>({} as any);
 
 const WorkspacePageClient = ({ initialWorkspaces }: Props) => {
     const [workspaces, setWorkspaces] = useState<any>(initialWorkspaces);

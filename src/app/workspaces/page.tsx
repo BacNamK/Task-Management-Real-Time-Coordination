@@ -1,11 +1,8 @@
-import { workspaceOwn } from '@/src/server/actions/workspace.action';
-import WorkspacePageClient from '@/src/components/ui/workspace/PageClient';
-import { workspaceRp } from '@/src/types/listWorkspace.Type';
+﻿import { getAllWorkspaces } from '../../service/workspace/workspace.action';
+import WorkspacePageClient from '../../components/ui/workspace/PageClient';
 
 const Page = async () => {
-    // Tầng query đầu lấy danh sách Workspacce - Member
-    const result = await workspaceOwn();
-
+    const result = await getAllWorkspaces();
     return <WorkspacePageClient initialWorkspaces={result} />;
 };
 

@@ -1,5 +1,7 @@
-import { createServiceToken } from '../../service/token.service';
-import { getSessionUser } from './auth.session';
+import 'server-only';
+
+import { getServiceToken } from '../../service/token.service';
+import { getSessionUser } from '../auth/auth.session';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,7 +20,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
         headers: {
             'Content-Type': 'application/json',
             'User-Id': userId,
-            Authorization: `Bearer ${createServiceToken()}`,
+            Authorization: `Bearer ${await getServiceToken()}`,
             ...headers,
         },
         body: body === undefined ? undefined : JSON.stringify(body),
