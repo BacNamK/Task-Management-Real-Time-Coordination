@@ -1,0 +1,137 @@
+import NextAuth, { type DefaultSession } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+
+import authConfig from './auth.config';
+import { UserType } from '../../feature/user/service/user.type';
+import { authClient } from '../../service/authClient.api';
+declare module 'next-auth' {
+    interface User {
+        role?: string;
+    }
+    interface Session {
+        user: {
+            id: string;
+            role?: string;
+        } & DefaultSession['user'];
+        accessToken?: string;
+        error?: 'RefreshAccessTokenError';
+        provider?: string;
+        providerAccountId?: string;
+    }
+}
+
+declare module 'next-auth/jwt' {
+    interface JWT {
+        accessToken?: string;
+        refreshToken?: string;
+        accessTokenExpires?: number;
+        error?: 'RefreshAccessTokenError';
+        role?: string;
+        id?: string;
+        provider?: string;
+        providerAccountId?: string;
+    }
+}
+
+async function refreshAccessToken(token: JWT): Promise<JWT> {
+    if (!token.refreshToken) {
+        return { ...token, error: 'RefreshAccessTokenError' };
+    }
+
+    try {
+        const response = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: process.env.AUTH_GOOGLE_ID ?? '',
+                client_secret: process.env.AUTH_GOOGLE_SECRET ?? '',
+                grant_type: 'refresh_token',
+                refresh_token: token.refreshToken,
+            }),
+        });
+
+        const refreshedTokens: {
+            access_token?: string;
+            expires_in?: number;
+            refresh_token?: string;
+        } = await response.json();
+
+        if (!response.ok || !refreshedTokens.access_token) {
+            throw new Error('Google access token refresh failed');
+        }
+
+        return {
+            ...token,
+            accessToken: refreshedTokens.access_token,
+            accessTokenExpires: Date.now() + (refreshedTokens.expires_in ?? 3600) * 1000,
+            refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+            error: undefined,
+        };
+    } catch {
+        return { ...token, error: 'RefreshAccessTokenError' };
+    }
+}
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+    ...authConfig,
+    callbacks: {
+        async signIn() {
+            return true;
+        },
+        async jwt({ token, user, account }) {
+            if (account) {
+                token.accessToken = account.access_token;
+                token.refreshToken = account.refresh_token;
+                token.accessTokenExpires = account.expires_at
+                    ? account.expires_at * 1000
+                    : undefined;
+
+                token.providerAccountId = account.providerAccountId;
+                token.provider = account.provider;
+            }
+
+            if (
+                token.accessToken &&
+                token.accessTokenExpires &&
+                Date.now() >= token.accessTokenExpires - 60_000 &&
+                token.refreshToken
+            ) {
+                token = await refreshAccessToken(token);
+            }
+
+            if (user?.role) {
+                token.role = user.role;
+            }
+
+            if (token.email && !token.id) {
+                let user: UserType | null = await authClient.findUserByEmail(token.email);
+
+                if (!user) {
+                    const name = token.name?.trim() || token.email.split('@')[0];
+                    user = await authClient.ensureUser(name, token.email, token.picture ?? null);
+                }
+
+                token.id = user.id;
+
+                if (user.role) {
+                    token.role = user.role;
+                }
+            }
+
+            return token;
+        },
+        async session({ session, token }) {
+            session.error = token.error;
+            session.provider = token.provider;
+            session.providerAccountId = token.providerAccountId;
+            if (token.id) {
+                session.user.id = token.id;
+            }
+            if (token.role) {
+                session.user.role = token.role;
+            }
+
+            return session;
+        },
+    },
+});
