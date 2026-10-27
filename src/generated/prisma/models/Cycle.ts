@@ -245,7 +245,7 @@ export type CycleWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Cycle"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Cycle"> | Date | string | null
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
-  task?: Prisma.TaskListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
 }
 
 export type CycleOrderByWithRelationInput = {
@@ -258,7 +258,7 @@ export type CycleOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   board?: Prisma.BoardOrderByWithRelationInput
-  task?: Prisma.TaskOrderByRelationAggregateInput
+  tasks?: Prisma.TaskOrderByRelationAggregateInput
 }
 
 export type CycleWhereUniqueInput = Prisma.AtLeast<{
@@ -274,7 +274,7 @@ export type CycleWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Cycle"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Cycle"> | Date | string | null
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
-  task?: Prisma.TaskListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
 }, "id">
 
 export type CycleOrderByWithAggregationInput = {
@@ -315,8 +315,8 @@ export type CycleCreateInput = {
   columns?: Prisma.CycleCreatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Date | string
   updatedAt?: Date | string | null
-  board: Prisma.BoardCreateNestedOneWithoutCycleInput
-  task?: Prisma.TaskCreateNestedManyWithoutCycleInput
+  board: Prisma.BoardCreateNestedOneWithoutCyclesInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutCycleInput
 }
 
 export type CycleUncheckedCreateInput = {
@@ -328,7 +328,7 @@ export type CycleUncheckedCreateInput = {
   boardId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string | null
-  task?: Prisma.TaskUncheckedCreateNestedManyWithoutCycleInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCycleInput
 }
 
 export type CycleUpdateInput = {
@@ -339,8 +339,8 @@ export type CycleUpdateInput = {
   columns?: Prisma.CycleUpdatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  board?: Prisma.BoardUpdateOneRequiredWithoutCycleNestedInput
-  task?: Prisma.TaskUpdateManyWithoutCycleNestedInput
+  board?: Prisma.BoardUpdateOneRequiredWithoutCyclesNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutCycleNestedInput
 }
 
 export type CycleUncheckedUpdateInput = {
@@ -352,7 +352,7 @@ export type CycleUncheckedUpdateInput = {
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  task?: Prisma.TaskUncheckedUpdateManyWithoutCycleNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutCycleNestedInput
 }
 
 export type CycleCreateManyInput = {
@@ -515,20 +515,20 @@ export type CycleUpdatecolumnsInput = {
   push?: runtime.InputJsonValue | runtime.InputJsonValue[]
 }
 
-export type CycleCreateNestedOneWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.CycleCreateWithoutTaskInput, Prisma.CycleUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.CycleCreateOrConnectWithoutTaskInput
+export type CycleCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.CycleCreateWithoutTasksInput, Prisma.CycleUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.CycleCreateOrConnectWithoutTasksInput
   connect?: Prisma.CycleWhereUniqueInput
 }
 
-export type CycleUpdateOneWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.CycleCreateWithoutTaskInput, Prisma.CycleUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.CycleCreateOrConnectWithoutTaskInput
-  upsert?: Prisma.CycleUpsertWithoutTaskInput
+export type CycleUpdateOneWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.CycleCreateWithoutTasksInput, Prisma.CycleUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.CycleCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.CycleUpsertWithoutTasksInput
   disconnect?: Prisma.CycleWhereInput | boolean
   delete?: Prisma.CycleWhereInput | boolean
   connect?: Prisma.CycleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.CycleUpdateToOneWithWhereWithoutTaskInput, Prisma.CycleUpdateWithoutTaskInput>, Prisma.CycleUncheckedUpdateWithoutTaskInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CycleUpdateToOneWithWhereWithoutTasksInput, Prisma.CycleUpdateWithoutTasksInput>, Prisma.CycleUncheckedUpdateWithoutTasksInput>
 }
 
 export type CycleCreateWithoutBoardInput = {
@@ -539,7 +539,7 @@ export type CycleCreateWithoutBoardInput = {
   columns?: Prisma.CycleCreatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Date | string
   updatedAt?: Date | string | null
-  task?: Prisma.TaskCreateNestedManyWithoutCycleInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutCycleInput
 }
 
 export type CycleUncheckedCreateWithoutBoardInput = {
@@ -550,7 +550,7 @@ export type CycleUncheckedCreateWithoutBoardInput = {
   columns?: Prisma.CycleCreatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Date | string
   updatedAt?: Date | string | null
-  task?: Prisma.TaskUncheckedCreateNestedManyWithoutCycleInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCycleInput
 }
 
 export type CycleCreateOrConnectWithoutBoardInput = {
@@ -593,7 +593,7 @@ export type CycleScalarWhereInput = {
   updatedAt?: Prisma.DateTimeNullableFilter<"Cycle"> | Date | string | null
 }
 
-export type CycleCreateWithoutTaskInput = {
+export type CycleCreateWithoutTasksInput = {
   id?: bigint | number
   title: string
   position?: number
@@ -601,10 +601,10 @@ export type CycleCreateWithoutTaskInput = {
   columns?: Prisma.CycleCreatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Date | string
   updatedAt?: Date | string | null
-  board: Prisma.BoardCreateNestedOneWithoutCycleInput
+  board: Prisma.BoardCreateNestedOneWithoutCyclesInput
 }
 
-export type CycleUncheckedCreateWithoutTaskInput = {
+export type CycleUncheckedCreateWithoutTasksInput = {
   id?: bigint | number
   title: string
   position?: number
@@ -615,23 +615,23 @@ export type CycleUncheckedCreateWithoutTaskInput = {
   updatedAt?: Date | string | null
 }
 
-export type CycleCreateOrConnectWithoutTaskInput = {
+export type CycleCreateOrConnectWithoutTasksInput = {
   where: Prisma.CycleWhereUniqueInput
-  create: Prisma.XOR<Prisma.CycleCreateWithoutTaskInput, Prisma.CycleUncheckedCreateWithoutTaskInput>
+  create: Prisma.XOR<Prisma.CycleCreateWithoutTasksInput, Prisma.CycleUncheckedCreateWithoutTasksInput>
 }
 
-export type CycleUpsertWithoutTaskInput = {
-  update: Prisma.XOR<Prisma.CycleUpdateWithoutTaskInput, Prisma.CycleUncheckedUpdateWithoutTaskInput>
-  create: Prisma.XOR<Prisma.CycleCreateWithoutTaskInput, Prisma.CycleUncheckedCreateWithoutTaskInput>
+export type CycleUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.CycleUpdateWithoutTasksInput, Prisma.CycleUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.CycleCreateWithoutTasksInput, Prisma.CycleUncheckedCreateWithoutTasksInput>
   where?: Prisma.CycleWhereInput
 }
 
-export type CycleUpdateToOneWithWhereWithoutTaskInput = {
+export type CycleUpdateToOneWithWhereWithoutTasksInput = {
   where?: Prisma.CycleWhereInput
-  data: Prisma.XOR<Prisma.CycleUpdateWithoutTaskInput, Prisma.CycleUncheckedUpdateWithoutTaskInput>
+  data: Prisma.XOR<Prisma.CycleUpdateWithoutTasksInput, Prisma.CycleUncheckedUpdateWithoutTasksInput>
 }
 
-export type CycleUpdateWithoutTaskInput = {
+export type CycleUpdateWithoutTasksInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -639,10 +639,10 @@ export type CycleUpdateWithoutTaskInput = {
   columns?: Prisma.CycleUpdatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  board?: Prisma.BoardUpdateOneRequiredWithoutCycleNestedInput
+  board?: Prisma.BoardUpdateOneRequiredWithoutCyclesNestedInput
 }
 
-export type CycleUncheckedUpdateWithoutTaskInput = {
+export type CycleUncheckedUpdateWithoutTasksInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -671,7 +671,7 @@ export type CycleUpdateWithoutBoardInput = {
   columns?: Prisma.CycleUpdatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  task?: Prisma.TaskUpdateManyWithoutCycleNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutCycleNestedInput
 }
 
 export type CycleUncheckedUpdateWithoutBoardInput = {
@@ -682,7 +682,7 @@ export type CycleUncheckedUpdateWithoutBoardInput = {
   columns?: Prisma.CycleUpdatecolumnsInput | runtime.InputJsonValue[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  task?: Prisma.TaskUncheckedUpdateManyWithoutCycleNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutCycleNestedInput
 }
 
 export type CycleUncheckedUpdateManyWithoutBoardInput = {
@@ -701,11 +701,11 @@ export type CycleUncheckedUpdateManyWithoutBoardInput = {
  */
 
 export type CycleCountOutputType = {
-  task: number
+  tasks: number
 }
 
 export type CycleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | CycleCountOutputTypeCountTaskArgs
+  tasks?: boolean | CycleCountOutputTypeCountTasksArgs
 }
 
 /**
@@ -721,7 +721,7 @@ export type CycleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * CycleCountOutputType without action
  */
-export type CycleCountOutputTypeCountTaskArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CycleCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TaskWhereInput
 }
 
@@ -736,7 +736,7 @@ export type CycleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  task?: boolean | Prisma.Cycle$taskArgs<ExtArgs>
+  tasks?: boolean | Prisma.Cycle$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.CycleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cycle"]>
 
@@ -778,7 +778,7 @@ export type CycleSelectScalar = {
 export type CycleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "position" | "status" | "columns" | "boardId" | "createdAt" | "updatedAt", ExtArgs["result"]["cycle"]>
 export type CycleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  task?: boolean | Prisma.Cycle$taskArgs<ExtArgs>
+  tasks?: boolean | Prisma.Cycle$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.CycleCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CycleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -792,7 +792,7 @@ export type $CyclePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Cycle"
   objects: {
     board: Prisma.$BoardPayload<ExtArgs>
-    task: Prisma.$TaskPayload<ExtArgs>[]
+    tasks: Prisma.$TaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -1198,7 +1198,7 @@ readonly fields: CycleFieldRefs;
 export interface Prisma__CycleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   board<T extends Prisma.BoardDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardClient<runtime.Types.Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  task<T extends Prisma.Cycle$taskArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cycle$taskArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tasks<T extends Prisma.Cycle$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cycle$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1637,9 +1637,9 @@ export type CycleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Cycle.task
+ * Cycle.tasks
  */
-export type Cycle$taskArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Cycle$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Task
    */

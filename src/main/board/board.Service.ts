@@ -1,54 +1,42 @@
-import { CycleRp } from '../cycle/cycleRepository.js';
+import { Injectable } from '@nestjs/common';
+import { CycleRepository } from '../cycle/cycle.Repository.js';
 import { BoardRepository } from './board.Repository.js';
-import { BoardDto } from './board.Dto.js';
 
+@Injectable()
 export class BoardService {
   constructor(
     private readonly boardRepository: BoardRepository,
-    private readonly cycleRepository: CycleRp,
+    private readonly cycleRepository: CycleRepository,
   ) {}
 
-  async create(name: string, workspaceUuid: string) {
+  async create(name: string, projectUuid: string) {
     if (!name) {
       throw new Error('Name is required');
     }
-    if (!workspaceUuid) {
-      throw new Error('WorkspaceUuid is required');
+    if (!projectUuid) {
+      throw new Error('projectUuid is required');
     }
 
-    const columnsDefautl = [
-      {
-        id: 'l1',
-        name: 'Default',
-        item: [
-          { id: '0', name: 'To Do' },
-          { id: '1', name: 'In Progress' },
-          { id: '2', name: 'Done' },
-        ],
-      },
-    ];
+    const board = JSON.parse(
+      await this.boardRepository.create(name, projectUuid),
+    ) as { id: string };
 
-    const boardService: BoardDto = {
-      name,
-      columnsJson: columnsDefautl,
-    };
-    return await this.boardRepository.create(boardService, workspaceUuid);
-  }
+    const cycle = JSON.parse(
+      await this.cycleRepository.create(BigInt(board.id)),
+    );
 
-  async get(workspaceUuid: string) {
-    const boards = await this.boardRepository.get(workspaceUuid);
-    return boards;
+    return { ...board, cycle };
   }
 
   async find(boardId: bigint) {
-    return await this.boardRepository.find(boardId);
+    return await this.boardRepository.get(boardId);
   }
 
   static async update(boardId: bigint, data: any) {
-    // return await BoardRepository.update(boardId, workspaceUuid, data);
+    // return await BoardRepository.update(boardId, projectUuid, data);
   }
 
-  async addCycle(boardId: any) {
-    return await this.cycleRepository.create(boardId);
+  async addCycle(boardId: string | bigint) {
+    return await this.cycleRepository.create(BigInt(boardId));
   }
 }

@@ -29,7 +29,7 @@ lerna-debug.log*
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
+*.sublime-project
 
 # IDE - VSCode
 .vscode/*
@@ -44,7 +44,7 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
-
+/keys/public.pem
 # temp directory
 .temp
 .tmp

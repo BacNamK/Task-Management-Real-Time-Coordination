@@ -255,7 +255,7 @@ export type AssigneedsScalarWhereWithAggregatesInput = {
 export type AssigneedsCreateInput = {
   id?: bigint | number
   task: Prisma.TaskCreateNestedOneWithoutAssigneedsInput
-  user: Prisma.UserCreateNestedOneWithoutAssigneedsInput
+  user: Prisma.UserCreateNestedOneWithoutAssignedTasksInput
 }
 
 export type AssigneedsUncheckedCreateInput = {
@@ -267,7 +267,7 @@ export type AssigneedsUncheckedCreateInput = {
 export type AssigneedsUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   task?: Prisma.TaskUpdateOneRequiredWithoutAssigneedsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutAssigneedsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutAssignedTasksNestedInput
 }
 
 export type AssigneedsUncheckedUpdateInput = {
@@ -468,7 +468,7 @@ export type AssigneedsScalarWhereInput = {
 
 export type AssigneedsCreateWithoutTaskInput = {
   id?: bigint | number
-  user: Prisma.UserCreateNestedOneWithoutAssigneedsInput
+  user: Prisma.UserCreateNestedOneWithoutAssignedTasksInput
 }
 
 export type AssigneedsUncheckedCreateWithoutTaskInput = {
@@ -529,7 +529,7 @@ export type AssigneedsCreateManyTaskInput = {
 
 export type AssigneedsUpdateWithoutTaskInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  user?: Prisma.UserUpdateOneRequiredWithoutAssigneedsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutAssignedTasksNestedInput
 }
 
 export type AssigneedsUncheckedUpdateWithoutTaskInput = {

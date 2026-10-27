@@ -1,35 +1,34 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { BoardRepository } from './board.Repository.js';
 import { BoardService } from './board.Service.js';
 
-@Controller('board')
+@Controller('/board')
 export class BoardController {
   constructor(
     private readonly boardRepository: BoardRepository,
     private readonly boardService: BoardService,
   ) {}
 
-  @Get('get')
-  async get(@Query('workspaceUuid') workspaceUuid: string) {
-    const boards = await this.boardRepository.get(workspaceUuid);
-    return boards;
+  @Get()
+  async getprojectBoards(@Query('projectUuid') uuid: string) {
+    return await this.boardRepository.get(uuid);
   }
 
-  @Get('find')
-  async find(@Query('boardId') boardId: bigint) {
-    const board = await this.boardRepository.find(boardId);
-    return board;
+  @Get('/:id')
+  async find(@Param('id') boardId: string) {
+    return await this.boardRepository.find(boardId);
   }
 
-  @Post('create')
-  async create(
-    @Query('name') name: string,
-    @Query('workspaceUuid') workspaceUuid: string,
-  ) {
-    await this.boardRepository.create(name, workspaceUuid);
+  @Post('/create')
+  async create(@Body() formData: { boardName: string; projectUuid: string }) {
+    console.log(formData);
+    return await this.boardService.create(
+      formData.boardName,
+      formData.projectUuid,
+    );
   }
 
-  @Post('addCycle')
+  @Post('/addCycle')
   async addCycle(@Query('boardId') boardId: bigint) {
     return await this.boardService.addCycle(boardId);
   }

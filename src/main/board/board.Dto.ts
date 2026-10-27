@@ -1,7 +1,7 @@
 export interface Board {
   id: number;
   name: string;
-  workspaceUuid: string;
+  projectUuid: string;
 }
 
 export interface BoardDto {

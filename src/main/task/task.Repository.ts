@@ -1,37 +1,62 @@
-import { prisma } from '../lib/prisma.Client.js';
+import { Injectable } from '@nestjs/common';
+import { prisma } from '../../lib/prisma.Client.js';
+import { serializeBigInt } from '../../common/utils/bigint.util.js';
 
+@Injectable()
 export class TaskRepository {
-  async createTask(data: any) {
-    const task = await prisma.task.create({
-      data: {
-        ...data.task,
-        creatorId: data.creatorId,
-      },
-    });
-
-    for (const assignee of data.assigneeds) {
-      await prisma.assigneeds.create({
+  async create(data: any, userId: string) {
+    const task = await prisma.$transaction(async (tx) => {
+      const createdTask = await tx.task.create({
         data: {
-          taskId: task.id,
-          userId: Number(assignee.userId),
+          title: data.title,
+          description: data.description || null,
+          position: data.position,
+          dueDate: data.dueDate || null,
+          cycleId: data.cycleId ? BigInt(data.cycleId) : null,
+          boardId: BigInt(data.boardId),
+          creatorId: BigInt(userId),
         },
       });
-    }
+
+      if (data.assigneeds?.length) {
+        await tx.assigneeds.createMany({
+          data: data.assigneeds.map((assignee: { userId: string }) => ({
+            taskId: createdTask.id,
+            userId: BigInt(assignee.userId),
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return createdTask;
+    });
+
+    return serializeBigInt(task);
   }
 
   async get(boardId: bigint) {
-    return await prisma.task.findMany({
+    const tasks = await prisma.task.findMany({
       where: {
         boardId: boardId,
       },
     });
+    return serializeBigInt(tasks);
+  }
+  async update(id: bigint, data: any) {
+    const task = await prisma.task.update({
+      where: {
+        id: id,
+      },
+      data: data,
+    });
+    return serializeBigInt(task);
   }
   async changePosition(data: {
     taskId: bigint;
     cycleId: bigint;
     position: number;
   }) {
-    return await prisma.task.update({
+    const task = await prisma.task.update({
       where: {
         id: data.taskId,
       },
@@ -40,5 +65,6 @@ export class TaskRepository {
         position: data.position,
       },
     });
+    return serializeBigInt(task);
   }
 }

@@ -1,84 +1,98 @@
+import { Injectable } from '@nestjs/common';
 import { prisma } from '../../lib/prisma.Client.js';
-import { CycleRp } from '../cycle/cycleRepository.js';
-import { WorkspaceRepository } from '../workspace/workspace.Repository.js';
+import { CycleRepository } from '../cycle/cycle.Repository.js';
+import { projectRepository } from '../project/project.Repository.js';
+import { serializeBigInt } from '../../common/utils/bigint.util.js';
 
+@Injectable()
 export class BoardRepository {
   constructor(
-    private readonly cycleRepository: CycleRp,
-    private readonly workspaceRepository: WorkspaceRepository,
+    private readonly cycleRepository: CycleRepository,
+    private readonly projectRepository: projectRepository,
   ) {}
 
-  async create(rData: any, workspaceUuid: string) {
-    const workspace = await this.workspaceRepository.returnId(workspaceUuid);
+  async create(boarName: string, projectUuid: string) {
+    const project = await this.projectRepository.returnId(projectUuid);
 
-    if (!workspace) {
-      throw new Error('Workspace not found');
+    if (!project) {
+      throw new Error('project not found');
     }
 
     const boardCr = await prisma.board.create({
       data: {
-        name: rData.name,
-        workspaceId: workspace.id,
+        title: boarName,
+
+        projectId: project.id,
       },
     });
 
-    await this.cycleRepository.create(Number(boardCr.id));
+    return serializeBigInt(boardCr);
   }
 
-  async get(workspaceUuid: string) {
-    const workspace = await this.workspaceRepository.returnId(workspaceUuid);
-    if (!workspace) {
-      throw new Error('Workspace not found');
-    }
-
-    const workspaceData = await prisma.workspace.findUnique({
+  async get(projectUuid: any) {
+    const board = await prisma.project.findFirst({
       where: {
-        id: workspace.id,
+        uuid: projectUuid,
       },
-      select: {
-        uuid: true,
-        name: true,
-        boards: {
-          select: {
-            id: true,
-            name: true,
-            _count: {
-              select: {
-                cycle: true,
-                tasks: true,
-              },
-            },
-          },
-        },
-        members: {
-          select: {
-            role: true,
-            user: {
-              select: {
-                name: true,
-                image: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!workspaceData) {
-      throw new Error('Workspace not found');
-    }
-
-    return workspaceData;
-  }
-
-  async find(boardId: bigint) {
-    return await prisma.board.findFirst({
-      where: { id: boardId },
       select: {
         id: true,
         name: true,
-        createdAt: true,
-        cycle: {
+        boards: {
+          select: {
+            cycles: {
+              select: {
+                id: true,
+                title: true,
+                position: true,
+                columns: true,
+                createdAt: true,
+              },
+              orderBy: {
+                position: 'asc',
+              },
+            },
+
+            tasks: {
+              select: {
+                id: true,
+                title: true,
+                position: true,
+                description: true,
+                createdAt: true,
+                dueDate: true,
+                cycleId: true,
+                boardId: true,
+
+                assigneeds: {
+                  select: {
+                    id: true,
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        avatar: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return serializeBigInt(board);
+  }
+
+  async find(boardId: string) {
+    const board = await prisma.board.findUnique({
+      where: {
+        id: BigInt(boardId),
+      },
+      select: {
+        id: true,
+        title: true,
+        cycles: {
           select: {
             id: true,
             title: true,
@@ -86,11 +100,11 @@ export class BoardRepository {
             columns: true,
             createdAt: true,
           },
+          orderBy: {
+            position: 'asc',
+          },
         },
         tasks: {
-          where: {
-            boardId: boardId,
-          },
           select: {
             id: true,
             title: true,
@@ -107,7 +121,7 @@ export class BoardRepository {
                   select: {
                     id: true,
                     name: true,
-                    image: true,
+                    avatar: true,
                   },
                 },
               },
@@ -116,6 +130,11 @@ export class BoardRepository {
         },
       },
     });
+
+    if (!board) return null;
+
+    const { cycles, ...boardDetails } = board;
+    return serializeBigInt({ ...boardDetails, cycle: cycles });
   }
 }
 // export const updateboardRepository = async (boardId: bigint, rawdData: any) => {

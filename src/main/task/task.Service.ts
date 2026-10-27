@@ -1,19 +1,22 @@
-import { assignTask } from './task.Dto.js';
+import { Injectable } from '@nestjs/common';
+import { TaskDto } from './task.Dto.js';
 import { TaskRepository } from './task.Repository.js';
 
+@Injectable()
 export class TaskService {
-  constructor(private taskRepository: TaskRepository) {}
-  async createTaskService(dataRequest: assignTask) {
-    const data = {
-      ...dataRequest,
-      creatorId: Number(1),
-    };
-
-    await this.taskRepository.createTask(data);
+  constructor(private readonly Repository: TaskRepository) {}
+  async create(dataRequest: TaskDto, userId: string) {
+    return this.Repository.create(dataRequest, userId);
   }
 
   async get(boardId: bigint) {
-    return await this.taskRepository.get(boardId);
+    return await this.Repository.get(boardId);
+  }
+
+  async update(id: bigint, data: any, userId: bigint) {
+    // Kiểm tra user có quyền update task không? if không thì throw error
+
+    return await this.Repository.update(id, data);
   }
 
   async changePosition(data: {
@@ -21,6 +24,6 @@ export class TaskService {
     cycleId: bigint;
     position: number;
   }) {
-    return await this.taskRepository.changePosition(data);
+    return await this.Repository.changePosition(data);
   }
 }
