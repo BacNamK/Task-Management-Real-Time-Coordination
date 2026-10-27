@@ -2,8 +2,8 @@ import NextAuth, { type DefaultSession } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
 import authConfig from './auth.config';
-import { UserType } from '../../service/user/user.type';
-import { authClient } from '../../nestjs/authClient.api';
+import { UserType } from '../../feature/user/service/user.type';
+import { authClient } from '../../service/authClient.api';
 declare module 'next-auth' {
     interface User {
         role?: string;
@@ -75,6 +75,9 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
     callbacks: {
+        async signIn() {
+            return true;
+        },
         async jwt({ token, user, account }) {
             if (account) {
                 token.accessToken = account.access_token;
@@ -100,15 +103,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token.role = user.role;
             }
 
-            if (token.email) {
-                const user: UserType = await authClient.findUserByEmail(token.email);
+            if (token.email && !token.id) {
+                let user: UserType | null = await authClient.findUserByEmail(token.email);
 
-                if (user) {
-                    token.id = user.id;
+                if (!user) {
+                    const name = token.name?.trim() || token.email.split('@')[0];
+                    user = await authClient.ensureUser(name, token.email, token.picture ?? null);
+                }
 
-                    if (user.role) {
-                        token.role = user.role;
-                    }
+                token.id = user.id;
+
+                if (user.role) {
+                    token.role = user.role;
                 }
             }
 

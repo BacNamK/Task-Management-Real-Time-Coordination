@@ -1,6 +1,15 @@
 'use client';
 
-import { BookOpen, Box, ChevronRight, HomeIcon, Settings } from 'lucide-react';
+import {
+    BookOpen,
+    Box,
+    BriefcaseBusiness,
+    ChevronRight,
+    HomeIcon,
+    Settings,
+    Workflow,
+    WorkflowIcon,
+} from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -11,23 +20,34 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarTrigger,
-} from '../../../components/ui/sidebar';
+} from '../ui/sidebar';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
-export function AppSidebar({ user }: { user?: any }) {
+type SidebarUser = {
+    name?: string | null;
+    image?: string | null;
+};
+
+export function AppSidebar({ user }: { user?: SidebarUser }) {
     const router = useRouter();
     const pathname = usePathname();
 
+    if (pathname === '/login') return null;
+
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar collapsible="icon" className="bg-white text-slate-500 text-xs font-semibold">
             <SidebarHeader>
                 <div className="flex items-center justify-between">
                     <SidebarMenuButton
                         tooltip="TOJECT"
-                        className="group-data-[collapsible=icon]:hidden"
+                        className="h-10 group-data-[collapsible=icon]:hidden"
                     >
-                        <span className="font-bold ">TOJECT</span>
+                        <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                            <BriefcaseBusiness aria-hidden="true" size={16} />
+                        </span>
+                        <span className="font-semibold tracking-wide">TOJECT</span>
                     </SidebarMenuButton>
 
                     <SidebarTrigger />
@@ -36,15 +56,15 @@ export function AppSidebar({ user }: { user?: any }) {
 
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarMenu className="w-full grid gap-y-1">
+                    <SidebarMenu className="grid w-full gap-y-1">
                         <SidebarMenuItem>
                             <SidebarMenuButton
-                                tooltip="Home"
-                                isActive={pathname === '/home'}
-                                onClick={() => router.push('/home')}
+                                tooltip="My Tasks"
+                                isActive={pathname === '/mytasks'}
+                                onClick={() => router.push('/mytasks')}
                             >
-                                <HomeIcon />
-                                <span>Home</span>
+                                <WorkflowIcon />
+                                <span>My Tasks</span>
                             </SidebarMenuButton>
 
                             {/* submenu */}
@@ -52,30 +72,32 @@ export function AppSidebar({ user }: { user?: any }) {
 
                         <SidebarMenuItem>
                             <SidebarMenuButton
-                                tooltip="Workspace"
-                                isActive={pathname === '/workspaces'}
-                                onClick={() => router.push('/workspaces')}
+                                tooltip="project"
+                                isActive={
+                                    pathname === '/project' || pathname.startsWith('/project/')
+                                }
+                                onClick={() => router.push('/project')}
                             >
                                 <Box />
-                                <span>Workspace</span>
+                                <span>project</span>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
 
                         <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Tài liệu">
+                            <SidebarMenuButton tooltip="Documnet">
                                 <BookOpen />
                                 <div className="w-full flex items-center justify-between">
-                                    <span className="block">Tài liệu</span>
+                                    <span className="block">Document</span>
                                     <ChevronRight />
                                 </div>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
 
                         <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Cài đặt">
+                            <SidebarMenuButton tooltip="Setting">
                                 <Settings />
                                 <div className="w-full flex items-center justify-between">
-                                    <span className="block">Cài đặt</span>
+                                    <span className="block">Settings</span>
                                     <ChevronRight />
                                 </div>
                             </SidebarMenuButton>
@@ -85,16 +107,23 @@ export function AppSidebar({ user }: { user?: any }) {
             </SidebarContent>
 
             <SidebarFooter>
-                <div className="flex gap-2 ">
-                    <img
-                        src={user?.image}
-                        alt={user?.name || ''}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                    />
-                    <span className="text-sm font-medium group-data-[collapsible=icon]:hidden ">
-                        {user?.name || ''}
+                <div className="flex min-w-0 items-center gap-2 rounded-xl border border-slate-100 bg-slate-50 p-2">
+                    {user?.image ? (
+                        <Image
+                            src={user.image}
+                            alt={user.name ?? 'User profile'}
+                            width={32}
+                            height={32}
+                            unoptimized
+                            className="size-8 shrink-0 rounded-full object-cover"
+                        />
+                    ) : (
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+                            {user?.name?.charAt(0).toUpperCase() ?? '?'}
+                        </div>
+                    )}
+                    <span className="truncate text-sm font-medium text-slate-700 group-data-[collapsible=icon]:hidden">
+                        {user?.name || 'Account'}
                     </span>
                 </div>
             </SidebarFooter>

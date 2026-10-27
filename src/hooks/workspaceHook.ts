@@ -1,21 +1,21 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 interface ItemsState {
-    workspace: any | null;
+    project: any | null;
     members: any | null;
     setMembers: (members: any | null) => void;
-    setWorkspace: (workspace: any | null) => void;
+    setproject: (project: any | null) => void;
     reset: () => void;
 }
 
 export const useItemsStore = create<ItemsState>()(
     persist(
         (set) => ({
-            workspace: null,
+            project: null,
             members: null,
-            setWorkspace: (workspace) =>
+            setproject: (project) =>
                 set({
-                    workspace,
+                    project,
                 }),
             setMembers: (members) =>
                 set({
@@ -24,7 +24,7 @@ export const useItemsStore = create<ItemsState>()(
 
             reset: () =>
                 set({
-                    workspace: null,
+                    project: null,
                     members: null,
                 }),
         }),
