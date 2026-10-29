@@ -1,9 +1,10 @@
 'use client';
 
-import { useItemsStore } from '../../../../hooks/projectHook';
+import { useState } from 'react';
+import { useItemsStore } from '../../../../hooks/workspaceHook';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CalendarDays, Columns3, UsersRound } from 'lucide-react';
+import { CalendarDays, Columns3, PanelsTopLeft, UsersRound } from 'lucide-react';
 import type { project } from '../../sevice/project.type';
 
 type projectItem = {
@@ -18,6 +19,7 @@ type projectItem = {
 export const Item = ({ item }: { item: projectItem }) => {
     // Lưu danh sách người có trong projectMember
     const setSelectedItem = useItemsStore((state) => state.setproject);
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
     const handleItemClick = (item: projectItem) => {
         setSelectedItem(item);
@@ -25,37 +27,66 @@ export const Item = ({ item }: { item: projectItem }) => {
     const ownerAvatar = item.owner?.avatar ?? item.owner?.image;
 
     return (
-        <Link
-            href={`/projects/${item.project.uuid}`}
-            onClick={() => handleItemClick(item)}
-            className="Item-project group block w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-            <div className="flex min-h-36 flex-col justify-between gap-5">
+        <div className="Item-project group relative block h-auto w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <Link
+                href={`/projects/${item.project.uuid}`}
+                onClick={() => handleItemClick(item)}
+                aria-label={`Open project ${item.project.name}`}
+                className="absolute inset-0 z-0  rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            />
+            <div className="pointer-events-none relative z-10 flex flex-col gap-2">
                 {/* Header */}
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                            <Columns3 aria-hidden="true" size={18} />
+                <div className="flex w-full items-center justify-between gap-3">
+                    <div className="flex gap-2 items-center justify-center rounded-xl">
+                        <div className="size-10 justify-items-center content-center bg-indigo-50 text-indigo-500 rounded-lg">
+                            <PanelsTopLeft aria-hidden="true" size={22} />
                         </div>
                         <h3 className="truncate text-base font-semibold text-slate-900 transition-colors group-hover:text-indigo-600">
                             {item.project.name}
                         </h3>
                     </div>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                        <CalendarDays aria-hidden="true" size={14} />
+                        {new Date(item.project.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                        })}
+                    </div>
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-slate-100" />
+                {item.project.description?.trim() && (
+                    <div className="w-full rounded-xl p-2 text-sm text-slate-600">
+                        <p
+                            className={
+                                isDescriptionExpanded
+                                    ? 'whitespace-pre-wrap'
+                                    : 'line-clamp-6 whitespace-pre-wrap'
+                            }
+                        >
+                            {item.project.description}
+                        </p>
+                        <button
+                            type="button"
+                            aria-expanded={isDescriptionExpanded}
+                            onClick={() => setIsDescriptionExpanded((expanded) => !expanded)}
+                            className="pointer-events-auto mt-1 text-sm font-medium hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                            {isDescriptionExpanded ? 'Read less' : 'Read more...'}
+                        </button>
+                    </div>
+                )}
 
                 {/* Footer */}
-                <div className="flex flex-wrap items-end justify-between gap-4">
+                <div className="flex flex-wrap items-end justify-between gap-4 p-1">
                     {/* Owner */}
                     <div className="flex min-w-0 items-center gap-2.5">
                         {ownerAvatar ? (
                             <Image
                                 src={ownerAvatar}
                                 alt={item.owner.name ?? 'Owner'}
-                                width={32}
-                                height={32}
+                                width={28}
+                                height={28}
                                 className="size-9 shrink-0 rounded-full object-cover"
                             />
                         ) : (
@@ -89,16 +120,7 @@ export const Item = ({ item }: { item: projectItem }) => {
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                    <CalendarDays aria-hidden="true" size={14} />
-                    Created{' '}
-                    {new Date(item.project.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                    })}
-                </div>
             </div>
-        </Link>
+        </div>
     );
 };

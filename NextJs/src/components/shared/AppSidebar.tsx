@@ -37,7 +37,7 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
     if (pathname === '/login') return null;
 
     return (
-        <Sidebar collapsible="icon" className="bg-white text-slate-500 text-xs font-semibold">
+        <Sidebar collapsible="icon" className="bg-white text-slate-500 text-xs font-medium">
             <SidebarHeader>
                 <div className="flex items-center justify-between">
                     <SidebarMenuButton
@@ -72,14 +72,14 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
 
                         <SidebarMenuItem>
                             <SidebarMenuButton
-                                tooltip="project"
+                                tooltip="projects"
                                 isActive={
-                                    pathname === '/project' || pathname.startsWith('/project/')
+                                    pathname === '/projects' || pathname.startsWith('/projects/')
                                 }
-                                onClick={() => router.push('/project')}
+                                onClick={() => router.push('/projects')}
                             >
                                 <Box />
-                                <span>project</span>
+                                <span>Projects</span>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
 

@@ -20,6 +20,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Service token keys
+
+Generate the RSA key pair used to sign service tokens with:
+
+```bash
+pnpm generate:keys
+```
+
+The command creates `keys/private.pem` and `keys/public.pem` in the Next.js project root. It refuses to overwrite either existing key file. Keep the private key secret and provide the matching public key to the API that verifies these tokens.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -18,7 +18,7 @@ enum EnumRoleSys {
 
 enum projectMemberRole {
   OWNER
-  ADMIN
+  MODER
   MEMBER
 }
 
@@ -36,13 +36,17 @@ model User {
   avatar               String?               @db.Text
   createdAt            DateTime              @default(now()) @map("created_at") @db.Timestamp(6)
   roleUsers            RoleUserSys[]
-  projectMembers     projectMember[]
+  projectMembers       projectMember[]
   createdTasks         Task[]                @relation("CreatedTasks")
   assignedTasks        Assigneeds[]
   messages             Message[]
   chatRoomParticipants ChatRoomParticipant[]
   files                Files[]
   accounts             OAuthAccount[]
+  session              Session[]
+  task                 Task[]
+  comments             Comments[]
+  imageAndVideos       ImageAndVideo[]
 
   @@map("user")
 }
@@ -59,12 +63,23 @@ model RoleUserSys {
 }
 
 model Role {
-  id          Int          @id @default(autoincrement())
-  roleName    EnumRoleSys  @map("role_name")
-  description String       @map("descrition") @db.Text
+  id          Int           @id @default(autoincrement())
+  roleName    EnumRoleSys   @map("role_name")
+  description String        @map("descrition") @db.Text
   roleUsers   RoleUserSys[]
 
   @@map("role")
+}
+
+model Session {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @unique @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  expiredAt DateTime @db.Timestamp(6)
+  isBanned  Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("session")
 }
 
 model OAuthAccount {
@@ -80,30 +95,31 @@ model OAuthAccount {
 }
 
 model project {
-  id        BigInt            @id @default(autoincrement())
-  uuid      String            @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
-  name      String            @db.VarChar
-  description String?          @db.Text
-  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamp(6)
-  members   projectMember[]
-  boards    Board[]
-  chatRooms ChatRoom[]
-  files     Files[]
+  id             BigInt          @id @default(autoincrement())
+  uuid           String          @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name           String          @db.VarChar
+  description    String?         @db.Text
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
+  members        projectMember[]
+  boards         Board[]
+  chatRooms      ChatRoom[]
+  files          Files[]
+  imageAndVideos ImageAndVideo[]
 
   @@map("project")
 }
 
 model projectMember {
-  id           BigInt              @id @default(autoincrement())
-  uuid         String              @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
-  projectId  BigInt              @map("project_id")
-  userId       BigInt              @map("user_id")
+  id           BigInt            @id @default(autoincrement())
+  uuid         String            @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
+  projectId    BigInt            @map("project_id")
+  userId       BigInt            @map("user_id")
   role         projectMemberRole @default(MEMBER)
-  permissionId Int                 @map("permission_id")
-  createdAt    DateTime            @default(now()) @map("created_at") @db.Timestamp(6)
-  project    project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  permission   Permission          @relation(fields: [permissionId], references: [id], onDelete: Restrict)
+  permissionId Int               @map("permission_id")
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamp(6)
+  project      project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission        @relation(fields: [permissionId], references: [id], onDelete: Restrict)
 
   @@unique([projectId, userId])
   @@index([permissionId])
@@ -111,21 +127,21 @@ model projectMember {
 }
 
 model Permission {
-  id          Int               @id @default(autoincrement())
-  name        String            @unique @db.Text
-  description String            @db.Text
+  id          Int             @id @default(autoincrement())
+  name        String          @unique @db.Text
+  description String          @db.Text
   members     projectMember[]
 
   @@map("permission")
 }
 
 model Board {
-  id          BigInt    @id @default(autoincrement())
-  title       String    @db.VarChar(255)
-  projectId BigInt    @map("project_id")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt   DateTime? @map("updated_at") @db.Timestamp(6)
-  project   project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id          BigInt   @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  projectId   BigInt   @map("project_id")
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  project     project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   tasks       Task[]
   cycles      Cycle[]
 
@@ -154,6 +170,8 @@ model Task {
   title       String       @db.VarChar
   position    Int
   description String?      @db.Text
+  priority    Int          @default(1)
+  censorId    BigInt?       @map("censor_id")
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
   updatedAt   DateTime?    @map("updated_at") @db.Timestamp(6)
@@ -162,9 +180,12 @@ model Task {
   boardId     BigInt       @map("board_id")
   assigneeds  Assigneeds[]
   files       Files[]
+  comments    Comments[]
+  tags        Tags[]
   board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
   creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id], onDelete: Restrict)
   cycle       Cycle?       @relation(fields: [cycleId], references: [id], onDelete: SetNull)
+  user        User?         @relation(fields: [censorId], references: [id], onDelete: SetNull)
 
   @@index([boardId, position])
   @@index([creatorId])
@@ -172,26 +193,64 @@ model Task {
   @@map("task")
 }
 
+model Tags {
+  id     String @id @default(uuid())
+  name   String @db.VarChar(255)
+  taskId BigInt @map("task_id")
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("tags")
+}
+
+model Comments {
+  id       BigInt @id @default(autoincrement())
+  content  String @db.Text
+  taskId   BigInt @map("task_id")
+  sendById BigInt @map("send_by_id")
+  task     Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [sendById], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
 model Files {
-  id          String   @id @default(uuid())
-  title       String
-  mimeType    String    @map("mime_type")
-  size        BigInt
-  storageKey  String   @unique @map("storage_key")
-  bucket      String
-  provider    String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  sendById    BigInt   @map("send_by_id")
-  projectId BigInt   @map("project_id")
-  taskId      BigInt   @map("task_id")
-  user        User      @relation(fields: [sendById], references: [id], onDelete: Cascade)
-  project   project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  title      String
+  mimeType   String   @map("mime_type")
+  size       Float
+  storageKey String   @unique @map("storage_key")
+  bucket     String
+  provider   String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  sendById   BigInt   @map("send_by_id")
+  projectId  BigInt   @map("project_id")
+  taskId     BigInt   @map("task_id")
+  user       User     @relation(fields: [sendById], references: [id], onDelete: Cascade)
+  project    project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([sendById])
   @@index([projectId])
   @@index([taskId])
   @@map("files")
+}
+
+model ImageAndVideo {
+  id         String  @id @default(uuid())
+  mimeType   String  @map("mime_type")
+  size       Float
+  storageKey String  @unique @map("storage_key")
+  bucket     String
+  provider   String?
+  messageId  String  @map("message_id")
+  sendById   BigInt  @map("send_by_id")
+  projectId  BigInt  @map("project_id")
+  user       User    @relation(fields: [sendById], references: [id], onDelete: Cascade)
+  project    project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  message    Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("imageandvideo")
 }
 
 model Assigneeds {
@@ -211,8 +270,8 @@ model ChatRoom {
   uuid         String                @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   name         String?               @db.VarChar
   isDirect     Boolean               @default(false) @map("is_direct")
-  projectId  BigInt                @map("project_id")
-  project    project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId    BigInt                @map("project_id")
+  project      project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
   messages     Message[]
   participants ChatRoomParticipant[]
 
@@ -221,14 +280,15 @@ model ChatRoom {
 }
 
 model Message {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Text
-  content   String?   @db.Text
-  senderId  BigInt    @map("sender_id")
-  roomId    BigInt    @map("room_id")
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
-  sender    User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  room      ChatRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  content       String?         @db.Text
+  senderId      BigInt          @map("sender_id")
+  roomId        BigInt          @map("room_id")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt     DateTime?       @map("updated_at") @db.Timestamp(6)
+  sender        User            @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  room          ChatRoom        @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  imageandvideo ImageAndVideo[]
 
   @@index([senderId])
   @@index([roomId, createdAt])
@@ -236,11 +296,11 @@ model Message {
 }
 
 model ChatRoomParticipant {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
-  chatRoomId BigInt  @map("chat_room_id")
-  userId    BigInt   @map("user_id")
-  chatRoom  ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  chatRoomId BigInt   @map("chat_room_id")
+  userId     BigInt   @map("user_id")
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([chatRoomId, userId])
   @@index([userId])

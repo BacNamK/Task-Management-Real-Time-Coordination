@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useItemsStore } from '../../../hooks/projectHook';
+import { useItemsStore } from '../../../hooks/workspaceHook';
 import { FormCreateBoard } from '../../board/ui/form/Create';
 import BoxMember from './component/BoxMember';
 import BoxChat from '../../chat/ui/BoxChat';
@@ -12,6 +12,7 @@ import {
     ArrowUpRight,
     BriefcaseBusiness,
     CalendarDays,
+    ClipboardPenLine,
     Columns3,
     LayoutGrid,
     MessageCircle,
@@ -274,15 +275,20 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                                             <div className="flex items-center justify-between gap-2">
                                                 <div className="flex min-w-0 items-center gap-3">
                                                     <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-                                                        <Columns3 aria-hidden="true" size={17} />
+                                                        <ClipboardPenLine
+                                                            aria-hidden="true"
+                                                            size={17}
+                                                        />
                                                     </div>
-                                                    <h3 className="truncate text-sm font-semibold text-slate-800 group-hover:text-indigo-600">
+                                                    <h3 className=" text-sm font-semibold text-slate-800 group-hover:text-indigo-600">
                                                         {board.title}
                                                     </h3>
                                                 </div>
                                             </div>
 
-                                            <div className="border-t border-slate-100" />
+                                            <div className="w-full text-xs text-slate-600">
+                                                {board?.description}
+                                            </div>
 
                                             {/* Board statistics */}
                                             <div className="flex items-center gap-4 text-slate-500">

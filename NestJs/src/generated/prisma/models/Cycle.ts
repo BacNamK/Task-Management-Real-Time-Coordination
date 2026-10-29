@@ -506,13 +506,13 @@ export type CycleCreatecolumnsInput = {
   set: runtime.InputJsonValue[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type CycleUpdatecolumnsInput = {
   set?: runtime.InputJsonValue[]
   push?: runtime.InputJsonValue | runtime.InputJsonValue[]
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type CycleCreateNestedOneWithoutTasksInput = {

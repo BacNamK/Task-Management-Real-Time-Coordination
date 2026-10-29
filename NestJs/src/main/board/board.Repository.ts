@@ -110,10 +110,18 @@ export class BoardRepository {
             title: true,
             position: true,
             description: true,
+            priority: true,
             createdAt: true,
             dueDate: true,
             cycleId: true,
             boardId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
             assigneeds: {
               select: {
                 id: true,
@@ -134,7 +142,12 @@ export class BoardRepository {
     if (!board) return null;
 
     const { cycles, ...boardDetails } = board;
-    return serializeBigInt({ ...boardDetails, cycle: cycles });
+    const tasks = boardDetails.tasks.map(({ user, ...task }) => ({
+      ...task,
+      censor: user,
+    }));
+
+    return serializeBigInt({ ...boardDetails, tasks, cycle: cycles });
   }
 }
 // export const updateboardRepository = async (boardId: bigint, rawdData: any) => {

@@ -3,7 +3,7 @@ import 'server-only';
 import { getServiceToken } from './tokenServer.auth';
 import { getSessionUser } from '../lib/auth/auth.session';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.NEXT_PRIVATE_API_URL;
 
 type RequestOptions = Omit<RequestInit, 'body'> & {
     body?: unknown;
