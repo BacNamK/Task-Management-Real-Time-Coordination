@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Info, Pencil, Plus, Workflow } from 'lucide-react';
+import Link from 'next/link';
+import { Info, MoveLeft, Pencil, Plus, Workflow } from 'lucide-react';
 
 import { Create } from '../../../task/ui/form/formTask';
-import { useItemsStore } from '../../../../hooks/projectHook';
+import { useItemsStore } from '../../../../hooks/workspaceHook';
 import EditColumnsBoard from '../../../cycle/ui/form/EditColumnsBoard';
 
 import { addAction } from '../../../cycle/service/cylce.action';
@@ -17,7 +18,7 @@ import type { BoardView, Cycle } from '../../service/board.type';
 import type { TaskChangePosition } from '../../../task/service/task.type';
 import type { Task } from '../../../task/service/task.type';
 
-export const Model = ({ board }: { board: BoardView }) => {
+export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: string }) => {
     const [tasks, setTasks] = useState<Task[]>(board.tasks);
 
     const changePositionTask = (change: {
@@ -91,7 +92,14 @@ export const Model = ({ board }: { board: BoardView }) => {
                 {/* Board header */}
                 <div className="flex shrink-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-4">
+                            <Link
+                                aria-label="Back to project"
+                                className="rounded-md p-2 text-slate-600 shadow"
+                                href={`/projects/${projectUuid}`}
+                            >
+                                <MoveLeft />
+                            </Link>
                             <h3 className="truncate text-lg font-semibold text-slate-900 sm:text-xl">
                                 {board.title}
                             </h3>
@@ -137,7 +145,7 @@ export const Model = ({ board }: { board: BoardView }) => {
                         {taskQueue.length > 0 ? (
                             taskQueue.map((task, index) => (
                                 <div key={task.id ?? index} className="w-56 shrink-0">
-                                    <DraggableTask task={task} />
+                                    <DraggableTask task={task} cycleColumns={[]} />
                                 </div>
                             ))
                         ) : (

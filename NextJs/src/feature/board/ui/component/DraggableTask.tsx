@@ -3,8 +3,15 @@ import { useState } from 'react';
 import DetailTask from '../../../task/ui/component/DetailTask';
 import { Target } from 'lucide-react';
 import type { Task } from '../../../task/service/task.type';
+import type { CycleColumn } from '../../service/board.type';
 
-function DraggableTask({ task }: { task: Task }) {
+function DraggableTask({
+    task,
+    cycleColumns,
+}: {
+    task: Task;
+    cycleColumns: CycleColumn[];
+}) {
     const [showTaskDetail, setShowTaskDetail] = useState(false);
 
     const { ref, isDragging } = useDraggable({
@@ -34,7 +41,11 @@ function DraggableTask({ task }: { task: Task }) {
             </button>
             <p className="min-w-0 truncate text-sm font-medium text-slate-700">{task.title}</p>
             {showTaskDetail && (
-                <DetailTask task={task} close={() => setShowTaskDetail(!showTaskDetail)} />
+                <DetailTask
+                    task={task}
+                    cycleColumns={cycleColumns}
+                    close={() => setShowTaskDetail(!showTaskDetail)}
+                />
             )}
         </div>
     );

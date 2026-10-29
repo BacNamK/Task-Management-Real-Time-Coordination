@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 
 import { UsersModule } from './main/users/user.Module.js';
 import { projectModule } from './main/project/project.Module.js';
@@ -31,7 +30,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     UsersAuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

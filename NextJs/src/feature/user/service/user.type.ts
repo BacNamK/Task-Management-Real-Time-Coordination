@@ -2,6 +2,6 @@ export interface UserType {
     id: string;
     name: string;
     email: string;
-    image: string | null;
+    avatar: string | null;
     role?: string;
 }

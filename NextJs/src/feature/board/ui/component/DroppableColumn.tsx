@@ -28,7 +28,11 @@ function DroppableColumn({
             }`}
         >
             {task.map((item) => (
-                <DraggableTask key={item.id} task={item} />
+                <DraggableTask
+                    key={item.id}
+                    task={item}
+                    cycleColumns={cycle.columns}
+                />
             ))}
         </div>
     );

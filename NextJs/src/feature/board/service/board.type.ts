@@ -4,6 +4,7 @@ export interface Board {
     id: string;
     name: string;
     createdAt: Date;
+    description : string;
     cycle?: Cycle[];
     tasks?: Task[];
 }

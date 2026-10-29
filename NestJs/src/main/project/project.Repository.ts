@@ -20,7 +20,7 @@ export class projectRepository {
           data: {
             projectId: project.id,
             userId: BigInt(userId),
-            role: 'ADMIN',
+            role: 'OWNER',
             permissionId: 3, // Assuming 3 is the ID for the default permission
           },
         });
@@ -52,9 +52,10 @@ export class projectRepository {
             uuid: true,
             name: true,
             createdAt: true,
+            description: true,
             members: {
               where: {
-                role: 'ADMIN',
+                role: 'OWNER',
               },
               take: 1,
               select: {
@@ -83,6 +84,7 @@ export class projectRepository {
             uuid: membership.project.uuid,
             name: membership.project.name,
             createdAt: membership.project.createdAt,
+            description: membership.project.description,
             _count: membership.project._count,
           },
           owner: {
@@ -91,7 +93,7 @@ export class projectRepository {
           },
         };
 
-        if (membership.role === 'ADMIN') {
+        if (membership.role === 'OWNER') {
           result.yourOwn.push(item);
         } else {
           result.yourMem.push(item);
@@ -129,7 +131,7 @@ export class projectRepository {
             id: true,
             title: true,
             createdAt: true,
-            updatedAt: true,
+            description: true,
             _count: {
               select: {
                 cycles: true,

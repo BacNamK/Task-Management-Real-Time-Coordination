@@ -1,7 +1,7 @@
 import { UserType } from '../feature/user/service/user.type';
 import { getServiceToken } from './tokenServer.auth';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.NEXT_PRIVATE_API_URL;
 const AUTH_API_URL = `${BASE_URL}/auth/users`;
 
 async function authHeaders(): Promise<HeadersInit> {

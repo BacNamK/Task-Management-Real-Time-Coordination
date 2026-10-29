@@ -4,6 +4,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@keyframes rotate-and-pause {
+  0% {
+    transform: rotate(0deg);
+  }
+  23.077% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-rotate-repeat {
+  animation: rotate-and-pause 2.6s cubic-bezier(0.2, 0.4, 0.6, 1) infinite;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -29,6 +29,8 @@ export type AggregateTask = {
 export type TaskAvgAggregateOutputType = {
   id: number | null
   position: number | null
+  priority: number | null
+  censorId: number | null
   creatorId: number | null
   cycleId: number | null
   boardId: number | null
@@ -37,6 +39,8 @@ export type TaskAvgAggregateOutputType = {
 export type TaskSumAggregateOutputType = {
   id: bigint | null
   position: number | null
+  priority: number | null
+  censorId: bigint | null
   creatorId: bigint | null
   cycleId: bigint | null
   boardId: bigint | null
@@ -47,6 +51,8 @@ export type TaskMinAggregateOutputType = {
   title: string | null
   position: number | null
   description: string | null
+  priority: number | null
+  censorId: bigint | null
   createdAt: Date | null
   dueDate: Date | null
   updatedAt: Date | null
@@ -60,6 +66,8 @@ export type TaskMaxAggregateOutputType = {
   title: string | null
   position: number | null
   description: string | null
+  priority: number | null
+  censorId: bigint | null
   createdAt: Date | null
   dueDate: Date | null
   updatedAt: Date | null
@@ -73,6 +81,8 @@ export type TaskCountAggregateOutputType = {
   title: number
   position: number
   description: number
+  priority: number
+  censorId: number
   createdAt: number
   dueDate: number
   updatedAt: number
@@ -86,6 +96,8 @@ export type TaskCountAggregateOutputType = {
 export type TaskAvgAggregateInputType = {
   id?: true
   position?: true
+  priority?: true
+  censorId?: true
   creatorId?: true
   cycleId?: true
   boardId?: true
@@ -94,6 +106,8 @@ export type TaskAvgAggregateInputType = {
 export type TaskSumAggregateInputType = {
   id?: true
   position?: true
+  priority?: true
+  censorId?: true
   creatorId?: true
   cycleId?: true
   boardId?: true
@@ -104,6 +118,8 @@ export type TaskMinAggregateInputType = {
   title?: true
   position?: true
   description?: true
+  priority?: true
+  censorId?: true
   createdAt?: true
   dueDate?: true
   updatedAt?: true
@@ -117,6 +133,8 @@ export type TaskMaxAggregateInputType = {
   title?: true
   position?: true
   description?: true
+  priority?: true
+  censorId?: true
   createdAt?: true
   dueDate?: true
   updatedAt?: true
@@ -130,6 +148,8 @@ export type TaskCountAggregateInputType = {
   title?: true
   position?: true
   description?: true
+  priority?: true
+  censorId?: true
   createdAt?: true
   dueDate?: true
   updatedAt?: true
@@ -230,6 +250,8 @@ export type TaskGroupByOutputType = {
   title: string
   position: number
   description: string | null
+  priority: number
+  censorId: bigint | null
   createdAt: Date
   dueDate: Date | null
   updatedAt: Date | null
@@ -266,6 +288,8 @@ export type TaskWhereInput = {
   title?: Prisma.StringFilter<"Task"> | string
   position?: Prisma.IntFilter<"Task"> | number
   description?: Prisma.StringNullableFilter<"Task"> | string | null
+  priority?: Prisma.IntFilter<"Task"> | number
+  censorId?: Prisma.BigIntNullableFilter<"Task"> | bigint | number | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   updatedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
@@ -274,9 +298,12 @@ export type TaskWhereInput = {
   boardId?: Prisma.BigIntFilter<"Task"> | bigint | number
   assigneeds?: Prisma.AssigneedsListRelationFilter
   files?: Prisma.FilesListRelationFilter
+  comments?: Prisma.CommentsListRelationFilter
+  tags?: Prisma.TagsListRelationFilter
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   cycle?: Prisma.XOR<Prisma.CycleNullableScalarRelationFilter, Prisma.CycleWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type TaskOrderByWithRelationInput = {
@@ -284,6 +311,8 @@ export type TaskOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,9 +321,12 @@ export type TaskOrderByWithRelationInput = {
   boardId?: Prisma.SortOrder
   assigneeds?: Prisma.AssigneedsOrderByRelationAggregateInput
   files?: Prisma.FilesOrderByRelationAggregateInput
+  comments?: Prisma.CommentsOrderByRelationAggregateInput
+  tags?: Prisma.TagsOrderByRelationAggregateInput
   board?: Prisma.BoardOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
   cycle?: Prisma.CycleOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +337,8 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Task"> | string
   position?: Prisma.IntFilter<"Task"> | number
   description?: Prisma.StringNullableFilter<"Task"> | string | null
+  priority?: Prisma.IntFilter<"Task"> | number
+  censorId?: Prisma.BigIntNullableFilter<"Task"> | bigint | number | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   updatedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
@@ -313,9 +347,12 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   boardId?: Prisma.BigIntFilter<"Task"> | bigint | number
   assigneeds?: Prisma.AssigneedsListRelationFilter
   files?: Prisma.FilesListRelationFilter
+  comments?: Prisma.CommentsListRelationFilter
+  tags?: Prisma.TagsListRelationFilter
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   cycle?: Prisma.XOR<Prisma.CycleNullableScalarRelationFilter, Prisma.CycleWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type TaskOrderByWithAggregationInput = {
@@ -323,6 +360,8 @@ export type TaskOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,6 +383,8 @@ export type TaskScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Task"> | string
   position?: Prisma.IntWithAggregatesFilter<"Task"> | number
   description?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
+  priority?: Prisma.IntWithAggregatesFilter<"Task"> | number
+  censorId?: Prisma.BigIntNullableWithAggregatesFilter<"Task"> | bigint | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
   updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
@@ -357,14 +398,18 @@ export type TaskCreateInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
   cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateInput = {
@@ -372,6 +417,8 @@ export type TaskUncheckedCreateInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -380,6 +427,8 @@ export type TaskUncheckedCreateInput = {
   boardId: bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUpdateInput = {
@@ -387,14 +436,18 @@ export type TaskUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
   cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateInput = {
@@ -402,6 +455,8 @@ export type TaskUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -410,6 +465,8 @@ export type TaskUncheckedUpdateInput = {
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateManyInput = {
@@ -417,6 +474,8 @@ export type TaskCreateManyInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -430,6 +489,7 @@ export type TaskUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -440,6 +500,8 @@ export type TaskUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -463,6 +525,8 @@ export type TaskCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -474,6 +538,8 @@ export type TaskCountOrderByAggregateInput = {
 export type TaskAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   cycleId?: Prisma.SortOrder
   boardId?: Prisma.SortOrder
@@ -484,6 +550,8 @@ export type TaskMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -497,6 +565,8 @@ export type TaskMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -508,6 +578,8 @@ export type TaskMinOrderByAggregateInput = {
 export type TaskSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  censorId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   cycleId?: Prisma.SortOrder
   boardId?: Prisma.SortOrder
@@ -525,10 +597,24 @@ export type TaskCreateNestedManyWithoutCreatorInput = {
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
 }
 
+export type TaskCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput> | Prisma.TaskCreateWithoutUserInput[] | Prisma.TaskUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutUserInput | Prisma.TaskCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.TaskCreateManyUserInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
 export type TaskUncheckedCreateNestedManyWithoutCreatorInput = {
   create?: Prisma.XOR<Prisma.TaskCreateWithoutCreatorInput, Prisma.TaskUncheckedCreateWithoutCreatorInput> | Prisma.TaskCreateWithoutCreatorInput[] | Prisma.TaskUncheckedCreateWithoutCreatorInput[]
   connectOrCreate?: Prisma.TaskCreateOrConnectWithoutCreatorInput | Prisma.TaskCreateOrConnectWithoutCreatorInput[]
   createMany?: Prisma.TaskCreateManyCreatorInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
+export type TaskUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput> | Prisma.TaskCreateWithoutUserInput[] | Prisma.TaskUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutUserInput | Prisma.TaskCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.TaskCreateManyUserInputEnvelope
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
 }
 
@@ -546,6 +632,20 @@ export type TaskUpdateManyWithoutCreatorNestedInput = {
   deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
 }
 
+export type TaskUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput> | Prisma.TaskCreateWithoutUserInput[] | Prisma.TaskUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutUserInput | Prisma.TaskCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutUserInput | Prisma.TaskUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.TaskCreateManyUserInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutUserInput | Prisma.TaskUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutUserInput | Prisma.TaskUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
 export type TaskUncheckedUpdateManyWithoutCreatorNestedInput = {
   create?: Prisma.XOR<Prisma.TaskCreateWithoutCreatorInput, Prisma.TaskUncheckedCreateWithoutCreatorInput> | Prisma.TaskCreateWithoutCreatorInput[] | Prisma.TaskUncheckedCreateWithoutCreatorInput[]
   connectOrCreate?: Prisma.TaskCreateOrConnectWithoutCreatorInput | Prisma.TaskCreateOrConnectWithoutCreatorInput[]
@@ -557,6 +657,20 @@ export type TaskUncheckedUpdateManyWithoutCreatorNestedInput = {
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
   update?: Prisma.TaskUpdateWithWhereUniqueWithoutCreatorInput | Prisma.TaskUpdateWithWhereUniqueWithoutCreatorInput[]
   updateMany?: Prisma.TaskUpdateManyWithWhereWithoutCreatorInput | Prisma.TaskUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
+export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput> | Prisma.TaskCreateWithoutUserInput[] | Prisma.TaskUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutUserInput | Prisma.TaskCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutUserInput | Prisma.TaskUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.TaskCreateManyUserInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutUserInput | Prisma.TaskUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutUserInput | Prisma.TaskUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
 }
 
@@ -652,6 +766,34 @@ export type NullableBigIntFieldUpdateOperationsInput = {
   divide?: bigint | number
 }
 
+export type TaskCreateNestedOneWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutTagsInput, Prisma.TaskUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutTagsInput
+  connect?: Prisma.TaskWhereUniqueInput
+}
+
+export type TaskUpdateOneRequiredWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutTagsInput, Prisma.TaskUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutTagsInput
+  upsert?: Prisma.TaskUpsertWithoutTagsInput
+  connect?: Prisma.TaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutTagsInput, Prisma.TaskUpdateWithoutTagsInput>, Prisma.TaskUncheckedUpdateWithoutTagsInput>
+}
+
+export type TaskCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutCommentsInput, Prisma.TaskUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.TaskWhereUniqueInput
+}
+
+export type TaskUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutCommentsInput, Prisma.TaskUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.TaskUpsertWithoutCommentsInput
+  connect?: Prisma.TaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutCommentsInput, Prisma.TaskUpdateWithoutCommentsInput>, Prisma.TaskUncheckedUpdateWithoutCommentsInput>
+}
+
 export type TaskCreateNestedOneWithoutFilesInput = {
   create?: Prisma.XOR<Prisma.TaskCreateWithoutFilesInput, Prisma.TaskUncheckedCreateWithoutFilesInput>
   connectOrCreate?: Prisma.TaskCreateOrConnectWithoutFilesInput
@@ -685,13 +827,17 @@ export type TaskCreateWithoutCreatorInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
   cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutCreatorInput = {
@@ -699,6 +845,8 @@ export type TaskUncheckedCreateWithoutCreatorInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -706,6 +854,8 @@ export type TaskUncheckedCreateWithoutCreatorInput = {
   boardId: bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutCreatorInput = {
@@ -715,6 +865,52 @@ export type TaskCreateOrConnectWithoutCreatorInput = {
 
 export type TaskCreateManyCreatorInputEnvelope = {
   data: Prisma.TaskCreateManyCreatorInput | Prisma.TaskCreateManyCreatorInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskCreateWithoutUserInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
+  board: Prisma.BoardCreateNestedOneWithoutTasksInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
+  cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+}
+
+export type TaskUncheckedCreateWithoutUserInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  creatorId: bigint | number
+  cycleId?: bigint | number | null
+  boardId: bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type TaskCreateOrConnectWithoutUserInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput>
+}
+
+export type TaskCreateManyUserInputEnvelope = {
+  data: Prisma.TaskCreateManyUserInput | Prisma.TaskCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
@@ -742,6 +938,8 @@ export type TaskScalarWhereInput = {
   title?: Prisma.StringFilter<"Task"> | string
   position?: Prisma.IntFilter<"Task"> | number
   description?: Prisma.StringNullableFilter<"Task"> | string | null
+  priority?: Prisma.IntFilter<"Task"> | number
+  censorId?: Prisma.BigIntNullableFilter<"Task"> | bigint | number | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   updatedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
@@ -750,18 +948,38 @@ export type TaskScalarWhereInput = {
   boardId?: Prisma.BigIntFilter<"Task"> | bigint | number
 }
 
+export type TaskUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.TaskWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutUserInput, Prisma.TaskUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutUserInput, Prisma.TaskUncheckedCreateWithoutUserInput>
+}
+
+export type TaskUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.TaskWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutUserInput, Prisma.TaskUncheckedUpdateWithoutUserInput>
+}
+
+export type TaskUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.TaskScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutUserInput>
+}
+
 export type TaskCreateWithoutBoardInput = {
   id?: bigint | number
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
   cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutBoardInput = {
@@ -769,6 +987,8 @@ export type TaskUncheckedCreateWithoutBoardInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -776,6 +996,8 @@ export type TaskUncheckedCreateWithoutBoardInput = {
   cycleId?: bigint | number | null
   assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutBoardInput = {
@@ -809,13 +1031,17 @@ export type TaskCreateWithoutCycleInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutCycleInput = {
@@ -823,6 +1049,8 @@ export type TaskUncheckedCreateWithoutCycleInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -830,6 +1058,8 @@ export type TaskUncheckedCreateWithoutCycleInput = {
   boardId: bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
   files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutCycleInput = {
@@ -858,25 +1088,31 @@ export type TaskUpdateManyWithWhereWithoutCycleInput = {
   data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutCycleInput>
 }
 
-export type TaskCreateWithoutFilesInput = {
+export type TaskCreateWithoutTagsInput = {
   id?: bigint | number
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
   cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
-export type TaskUncheckedCreateWithoutFilesInput = {
+export type TaskUncheckedCreateWithoutTagsInput = {
   id?: bigint | number
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -884,6 +1120,184 @@ export type TaskUncheckedCreateWithoutFilesInput = {
   cycleId?: bigint | number | null
   boardId: bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type TaskCreateOrConnectWithoutTagsInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutTagsInput, Prisma.TaskUncheckedCreateWithoutTagsInput>
+}
+
+export type TaskUpsertWithoutTagsInput = {
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutTagsInput, Prisma.TaskUncheckedUpdateWithoutTagsInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutTagsInput, Prisma.TaskUncheckedCreateWithoutTagsInput>
+  where?: Prisma.TaskWhereInput
+}
+
+export type TaskUpdateToOneWithWhereWithoutTagsInput = {
+  where?: Prisma.TaskWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutTagsInput, Prisma.TaskUncheckedUpdateWithoutTagsInput>
+}
+
+export type TaskUpdateWithoutTagsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
+  cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutTagsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  creatorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskCreateWithoutCommentsInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
+  board: Prisma.BoardCreateNestedOneWithoutTasksInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
+  cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
+}
+
+export type TaskUncheckedCreateWithoutCommentsInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  creatorId: bigint | number
+  cycleId?: bigint | number | null
+  boardId: bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
+  files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type TaskCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutCommentsInput, Prisma.TaskUncheckedCreateWithoutCommentsInput>
+}
+
+export type TaskUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutCommentsInput, Prisma.TaskUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutCommentsInput, Prisma.TaskUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.TaskWhereInput
+}
+
+export type TaskUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.TaskWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutCommentsInput, Prisma.TaskUncheckedUpdateWithoutCommentsInput>
+}
+
+export type TaskUpdateWithoutCommentsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
+  board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
+  cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  creatorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskCreateWithoutFilesInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  assigneeds?: Prisma.AssigneedsCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
+  board: Prisma.BoardCreateNestedOneWithoutTasksInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
+  cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
+}
+
+export type TaskUncheckedCreateWithoutFilesInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  creatorId: bigint | number
+  cycleId?: bigint | number | null
+  boardId: bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutFilesInput = {
@@ -907,13 +1321,17 @@ export type TaskUpdateWithoutFilesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
   cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutFilesInput = {
@@ -921,6 +1339,8 @@ export type TaskUncheckedUpdateWithoutFilesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -928,6 +1348,8 @@ export type TaskUncheckedUpdateWithoutFilesInput = {
   cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutAssigneedsInput = {
@@ -935,13 +1357,17 @@ export type TaskCreateWithoutAssigneedsInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
   files?: Prisma.FilesCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsCreateNestedManyWithoutTaskInput
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
   cycle?: Prisma.CycleCreateNestedOneWithoutTasksInput
+  user?: Prisma.UserCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutAssigneedsInput = {
@@ -949,6 +1375,8 @@ export type TaskUncheckedCreateWithoutAssigneedsInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -956,6 +1384,8 @@ export type TaskUncheckedCreateWithoutAssigneedsInput = {
   cycleId?: bigint | number | null
   boardId: bigint | number
   files?: Prisma.FilesUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutTaskInput
+  tags?: Prisma.TagsUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutAssigneedsInput = {
@@ -979,13 +1409,17 @@ export type TaskUpdateWithoutAssigneedsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
   cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutAssigneedsInput = {
@@ -993,6 +1427,8 @@ export type TaskUncheckedUpdateWithoutAssigneedsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1000,6 +1436,8 @@ export type TaskUncheckedUpdateWithoutAssigneedsInput = {
   cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateManyCreatorInput = {
@@ -1007,9 +1445,25 @@ export type TaskCreateManyCreatorInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
+  cycleId?: bigint | number | null
+  boardId: bigint | number
+}
+
+export type TaskCreateManyUserInput = {
+  id?: bigint | number
+  title: string
+  position: number
+  description?: string | null
+  priority?: number
+  createdAt?: Date | string
+  dueDate?: Date | string | null
+  updatedAt?: Date | string | null
+  creatorId: bigint | number
   cycleId?: bigint | number | null
   boardId: bigint | number
 }
@@ -1019,13 +1473,17 @@ export type TaskUpdateWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
   cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutCreatorInput = {
@@ -1033,6 +1491,8 @@ export type TaskUncheckedUpdateWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1040,6 +1500,8 @@ export type TaskUncheckedUpdateWithoutCreatorInput = {
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutCreatorInput = {
@@ -1047,9 +1509,61 @@ export type TaskUncheckedUpdateManyWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+}
+
+export type TaskUpdateWithoutUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
+  board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
+  cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  creatorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
+  files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  creatorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
@@ -1059,6 +1573,8 @@ export type TaskCreateManyBoardInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -1071,13 +1587,17 @@ export type TaskUpdateWithoutBoardInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
   cycle?: Prisma.CycleUpdateOneWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutBoardInput = {
@@ -1085,6 +1605,8 @@ export type TaskUncheckedUpdateWithoutBoardInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1092,6 +1614,8 @@ export type TaskUncheckedUpdateWithoutBoardInput = {
   cycleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutBoardInput = {
@@ -1099,6 +1623,8 @@ export type TaskUncheckedUpdateManyWithoutBoardInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1111,6 +1637,8 @@ export type TaskCreateManyCycleInput = {
   title: string
   position: number
   description?: string | null
+  priority?: number
+  censorId?: bigint | number | null
   createdAt?: Date | string
   dueDate?: Date | string | null
   updatedAt?: Date | string | null
@@ -1123,13 +1651,17 @@ export type TaskUpdateWithoutCycleInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assigneeds?: Prisma.AssigneedsUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUpdateManyWithoutTaskNestedInput
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
+  user?: Prisma.UserUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutCycleInput = {
@@ -1137,6 +1669,8 @@ export type TaskUncheckedUpdateWithoutCycleInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1144,6 +1678,8 @@ export type TaskUncheckedUpdateWithoutCycleInput = {
   boardId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   assigneeds?: Prisma.AssigneedsUncheckedUpdateManyWithoutTaskNestedInput
   files?: Prisma.FilesUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutTaskNestedInput
+  tags?: Prisma.TagsUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutCycleInput = {
@@ -1151,6 +1687,8 @@ export type TaskUncheckedUpdateManyWithoutCycleInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  censorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1166,11 +1704,15 @@ export type TaskUncheckedUpdateManyWithoutCycleInput = {
 export type TaskCountOutputType = {
   assigneeds: number
   files: number
+  comments: number
+  tags: number
 }
 
 export type TaskCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assigneeds?: boolean | TaskCountOutputTypeCountAssigneedsArgs
   files?: boolean | TaskCountOutputTypeCountFilesArgs
+  comments?: boolean | TaskCountOutputTypeCountCommentsArgs
+  tags?: boolean | TaskCountOutputTypeCountTagsArgs
 }
 
 /**
@@ -1197,12 +1739,28 @@ export type TaskCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.FilesWhereInput
 }
 
+/**
+ * TaskCountOutputType without action
+ */
+export type TaskCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentsWhereInput
+}
+
+/**
+ * TaskCountOutputType without action
+ */
+export type TaskCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TagsWhereInput
+}
+
 
 export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   position?: boolean
   description?: boolean
+  priority?: boolean
+  censorId?: boolean
   createdAt?: boolean
   dueDate?: boolean
   updatedAt?: boolean
@@ -1211,9 +1769,12 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   boardId?: boolean
   assigneeds?: boolean | Prisma.Task$assigneedsArgs<ExtArgs>
   files?: boolean | Prisma.Task$filesArgs<ExtArgs>
+  comments?: boolean | Prisma.Task$commentsArgs<ExtArgs>
+  tags?: boolean | Prisma.Task$tagsArgs<ExtArgs>
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
@@ -1222,6 +1783,8 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   position?: boolean
   description?: boolean
+  priority?: boolean
+  censorId?: boolean
   createdAt?: boolean
   dueDate?: boolean
   updatedAt?: boolean
@@ -1231,6 +1794,7 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1238,6 +1802,8 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   position?: boolean
   description?: boolean
+  priority?: boolean
+  censorId?: boolean
   createdAt?: boolean
   dueDate?: boolean
   updatedAt?: boolean
@@ -1247,6 +1813,7 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectScalar = {
@@ -1254,6 +1821,8 @@ export type TaskSelectScalar = {
   title?: boolean
   position?: boolean
   description?: boolean
+  priority?: boolean
+  censorId?: boolean
   createdAt?: boolean
   dueDate?: boolean
   updatedAt?: boolean
@@ -1262,24 +1831,29 @@ export type TaskSelectScalar = {
   boardId?: boolean
 }
 
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "position" | "description" | "createdAt" | "dueDate" | "updatedAt" | "creatorId" | "cycleId" | "boardId", ExtArgs["result"]["task"]>
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "position" | "description" | "priority" | "censorId" | "createdAt" | "dueDate" | "updatedAt" | "creatorId" | "cycleId" | "boardId", ExtArgs["result"]["task"]>
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assigneeds?: boolean | Prisma.Task$assigneedsArgs<ExtArgs>
   files?: boolean | Prisma.Task$filesArgs<ExtArgs>
+  comments?: boolean | Prisma.Task$commentsArgs<ExtArgs>
+  tags?: boolean | Prisma.Task$tagsArgs<ExtArgs>
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
 }
 export type TaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   cycle?: boolean | Prisma.Task$cycleArgs<ExtArgs>
+  user?: boolean | Prisma.Task$userArgs<ExtArgs>
 }
 
 export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1287,15 +1861,20 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     assigneeds: Prisma.$AssigneedsPayload<ExtArgs>[]
     files: Prisma.$FilesPayload<ExtArgs>[]
+    comments: Prisma.$CommentsPayload<ExtArgs>[]
+    tags: Prisma.$TagsPayload<ExtArgs>[]
     board: Prisma.$BoardPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs>
     cycle: Prisma.$CyclePayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
     title: string
     position: number
     description: string | null
+    priority: number
+    censorId: bigint | null
     createdAt: Date
     dueDate: Date | null
     updatedAt: Date | null
@@ -1698,9 +2277,12 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   assigneeds<T extends Prisma.Task$assigneedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$assigneedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssigneedsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   files<T extends Prisma.Task$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comments<T extends Prisma.Task$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tags<T extends Prisma.Task$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   board<T extends Prisma.BoardDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardClient<runtime.Types.Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   cycle<T extends Prisma.Task$cycleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$cycleArgs<ExtArgs>>): Prisma.Prisma__CycleClient<runtime.Types.Result.GetResult<Prisma.$CyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Task$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1734,6 +2316,8 @@ export interface TaskFieldRefs {
   readonly title: Prisma.FieldRef<"Task", 'String'>
   readonly position: Prisma.FieldRef<"Task", 'Int'>
   readonly description: Prisma.FieldRef<"Task", 'String'>
+  readonly priority: Prisma.FieldRef<"Task", 'Int'>
+  readonly censorId: Prisma.FieldRef<"Task", 'BigInt'>
   readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly dueDate: Prisma.FieldRef<"Task", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Task", 'DateTime'>
@@ -2189,6 +2773,54 @@ export type Task$filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }
 
 /**
+ * Task.comments
+ */
+export type Task$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comments
+   */
+  select?: Prisma.CommentsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comments
+   */
+  omit?: Prisma.CommentsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentsInclude<ExtArgs> | null
+  where?: Prisma.CommentsWhereInput
+  orderBy?: Prisma.CommentsOrderByWithRelationInput | Prisma.CommentsOrderByWithRelationInput[]
+  cursor?: Prisma.CommentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentsScalarFieldEnum | Prisma.CommentsScalarFieldEnum[]
+}
+
+/**
+ * Task.tags
+ */
+export type Task$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Tags
+   */
+  select?: Prisma.TagsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Tags
+   */
+  omit?: Prisma.TagsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagsInclude<ExtArgs> | null
+  where?: Prisma.TagsWhereInput
+  orderBy?: Prisma.TagsOrderByWithRelationInput | Prisma.TagsOrderByWithRelationInput[]
+  cursor?: Prisma.TagsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TagsScalarFieldEnum | Prisma.TagsScalarFieldEnum[]
+}
+
+/**
  * Task.cycle
  */
 export type Task$cycleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2205,6 +2837,25 @@ export type Task$cycleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   include?: Prisma.CycleInclude<ExtArgs> | null
   where?: Prisma.CycleWhereInput
+}
+
+/**
+ * Task.user
+ */
+export type Task$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

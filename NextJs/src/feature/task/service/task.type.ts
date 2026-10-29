@@ -1,3 +1,5 @@
+import { UserType } from '../../user/service/user.type';
+
 export interface TaskAssignee {
     id: string;
     user: {
@@ -7,11 +9,15 @@ export interface TaskAssignee {
     };
 }
 
+type User = Pick<UserType, 'id' | 'name' | 'avatar'>;
+
 export interface Task {
     id: string;
     title: string;
     position: number;
     description?: string;
+    priority: number;
+    censor: User;
     cycleId: string | null;
     boardId: string;
     creatorId: string;

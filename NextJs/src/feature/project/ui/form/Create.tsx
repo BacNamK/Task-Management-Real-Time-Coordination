@@ -85,10 +85,10 @@ export const FormCreate = ({ onCreate }: { onCreate: (project: project) => void 
                 <button
                     type="button"
                     onClick={() => setIsOpen(true)}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex h-10 items-center justify-center gap-2 px-4 text-md font-medium transition"
                 >
                     <Plus aria-hidden="true" size={17} />
-                    New project
+                    New
                 </button>
             )}
         </div>

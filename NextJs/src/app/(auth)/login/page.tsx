@@ -9,7 +9,7 @@ export default async function LoginPage() {
 
     // Nếu đã đăng nhập, hiển thị thông tin User
     if (session?.user) {
-        redirect('/home');
+        redirect('/mytasks');
     }
 
     // Nếu chưa đăng nhập, hiển thị nút Đăng nhập bằng Google
