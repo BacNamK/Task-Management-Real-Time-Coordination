@@ -9,6 +9,16 @@ type RequestOptions = Omit<RequestInit, 'body'> & {
     body?: unknown;
 };
 
+export class ApiError extends Error {
+    constructor(
+        message: string,
+        public readonly status: number
+    ) {
+        super(message);
+        this.name = 'ApiError';
+    }
+}
+
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
     const { body, headers, ...rest } = options;
     const session = await getSessionUser();
@@ -31,7 +41,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
 
     if (!response.ok) {
         const error = await response.json().catch(() => null);
-        throw new Error(error?.message ?? `HTTP Error: ${response.status}`);
+        throw new ApiError(error?.message ?? `HTTP Error: ${response.status}`, response.status);
     }
 
     if (response.status === 204) {

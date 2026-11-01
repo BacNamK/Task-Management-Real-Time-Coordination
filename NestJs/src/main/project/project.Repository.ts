@@ -105,6 +105,10 @@ export class projectRepository {
         uuid: uuid,
       },
       select: {
+        uuid: true,
+        name: true,
+        createdAt: true,
+        description: true,
         members: {
           select: {
             role: true,
@@ -142,9 +146,13 @@ export class projectRepository {
       },
     });
 
-    if (!result) return { message: 'NOT_FOUND' };
+    if (!result) return null;
 
     return {
+      uuid: result.uuid,
+      name: result.name,
+      createdAt: result.createdAt,
+      description: result.description,
       boards: result.boards.map((board) => ({
         ...board,
         id: board.id.toString(),

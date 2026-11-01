@@ -2,7 +2,7 @@ export interface project {
     uuid: string;
     name: string;
     createdAt: Date;
-    description: string;
+    description: string | null;
     chatRooms: any;
     _count?: { members: number; boards: number };
 }

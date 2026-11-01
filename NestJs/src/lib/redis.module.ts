@@ -8,7 +8,7 @@ import KeyvRedis from '@keyv/redis';
       stores: [
         new KeyvRedis(process.env.REDIS_URL ?? 'redis://localhost:6379'),
       ],
-      ttl: 60_000,
+      ttl: 120_000,
     }),
   ],
   exports: [CacheModule],

@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
-import { MessageCircle, Send } from 'lucide-react';
+import { useContext, useEffect, useState, type FormEvent } from 'react';
+import { Send } from 'lucide-react';
+import { AuthContext } from '../../../components/context/ContextProvide';
 import { useSocket } from '../../../lib/socket/socketConText';
 import { type RoomType } from '../service/chat.type';
-
+import Image from 'next/image';
 type ChatMessage = {
-    id: number;
+    id: any;
     text: string;
     time: string;
+    sender: any;
 };
 
 const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
@@ -16,6 +18,8 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [room, setRoom] = useState<RoomType | undefined>(chatRooms[0]);
     const socket = useSocket();
+    const user = useContext(AuthContext);
+    const currentUser = user;
 
     useEffect(() => {
         if (!socket || !room) return;
@@ -31,8 +35,9 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
         setMessages((current) => [
             ...current,
             {
-                id: Date.now(),
+                id: currentUser.id,
                 text,
+                sender: currentUser,
                 time: new Intl.DateTimeFormat(undefined, {
                     hour: 'numeric',
                     minute: '2-digit',
@@ -52,12 +57,14 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
     useEffect(() => {
         if (!socket) return;
 
-        const onChat = (data: { content: string; createAt: string }) => {
+        const onChat = (data: { content: string; createAt: string; sender: any }) => {
+            console.log(data);
             setMessages((current) => [
                 ...current,
                 {
-                    id: Date.now(),
+                    id: data.sender.id,
                     text: data.content,
+                    sender: data.sender,
                     time: new Intl.DateTimeFormat(undefined, {
                         hour: 'numeric',
                         minute: '2-digit',
@@ -80,37 +87,40 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
                     aria-live="polite"
                     aria-label="Chat messages"
                 >
-                    {messages.length === 0 ? (
-                        <div className="m-auto flex max-w-xs flex-col items-center px-4 py-10 text-center">
-                            <div className="flex size-12 items-center justify-center rounded-2xl bg-white text-indigo-500 shadow-sm ring-1 ring-slate-100">
-                                <MessageCircle size={22} aria-hidden="true" />
-                            </div>
-                            <h3 className="mt-4 text-sm font-semibold text-slate-800">
-                                Start the conversation
-                            </h3>
-                            <p className="mt-1.5 text-sm leading-5 text-slate-500">
-                                Share an update, ask a question, or say hello to your team.
-                            </p>
-                        </div>
-                    ) : (
-                        messages.map((item) => (
-                            <article key={item.id} className="flex justify-end">
-                                <div className="max-w-[85%] sm:max-w-[70%]">
-                                    <div className="mb-1 flex items-center justify-end gap-2 px-1">
-                                        <time className="text-[11px] text-slate-400">
+                    {messages.map((item, index: number) => (
+                        <div key={index} className="flex w-full">
+                            {String(item.id) === currentUser.id ? (
+                                <div className="flex w-full items-end justify-end gap-2">
+                                    <div className="max-w-[75%] text-right">
+                                        <span className="mb-1 block text-xs text-slate-400">
                                             {item.time}
-                                        </time>
-                                        <span className="text-xs font-medium text-slate-600">
-                                            You
                                         </span>
+                                        <p className="whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-indigo-600 px-4 py-2.5 text-left text-sm leading-5 text-white shadow-sm">
+                                            {item.text}
+                                        </p>
                                     </div>
-                                    <p className="whitespace-pre-wrap wrap-break-word rounded-2xl rounded-tr-md bg-indigo-600 px-4 py-2.5 text-sm leading-5 text-white shadow-sm">
-                                        {item.text}
-                                    </p>
                                 </div>
-                            </article>
-                        ))
-                    )}
+                            ) : (
+                                <div className="flex w-full items-end justify-start gap-2">
+                                    <Image
+                                        src={item.sender.avatar}
+                                        height={32}
+                                        width={32}
+                                        alt=""
+                                        className="shrink-0 rounded-full object-cover"
+                                    ></Image>
+                                    <div className="max-w-[75%]">
+                                        <span className="mb-1 block text-xs text-slate-400">
+                                            {item.time}
+                                        </span>
+                                        <p className="whitespace-pre-wrap break-words rounded-2xl rounded-bl-md bg-white px-4 py-2.5 text-sm leading-5 text-slate-700 shadow-sm ring-1 ring-slate-200">
+                                            {item.text}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
 
                 <form onSubmit={sendMessage} className="shrink-0 p-3 sm:p-4">

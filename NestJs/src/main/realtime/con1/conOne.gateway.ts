@@ -17,6 +17,8 @@ import type {
 } from './conOnce.types.js';
 import { ChatService } from './chat/chat.service.js';
 import { WsAuthGuard } from '../../../auth/ws.auth.guard.js';
+import { Inject } from '@nestjs/common';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 // kết nối 1 sử lí các sự kiện thông báo,trực tuyến,tin nhắn,gọi
 
@@ -33,8 +35,8 @@ export class ConnectionOne
   constructor(
     private readonly ChatService: ChatService,
     private readonly wsAuthGuard: WsAuthGuard,
+    @Inject(CACHE_MANAGER) private CaheManage: Cache,
   ) {}
-
   @WebSocketServer()
   server: Namespace;
 
@@ -43,12 +45,20 @@ export class ConnectionOne
     console.log('WebSocket Gateway Initialized');
   }
 
-  handleConnection(client: Socket) {
+  async handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
+
+    await this.refreshPresence(client);
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
+    await this.CaheManage.del(this.getPresenceKey(client));
+  }
+
+  @SubscribeMessage('heartbeat')
+  async handleHeartbeat(@ConnectedSocket() client: Socket) {
+    await this.refreshPresence(client);
   }
 
   @SubscribeMessage('notification')
@@ -90,15 +100,23 @@ export class ConnectionOne
 
     const message: MessageSendType = {
       ...data,
-      senderId: BigInt(userId),
-    };
-    await this.ChatService.sendMessage(message);
-
-    const emittedMessage: MessageEmit = {
-      ...data,
       senderId: userId,
-      createAt: new Date().toISOString(),
     };
+    const emittedMessage = await this.ChatService.sendMessage(message);
+
     client.to(data.roomUuid).emit('chats', emittedMessage);
+  }
+
+  private async refreshPresence(client: Socket): Promise<void> {
+    await this.CaheManage.set(this.getPresenceKey(client), true, 120_000);
+  }
+
+  private getPresenceKey(client: Socket): string {
+    const userId: unknown = client.data.user?.userId;
+    if (typeof userId !== 'string' || userId.length === 0) {
+      throw new WsException('USER_ID_NOT_FOUND');
+    }
+
+    return `presence:${userId}:${client.id}`;
   }
 }

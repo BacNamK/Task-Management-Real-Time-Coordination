@@ -6,8 +6,6 @@ import { io, Socket } from 'socket.io-client';
 
 const SocketContext = createContext<Socket | null>(null);
 
-
-
 export const SocketProvider = ({
     children,
     enabled,
@@ -15,7 +13,9 @@ export const SocketProvider = ({
     children: React.ReactNode;
     enabled: boolean;
 }) => {
-    const [socketState, setSocketState] = useState<{ enabled: boolean; socket: Socket } | null>(null);
+    const [socketState, setSocketState] = useState<{ enabled: boolean; socket: Socket } | null>(
+        null
+    );
 
     useEffect(() => {
         if (!enabled) {
@@ -31,7 +31,9 @@ export const SocketProvider = ({
                     void fetch('/api/socket/token', { cache: 'no-store' })
                         .then(async (response) => {
                             if (!response.ok) {
-                                throw new Error(`Failed to obtain socket token: ${response.status}`);
+                                throw new Error(
+                                    `Failed to obtain socket token: ${response.status}`
+                                );
                             }
 
                             const payload: { token?: unknown } = await response.json();
@@ -50,7 +52,7 @@ export const SocketProvider = ({
                             }
                         });
                 },
-            },
+            }
         );
         socketInstance.on('connect_error', (error) => {
             console.error('WebSocket connection failed:', error.message);
@@ -67,6 +69,27 @@ export const SocketProvider = ({
     }, [enabled]);
 
     const socket = socketState?.enabled === enabled && enabled ? socketState.socket : null;
+
+    useEffect(() => {
+        if (!socket) {
+            return;
+        }
+
+        const sendHeartbeat = () => {
+            if (socket.connected) {
+                socket.emit('heartbeat');
+            }
+        };
+
+        socket.on('connect', sendHeartbeat);
+        const heartbeatTimer = window.setInterval(sendHeartbeat, 60_000);
+        sendHeartbeat();
+
+        return () => {
+            socket.off('connect', sendHeartbeat);
+            window.clearInterval(heartbeatTimer);
+        };
+    }, [socket]);
 
     return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };

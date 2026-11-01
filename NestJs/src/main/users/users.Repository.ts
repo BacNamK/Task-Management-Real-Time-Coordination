@@ -13,6 +13,16 @@ export class UsersRepository {
     });
   }
 
+  async findById(userId: string) {
+    return await prisma.user.findUnique({
+      where: { id: BigInt(userId) },
+      select: {
+        name: true,
+        avatar: true,
+      },
+    });
+  }
+
   async findUserByName(name: string) {
     return await prisma.user.findUnique({
       where: { name },

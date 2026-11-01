@@ -1,6 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { projectRepository } from './project.Repository.js';
-import { NOTFOUND } from 'dns';
 import { ChatRepository } from '../realtime/con1/chat/chat.repository.js';
 import { ProjectType } from './project.Types.js';
 import { serializeBigInt } from '../../common/utils/bigint.util.js';
@@ -32,8 +36,16 @@ export class projectService {
   }
 
   async target(uuid: string) {
-    if (!uuid) return 'UUID_NOT_FOUND';
-    return await this.Repository.target(uuid);
+    if (!uuid) {
+      throw new BadRequestException('UUID_REQUIRED');
+    }
+
+    const project = await this.Repository.target(uuid);
+    if (!project) {
+      throw new NotFoundException('PROJECT_NOT_FOUND');
+    }
+
+    return project;
   }
 
   async checkMember(projectUuid: string, userName: string) {

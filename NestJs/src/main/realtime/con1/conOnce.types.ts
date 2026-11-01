@@ -1,7 +1,7 @@
 export interface MessageSendType {
   roomUuid: string;
   content: string;
-  senderId: bigint;
+  senderId: string;
   createAt?: Date;
   updateAt?: Date;
 }
@@ -9,6 +9,6 @@ export interface MessageSendType {
 export type MessagePayload = Pick<MessageSendType, 'roomUuid' | 'content'>;
 
 export type MessageEmit = MessagePayload & {
-  senderId: string;
+  sender: any;
   createAt: string;
 };

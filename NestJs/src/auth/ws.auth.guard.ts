@@ -1,5 +1,10 @@
 // ws-auth.guard.ts
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import jwt from 'jsonwebtoken';
 import { readFileSync } from 'node:fs';
@@ -10,7 +15,6 @@ const publicKey = readFileSync(
   'utf8',
 );
 import { Socket } from 'socket.io';
-
 @Injectable()
 export class WsAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
