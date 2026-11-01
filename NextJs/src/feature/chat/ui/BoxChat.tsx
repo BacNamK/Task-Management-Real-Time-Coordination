@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { MessageCircle, Send } from 'lucide-react';
+import { useSocket } from '../../../lib/socket/socketConText';
+import { type RoomType } from '../service/chat.type';
 
 type ChatMessage = {
     id: number;
@@ -9,14 +11,22 @@ type ChatMessage = {
     time: string;
 };
 
-const BoxChat = () => {
+const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [room, setRoom] = useState<RoomType | undefined>(chatRooms[0]);
+    const socket = useSocket();
+
+    useEffect(() => {
+        if (!socket || !room) return;
+
+        socket.emit('joinRoom', room.uuid);
+    }, [socket, room]);
 
     const sendMessage = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const text = message.trim();
-        if (!text) return;
+        if (!text || !socket || !room) return;
 
         setMessages((current) => [
             ...current,
@@ -30,7 +40,37 @@ const BoxChat = () => {
             },
         ]);
         setMessage('');
+
+        const data = {
+            content: text,
+            roomUuid: room.uuid,
+        };
+
+        socket.emit('chats', data);
     };
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const onChat = (data: { content: string; createAt: string }) => {
+            setMessages((current) => [
+                ...current,
+                {
+                    id: Date.now(),
+                    text: data.content,
+                    time: new Intl.DateTimeFormat(undefined, {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                    }).format(new Date(data.createAt)),
+                },
+            ]);
+        };
+
+        socket.on('chats', onChat);
+        return () => {
+            socket.off('chats', onChat);
+        };
+    }, [socket]);
 
     return (
         <div className="w-full h-full flex">
@@ -104,7 +144,17 @@ const BoxChat = () => {
                 </form>
             </section>
             <section className="w-1/4 h-full p-4">
-                <div className="w-full h-full bg-white rounded-2xl"></div>
+                <div className="flex h-full w-full flex-col gap-2 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200">
+                    {chatRooms.map((item) => (
+                        <div
+                            key={item.id}
+                            onClick={() => setRoom(item)}
+                            className={`flex h-10 cursor-pointer items-center rounded-xl px-3 text-sm font-medium text-slate-600 transition-colors ${room?.id === item.id ? 'bg-amber-100 ' : ''}`}
+                        >
+                            <span># {item.name}</span>
+                        </div>
+                    ))}
+                </div>
             </section>
         </div>
     );

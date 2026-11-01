@@ -2,8 +2,8 @@ export interface project {
     uuid: string;
     name: string;
     createdAt: Date;
-    slug: string;
     description: string;
+    chatRooms: any;
     _count?: { members: number; boards: number };
 }
 
@@ -44,6 +44,7 @@ export interface projectDetail extends project {
         id: string;
         title: string;
         description: string;
+        chatRooms: any;
         _count?: { cycle?: number; tasks?: number };
     }>;
     members: projectMember[];

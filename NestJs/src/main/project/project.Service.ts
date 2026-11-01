@@ -1,13 +1,27 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { projectRepository } from './project.Repository.js';
 import { NOTFOUND } from 'dns';
+import { ChatRepository } from '../realtime/con1/chat/chat.repository.js';
+import { ProjectType } from './project.Types.js';
+import { serializeBigInt } from '../../common/utils/bigint.util.js';
 
 @Injectable()
 export class projectService {
-  constructor(private readonly Repository: projectRepository) {}
+  constructor(
+    private readonly Repository: projectRepository,
+    private readonly ChatRepository: ChatRepository,
+  ) {}
 
   async create(projectName: string, userId: string) {
-    return await this.Repository.create(projectName, userId);
+    const project = await this.Repository.create(projectName, userId);
+
+    if (!project) return;
+    // Bắt lỗi
+
+    //
+    await this.ChatRepository.createRoom(Number(project.id));
+
+    return serializeBigInt(project);
   }
 
   async gets(userId: string) {

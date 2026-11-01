@@ -2,40 +2,31 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { prisma } from '../../lib/prisma.Client.js';
 import { UsersRepository } from '../users/users.Repository.js';
 import { serializeBigInt } from '../../common/utils/bigint.util.js';
+import { ProjectType } from './project.Types.js';
 
 @Injectable()
 export class projectRepository {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async create(projectName: string, userId: string) {
-    try {
-      return await prisma.$transaction(async (tx) => {
-        const project = await tx.project.create({
-          data: {
-            name: projectName.trim(),
-          },
-        });
-
-        await tx.projectMember.create({
-          data: {
-            projectId: project.id,
-            userId: BigInt(userId),
-            role: 'OWNER',
-            permissionId: 3, // Assuming 3 is the ID for the default permission
-          },
-        });
-
-        return serializeBigInt(project);
+  async create(projectName: string, userId: string): Promise<ProjectType> {
+    return await prisma.$transaction(async (tx) => {
+      const project = await tx.project.create({
+        data: {
+          name: projectName.trim(),
+        },
       });
-    } catch (error) {
-      const isUniqueConstraintError =
-        typeof error === 'object' &&
-        error !== null &&
-        'code' in error &&
-        error.code === 'P2002';
 
-      if (!isUniqueConstraintError) throw error;
-    }
+      await tx.projectMember.create({
+        data: {
+          projectId: project.id,
+          userId: BigInt(userId),
+          role: 'OWNER',
+          permissionId: 3, // Assuming 3 is the ID for the default permission
+        },
+      });
+
+      return project;
+    });
   }
 
   async gets(userId: string) {
@@ -140,6 +131,14 @@ export class projectRepository {
             },
           },
         },
+        chatRooms: {
+          select: {
+            id: true,
+            uuid: true,
+            name: true,
+            isDirect: true,
+          },
+        },
       },
     });
 
@@ -159,6 +158,13 @@ export class projectRepository {
         name: user.name,
         avatar: user.avatar,
         role,
+      })),
+      chatRooms: result.chatRooms.map((room) => ({
+        ...room,
+        id: room.id.toString(),
+        uuid: room.uuid,
+        name: room.name,
+        isdirect: room.isDirect,
       })),
     };
   }

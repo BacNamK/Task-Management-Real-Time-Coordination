@@ -47,6 +47,8 @@ model User {
   task                 Task[]
   comments             Comments[]
   imageAndVideos       ImageAndVideo[]
+  notification          Notification []
+  actionrequest         ActionRequest[]
 
   @@map("user")
 }
@@ -171,7 +173,7 @@ model Task {
   position    Int
   description String?      @db.Text
   priority    Int          @default(1)
-  censorId    BigInt?       @map("censor_id")
+  censorId    BigInt?      @map("censor_id")
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
   dueDate     DateTime?    @map("due_date") @db.Timestamp(6)
   updatedAt   DateTime?    @map("updated_at") @db.Timestamp(6)
@@ -185,7 +187,7 @@ model Task {
   board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
   creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id], onDelete: Restrict)
   cycle       Cycle?       @relation(fields: [cycleId], references: [id], onDelete: SetNull)
-  user        User?         @relation(fields: [censorId], references: [id], onDelete: SetNull)
+  user        User?        @relation(fields: [censorId], references: [id], onDelete: SetNull)
 
   @@index([boardId, position])
   @@index([creatorId])
@@ -305,4 +307,98 @@ model ChatRoomParticipant {
   @@unique([chatRoomId, userId])
   @@index([userId])
   @@map("chat_room_participant")
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  TASK_COMMENTED
+  TASK_UPDATED
+  MEMBER_JOINED
+  MENTIONED
+  SYSTEM
+}
+
+model Notification {
+  id   String           @id @default(uuid())
+  type NotificationType
+
+  actorId BigInt       @map("actor_id")
+  title   String
+  message String?
+
+  entityType String?
+  entityId   String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  user       User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  receipts NotificationReceipt[]
+
+  @@map("notification")
+}
+
+model NotificationReceipt {
+  id String @id @default(uuid())
+
+  notificationId String @map("notification_id")
+  recipientId    String @map("recipient_id")
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@unique([notificationId, recipientId])
+  @@index([recipientId, isRead, notificationId])
+  @@map("receipt")
+}
+
+enum ActionRequestType {
+  WORKSPACE_INVITATION
+  PROJECT_INVITATION
+  TASK_TRANSFER
+  TASK_APPROVAL
+  MEMBER_JOIN_REQUEST
+}
+
+enum ActionRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  EXPIRED
+}
+
+model ActionRequest {
+  id String @id @default(uuid())
+
+  type   ActionRequestType
+  status ActionRequestStatus @default(PENDING)
+
+  senderId    BigInt      @map("sender_id")
+  recipientId String
+
+  // Đối tượng nghiệp vụ liên quan
+  entityType String?
+  entityId   String?
+
+  title    String
+  message  String?
+  metadata Json?
+
+  respondedAt DateTime?
+  expiresAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, status, createdAt])
+  @@index([senderId, createdAt])
+  @@index([entityType, entityId])
+  @@map("actionrequest")
 }

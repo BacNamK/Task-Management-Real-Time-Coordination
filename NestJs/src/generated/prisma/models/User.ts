@@ -236,6 +236,8 @@ export type UserWhereInput = {
   task?: Prisma.TaskListRelationFilter
   comments?: Prisma.CommentsListRelationFilter
   imageAndVideos?: Prisma.ImageAndVideoListRelationFilter
+  notification?: Prisma.NotificationListRelationFilter
+  actionrequest?: Prisma.ActionRequestListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -257,6 +259,8 @@ export type UserOrderByWithRelationInput = {
   task?: Prisma.TaskOrderByRelationAggregateInput
   comments?: Prisma.CommentsOrderByRelationAggregateInput
   imageAndVideos?: Prisma.ImageAndVideoOrderByRelationAggregateInput
+  notification?: Prisma.NotificationOrderByRelationAggregateInput
+  actionrequest?: Prisma.ActionRequestOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -281,6 +285,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   task?: Prisma.TaskListRelationFilter
   comments?: Prisma.CommentsListRelationFilter
   imageAndVideos?: Prisma.ImageAndVideoListRelationFilter
+  notification?: Prisma.NotificationListRelationFilter
+  actionrequest?: Prisma.ActionRequestListRelationFilter
 }, "id" | "uuid" | "name" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -328,6 +334,8 @@ export type UserCreateInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -349,6 +357,8 @@ export type UserUncheckedCreateInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -370,6 +380,8 @@ export type UserUpdateInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -391,6 +403,8 @@ export type UserUncheckedUpdateInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -655,6 +669,34 @@ export type UserUpdateOneRequiredWithoutChatRoomParticipantsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatRoomParticipantsInput, Prisma.UserUpdateWithoutChatRoomParticipantsInput>, Prisma.UserUncheckedUpdateWithoutChatRoomParticipantsInput>
 }
 
+export type UserCreateNestedOneWithoutNotificationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  upsert?: Prisma.UserUpsertWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationInput, Prisma.UserUpdateWithoutNotificationInput>, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+}
+
+export type UserCreateNestedOneWithoutActionrequestInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionrequestInput, Prisma.UserUncheckedCreateWithoutActionrequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionrequestInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutActionrequestNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionrequestInput, Prisma.UserUncheckedCreateWithoutActionrequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionrequestInput
+  upsert?: Prisma.UserUpsertWithoutActionrequestInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActionrequestInput, Prisma.UserUpdateWithoutActionrequestInput>, Prisma.UserUncheckedUpdateWithoutActionrequestInput>
+}
+
 export type UserCreateWithoutRoleUsersInput = {
   id?: bigint | number
   uuid?: string
@@ -673,6 +715,8 @@ export type UserCreateWithoutRoleUsersInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRoleUsersInput = {
@@ -693,6 +737,8 @@ export type UserUncheckedCreateWithoutRoleUsersInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRoleUsersInput = {
@@ -729,6 +775,8 @@ export type UserUpdateWithoutRoleUsersInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRoleUsersInput = {
@@ -749,6 +797,8 @@ export type UserUncheckedUpdateWithoutRoleUsersInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionInput = {
@@ -769,6 +819,8 @@ export type UserCreateWithoutSessionInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionInput = {
@@ -789,6 +841,8 @@ export type UserUncheckedCreateWithoutSessionInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionInput = {
@@ -825,6 +879,8 @@ export type UserUpdateWithoutSessionInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionInput = {
@@ -845,6 +901,8 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -865,6 +923,8 @@ export type UserCreateWithoutAccountsInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -885,6 +945,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -921,6 +983,8 @@ export type UserUpdateWithoutAccountsInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -941,6 +1005,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProjectMembersInput = {
@@ -961,6 +1027,8 @@ export type UserCreateWithoutProjectMembersInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -981,6 +1049,8 @@ export type UserUncheckedCreateWithoutProjectMembersInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -1017,6 +1087,8 @@ export type UserUpdateWithoutProjectMembersInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -1037,6 +1109,8 @@ export type UserUncheckedUpdateWithoutProjectMembersInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedTasksInput = {
@@ -1057,6 +1131,8 @@ export type UserCreateWithoutCreatedTasksInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -1077,6 +1153,8 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -1102,6 +1180,8 @@ export type UserCreateWithoutTaskInput = {
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTaskInput = {
@@ -1122,6 +1202,8 @@ export type UserUncheckedCreateWithoutTaskInput = {
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTaskInput = {
@@ -1158,6 +1240,8 @@ export type UserUpdateWithoutCreatedTasksInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -1178,6 +1262,8 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutTaskInput = {
@@ -1209,6 +1295,8 @@ export type UserUpdateWithoutTaskInput = {
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTaskInput = {
@@ -1229,6 +1317,8 @@ export type UserUncheckedUpdateWithoutTaskInput = {
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -1249,6 +1339,8 @@ export type UserCreateWithoutCommentsInput = {
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -1269,6 +1361,8 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -1305,6 +1399,8 @@ export type UserUpdateWithoutCommentsInput = {
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1325,6 +1421,8 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFilesInput = {
@@ -1345,6 +1443,8 @@ export type UserCreateWithoutFilesInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFilesInput = {
@@ -1365,6 +1465,8 @@ export type UserUncheckedCreateWithoutFilesInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFilesInput = {
@@ -1401,6 +1503,8 @@ export type UserUpdateWithoutFilesInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFilesInput = {
@@ -1421,6 +1525,8 @@ export type UserUncheckedUpdateWithoutFilesInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutImageAndVideosInput = {
@@ -1441,6 +1547,8 @@ export type UserCreateWithoutImageAndVideosInput = {
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutImageAndVideosInput = {
@@ -1461,6 +1569,8 @@ export type UserUncheckedCreateWithoutImageAndVideosInput = {
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutImageAndVideosInput = {
@@ -1497,6 +1607,8 @@ export type UserUpdateWithoutImageAndVideosInput = {
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutImageAndVideosInput = {
@@ -1517,6 +1629,8 @@ export type UserUncheckedUpdateWithoutImageAndVideosInput = {
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -1537,6 +1651,8 @@ export type UserCreateWithoutAssignedTasksInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -1557,6 +1673,8 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -1593,6 +1711,8 @@ export type UserUpdateWithoutAssignedTasksInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -1613,6 +1733,8 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -1633,6 +1755,8 @@ export type UserCreateWithoutMessagesInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -1653,6 +1777,8 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -1689,6 +1815,8 @@ export type UserUpdateWithoutMessagesInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -1709,6 +1837,8 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatRoomParticipantsInput = {
@@ -1729,6 +1859,8 @@ export type UserCreateWithoutChatRoomParticipantsInput = {
   task?: Prisma.TaskCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatRoomParticipantsInput = {
@@ -1749,6 +1881,8 @@ export type UserUncheckedCreateWithoutChatRoomParticipantsInput = {
   task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatRoomParticipantsInput = {
@@ -1785,6 +1919,8 @@ export type UserUpdateWithoutChatRoomParticipantsInput = {
   task?: Prisma.TaskUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatRoomParticipantsInput = {
@@ -1805,6 +1941,216 @@ export type UserUncheckedUpdateWithoutChatRoomParticipantsInput = {
   task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
   imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationInput = {
+  id?: bigint | number
+  uuid?: string
+  name: string
+  email: string
+  avatar?: string | null
+  createdAt?: Date | string
+  roleUsers?: Prisma.RoleUserSysCreateNestedManyWithoutUserInput
+  projectMembers?: Prisma.projectMemberCreateNestedManyWithoutUserInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.AssigneedsCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantCreateNestedManyWithoutUserInput
+  files?: Prisma.FilesCreateNestedManyWithoutUserInput
+  accounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  task?: Prisma.TaskCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
+  imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationInput = {
+  id?: bigint | number
+  uuid?: string
+  name: string
+  email: string
+  avatar?: string | null
+  createdAt?: Date | string
+  roleUsers?: Prisma.RoleUserSysUncheckedCreateNestedManyWithoutUserInput
+  projectMembers?: Prisma.projectMemberUncheckedCreateNestedManyWithoutUserInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUncheckedCreateNestedManyWithoutUserInput
+  files?: Prisma.FilesUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
+  imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+}
+
+export type UserUpsertWithoutNotificationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+}
+
+export type UserUpdateWithoutNotificationInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roleUsers?: Prisma.RoleUserSysUpdateManyWithoutUserNestedInput
+  projectMembers?: Prisma.projectMemberUpdateManyWithoutUserNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.AssigneedsUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUpdateManyWithoutUserNestedInput
+  files?: Prisma.FilesUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  task?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
+  imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roleUsers?: Prisma.RoleUserSysUncheckedUpdateManyWithoutUserNestedInput
+  projectMembers?: Prisma.projectMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.AssigneedsUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUncheckedUpdateManyWithoutUserNestedInput
+  files?: Prisma.FilesUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
+  imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutActionrequestInput = {
+  id?: bigint | number
+  uuid?: string
+  name: string
+  email: string
+  avatar?: string | null
+  createdAt?: Date | string
+  roleUsers?: Prisma.RoleUserSysCreateNestedManyWithoutUserInput
+  projectMembers?: Prisma.projectMemberCreateNestedManyWithoutUserInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.AssigneedsCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantCreateNestedManyWithoutUserInput
+  files?: Prisma.FilesCreateNestedManyWithoutUserInput
+  accounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  task?: Prisma.TaskCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentsCreateNestedManyWithoutUserInput
+  imageAndVideos?: Prisma.ImageAndVideoCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutActionrequestInput = {
+  id?: bigint | number
+  uuid?: string
+  name: string
+  email: string
+  avatar?: string | null
+  createdAt?: Date | string
+  roleUsers?: Prisma.RoleUserSysUncheckedCreateNestedManyWithoutUserInput
+  projectMembers?: Prisma.projectMemberUncheckedCreateNestedManyWithoutUserInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.AssigneedsUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUncheckedCreateNestedManyWithoutUserInput
+  files?: Prisma.FilesUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  task?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  comments?: Prisma.CommentsUncheckedCreateNestedManyWithoutUserInput
+  imageAndVideos?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutUserInput
+  notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutActionrequestInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionrequestInput, Prisma.UserUncheckedCreateWithoutActionrequestInput>
+}
+
+export type UserUpsertWithoutActionrequestInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutActionrequestInput, Prisma.UserUncheckedUpdateWithoutActionrequestInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionrequestInput, Prisma.UserUncheckedCreateWithoutActionrequestInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutActionrequestInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutActionrequestInput, Prisma.UserUncheckedUpdateWithoutActionrequestInput>
+}
+
+export type UserUpdateWithoutActionrequestInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roleUsers?: Prisma.RoleUserSysUpdateManyWithoutUserNestedInput
+  projectMembers?: Prisma.projectMemberUpdateManyWithoutUserNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.AssigneedsUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUpdateManyWithoutUserNestedInput
+  files?: Prisma.FilesUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  task?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentsUpdateManyWithoutUserNestedInput
+  imageAndVideos?: Prisma.ImageAndVideoUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutActionrequestInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roleUsers?: Prisma.RoleUserSysUncheckedUpdateManyWithoutUserNestedInput
+  projectMembers?: Prisma.projectMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.AssigneedsUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatRoomParticipants?: Prisma.ChatRoomParticipantUncheckedUpdateManyWithoutUserNestedInput
+  files?: Prisma.FilesUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  task?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  comments?: Prisma.CommentsUncheckedUpdateManyWithoutUserNestedInput
+  imageAndVideos?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutUserNestedInput
+  notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1825,6 +2171,8 @@ export type UserCountOutputType = {
   task: number
   comments: number
   imageAndVideos: number
+  notification: number
+  actionrequest: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1840,6 +2188,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   task?: boolean | UserCountOutputTypeCountTaskArgs
   comments?: boolean | UserCountOutputTypeCountCommentsArgs
   imageAndVideos?: boolean | UserCountOutputTypeCountImageAndVideosArgs
+  notification?: boolean | UserCountOutputTypeCountNotificationArgs
+  actionrequest?: boolean | UserCountOutputTypeCountActionrequestArgs
 }
 
 /**
@@ -1936,6 +2286,20 @@ export type UserCountOutputTypeCountImageAndVideosArgs<ExtArgs extends runtime.T
   where?: Prisma.ImageAndVideoWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountActionrequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActionRequestWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1956,6 +2320,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   task?: boolean | Prisma.User$taskArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   imageAndVideos?: boolean | Prisma.User$imageAndVideosArgs<ExtArgs>
+  notification?: boolean | Prisma.User$notificationArgs<ExtArgs>
+  actionrequest?: boolean | Prisma.User$actionrequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2000,6 +2366,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   task?: boolean | Prisma.User$taskArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   imageAndVideos?: boolean | Prisma.User$imageAndVideosArgs<ExtArgs>
+  notification?: boolean | Prisma.User$notificationArgs<ExtArgs>
+  actionrequest?: boolean | Prisma.User$actionrequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2020,6 +2388,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     task: Prisma.$TaskPayload<ExtArgs>[]
     comments: Prisma.$CommentsPayload<ExtArgs>[]
     imageAndVideos: Prisma.$ImageAndVideoPayload<ExtArgs>[]
+    notification: Prisma.$NotificationPayload<ExtArgs>[]
+    actionrequest: Prisma.$ActionRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -2434,6 +2804,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   task<T extends Prisma.User$taskArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$taskArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.User$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   imageAndVideos<T extends Prisma.User$imageAndVideosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$imageAndVideosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImageAndVideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notification<T extends Prisma.User$notificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  actionrequest<T extends Prisma.User$actionrequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$actionrequestArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3147,6 +3519,54 @@ export type User$imageAndVideosArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ImageAndVideoScalarFieldEnum | Prisma.ImageAndVideoScalarFieldEnum[]
+}
+
+/**
+ * User.notification
+ */
+export type User$notificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.actionrequest
+ */
+export type User$actionrequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActionRequest
+   */
+  select?: Prisma.ActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActionRequest
+   */
+  omit?: Prisma.ActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActionRequestInclude<ExtArgs> | null
+  where?: Prisma.ActionRequestWhereInput
+  orderBy?: Prisma.ActionRequestOrderByWithRelationInput | Prisma.ActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.ActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActionRequestScalarFieldEnum | Prisma.ActionRequestScalarFieldEnum[]
 }
 
 /**

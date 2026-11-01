@@ -102,11 +102,6 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                                         <h1 className="mt-1 wrap-break-word text-xl font-semibold text-slate-900">
                                             {data.name}
                                         </h1>
-                                        {data.slug && (
-                                            <p className="mt-1 text-sm text-slate-500">
-                                                {data.slug}
-                                            </p>
-                                        )}
                                     </div>
                                 </header>
 
@@ -321,7 +316,7 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                     )}
                     {activeTab === 'chat' && (
                         <div className="h-full min-h-0 overflow-hidden">
-                            <BoxChat />
+                            <BoxChat chatRooms={data.chatRooms} />
                         </div>
                     )}
                     {activeTab === 'members' && (
@@ -349,12 +344,6 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                                     <dt className="text-xs font-medium text-slate-500">Name</dt>
                                     <dd className="wrap-break-word text-sm font-medium text-slate-800">
                                         {data.name}
-                                    </dd>
-                                </div>
-                                <div className="grid gap-1 py-4 sm:grid-cols-[160px_1fr] sm:gap-4">
-                                    <dt className="text-xs font-medium text-slate-500">Slug</dt>
-                                    <dd className="wrap-break-word text-sm text-slate-700">
-                                        {data.slug || 'Not set'}
                                     </dd>
                                 </div>
                                 <div className="grid gap-1 py-4 sm:grid-cols-[160px_1fr] sm:gap-4">

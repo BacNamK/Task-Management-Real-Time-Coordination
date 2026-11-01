@@ -136,3 +136,18 @@ export type Message = Prisma.MessageModel
  * 
  */
 export type ChatRoomParticipant = Prisma.ChatRoomParticipantModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model NotificationReceipt
+ * 
+ */
+export type NotificationReceipt = Prisma.NotificationReceiptModel
+/**
+ * Model ActionRequest
+ * 
+ */
+export type ActionRequest = Prisma.ActionRequestModel

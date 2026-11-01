@@ -34,3 +34,37 @@ export const EnumStatus = {
 } as const
 
 export type EnumStatus = (typeof EnumStatus)[keyof typeof EnumStatus]
+
+
+export const NotificationType = {
+  TASK_ASSIGNED: 'TASK_ASSIGNED',
+  TASK_COMMENTED: 'TASK_COMMENTED',
+  TASK_UPDATED: 'TASK_UPDATED',
+  MEMBER_JOINED: 'MEMBER_JOINED',
+  MENTIONED: 'MENTIONED',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const ActionRequestType = {
+  WORKSPACE_INVITATION: 'WORKSPACE_INVITATION',
+  PROJECT_INVITATION: 'PROJECT_INVITATION',
+  TASK_TRANSFER: 'TASK_TRANSFER',
+  TASK_APPROVAL: 'TASK_APPROVAL',
+  MEMBER_JOIN_REQUEST: 'MEMBER_JOIN_REQUEST'
+} as const
+
+export type ActionRequestType = (typeof ActionRequestType)[keyof typeof ActionRequestType]
+
+
+export const ActionRequestStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ActionRequestStatus = (typeof ActionRequestStatus)[keyof typeof ActionRequestStatus]

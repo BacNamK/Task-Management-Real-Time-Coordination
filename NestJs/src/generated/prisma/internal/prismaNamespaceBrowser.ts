@@ -69,7 +69,10 @@ export const ModelName = {
   Assigneeds: 'Assigneeds',
   ChatRoom: 'ChatRoom',
   Message: 'Message',
-  ChatRoomParticipant: 'ChatRoomParticipant'
+  ChatRoomParticipant: 'ChatRoomParticipant',
+  Notification: 'Notification',
+  NotificationReceipt: 'NotificationReceipt',
+  ActionRequest: 'ActionRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -307,12 +310,66 @@ export const ChatRoomParticipantScalarFieldEnum = {
 export type ChatRoomParticipantScalarFieldEnum = (typeof ChatRoomParticipantScalarFieldEnum)[keyof typeof ChatRoomParticipantScalarFieldEnum]
 
 
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  actorId: 'actorId',
+  title: 'title',
+  message: 'message',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const NotificationReceiptScalarFieldEnum = {
+  id: 'id',
+  notificationId: 'notificationId',
+  recipientId: 'recipientId',
+  isRead: 'isRead',
+  readAt: 'readAt'
+} as const
+
+export type NotificationReceiptScalarFieldEnum = (typeof NotificationReceiptScalarFieldEnum)[keyof typeof NotificationReceiptScalarFieldEnum]
+
+
+export const ActionRequestScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  status: 'status',
+  senderId: 'senderId',
+  recipientId: 'recipientId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  title: 'title',
+  message: 'message',
+  metadata: 'metadata',
+  respondedAt: 'respondedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActionRequestScalarFieldEnum = (typeof ActionRequestScalarFieldEnum)[keyof typeof ActionRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -329,4 +386,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

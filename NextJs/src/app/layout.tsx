@@ -9,6 +9,7 @@ import { SidebarProvider } from '../components/ui/sidebar';
 import { AppSidebar } from '../components/shared/AppSidebar';
 import { SidebarController } from '../components/shared/SidebarControll';
 import { auth } from '../lib/auth/auth';
+import { SocketProvider } from '../lib/socket/socketConText';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -27,11 +28,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     return (
         <html lang="en" className={cn('font-sans', geist.variable)}>
             <body className="min-h-screen w-full bg-slate-50 text-slate-900">
-                <SidebarProvider>
-                    <SidebarController />
-                    <AppSidebar user={user} />
-                    <main className="h-screen min-w-0 w-full overflow-hidden">{children}</main>
-                </SidebarProvider>
+                <SocketProvider enabled={Boolean(user?.id)}>
+                    <SidebarProvider>
+                        <SidebarController />
+                        <AppSidebar user={user} />
+                        <main className="h-screen min-w-0 w-full overflow-hidden">{children}</main>
+                    </SidebarProvider>
+                </SocketProvider>
             </body>
         </html>
     );

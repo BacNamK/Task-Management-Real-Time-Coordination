@@ -20,6 +20,12 @@ export type RequestCustom = Request & {
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   use(req: RequestCustom, res: Response, next: NextFunction) {
+    const requestPath = (req.originalUrl || req.path).split('?')[0];
+    if (requestPath === '/socket.io' || requestPath.startsWith('/socket.io/')) {
+      next();
+      return;
+    }
+
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
@@ -33,7 +39,6 @@ export class AuthMiddleware implements NestMiddleware {
       return;
     }
 
-    const requestPath = (req.originalUrl || req.path).split('?')[0];
     const isAuthRoute = /(?:^|\/)auth(?:\/|$)/.test(requestPath);
 
     if (!isAuthRoute) {
