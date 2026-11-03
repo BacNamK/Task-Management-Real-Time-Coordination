@@ -409,6 +409,7 @@ export const ModelName = {
   Cycle: 'Cycle',
   Task: 'Task',
   Tags: 'Tags',
+  TaskTag: 'TaskTag',
   Comments: 'Comments',
   Files: 'Files',
   ImageAndVideo: 'ImageAndVideo',
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "roleUserSys" | "role" | "session" | "oAuthAccount" | "project" | "projectMember" | "permission" | "board" | "cycle" | "task" | "tags" | "comments" | "files" | "imageAndVideo" | "assigneeds" | "chatRoom" | "message" | "chatRoomParticipant" | "notification" | "notificationReceipt" | "actionRequest"
+    modelProps: "user" | "roleUserSys" | "role" | "session" | "oAuthAccount" | "project" | "projectMember" | "permission" | "board" | "cycle" | "task" | "tags" | "taskTag" | "comments" | "files" | "imageAndVideo" | "assigneeds" | "chatRoom" | "message" | "chatRoomParticipant" | "notification" | "notificationReceipt" | "actionRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1326,6 +1327,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TaskTag: {
+      payload: Prisma.$TaskTagPayload<ExtArgs>
+      fields: Prisma.TaskTagFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TaskTagFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TaskTagFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        findFirst: {
+          args: Prisma.TaskTagFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TaskTagFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        findMany: {
+          args: Prisma.TaskTagFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>[]
+        }
+        create: {
+          args: Prisma.TaskTagCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        createMany: {
+          args: Prisma.TaskTagCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TaskTagCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>[]
+        }
+        delete: {
+          args: Prisma.TaskTagDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        update: {
+          args: Prisma.TaskTagUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        deleteMany: {
+          args: Prisma.TaskTagDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TaskTagUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TaskTagUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>[]
+        }
+        upsert: {
+          args: Prisma.TaskTagUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskTagPayload>
+        }
+        aggregate: {
+          args: Prisma.TaskTagAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTaskTag>
+        }
+        groupBy: {
+          args: Prisma.TaskTagGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TaskTagGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TaskTagCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TaskTagCountAggregateOutputType> | number
+        }
+      }
+    }
     Comments: {
       payload: Prisma.$CommentsPayload<ExtArgs>
       fields: Prisma.CommentsFieldRefs
@@ -2161,6 +2236,7 @@ export const ProjectScalarFieldEnum = {
   uuid: 'uuid',
   name: 'name',
   description: 'description',
+  isDelete: 'isDelete',
   createdAt: 'createdAt'
 } as const
 
@@ -2194,6 +2270,7 @@ export const BoardScalarFieldEnum = {
   title: 'title',
   projectId: 'projectId',
   description: 'description',
+  isDelete: 'isDelete',
   createdAt: 'createdAt'
 } as const
 
@@ -2219,6 +2296,7 @@ export const TaskScalarFieldEnum = {
   title: 'title',
   position: 'position',
   description: 'description',
+  isDelete: 'isDelete',
   priority: 'priority',
   censorId: 'censorId',
   createdAt: 'createdAt',
@@ -2234,16 +2312,24 @@ export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof Task
 
 export const TagsScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  taskId: 'taskId'
+  name: 'name'
 } as const
 
 export type TagsScalarFieldEnum = (typeof TagsScalarFieldEnum)[keyof typeof TagsScalarFieldEnum]
 
 
+export const TaskTagScalarFieldEnum = {
+  taskId: 'taskId',
+  tagId: 'tagId'
+} as const
+
+export type TaskTagScalarFieldEnum = (typeof TaskTagScalarFieldEnum)[keyof typeof TaskTagScalarFieldEnum]
+
+
 export const CommentsScalarFieldEnum = {
   id: 'id',
   content: 'content',
+  isDelete: 'isDelete',
   taskId: 'taskId',
   sendById: 'sendById'
 } as const
@@ -2308,8 +2394,11 @@ export const MessageScalarFieldEnum = {
   content: 'content',
   senderId: 'senderId',
   roomId: 'roomId',
+  replicaId: 'replicaId',
+  isDelete: 'isDelete',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  replyToId: 'replyToId'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -2747,6 +2836,7 @@ export type GlobalOmitConfig = {
   cycle?: Prisma.CycleOmit
   task?: Prisma.TaskOmit
   tags?: Prisma.TagsOmit
+  taskTag?: Prisma.TaskTagOmit
   comments?: Prisma.CommentsOmit
   files?: Prisma.FilesOmit
   imageAndVideo?: Prisma.ImageAndVideoOmit

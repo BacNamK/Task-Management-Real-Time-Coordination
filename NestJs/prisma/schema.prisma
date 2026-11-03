@@ -101,6 +101,7 @@ model project {
   uuid           String          @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   name           String          @db.VarChar
   description    String?         @db.Text
+  isDelete       Boolean         @default(false)
   createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
   members        projectMember[]
   boards         Board[]
@@ -142,6 +143,7 @@ model Board {
   title       String   @db.VarChar(255)
   projectId   BigInt   @map("project_id")
   description String?  @db.Text
+  isDelete    Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   project     project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   tasks       Task[]
@@ -172,6 +174,7 @@ model Task {
   title       String       @db.VarChar
   position    Int
   description String?      @db.Text
+  isDelete    Boolean      @default(false)
   priority    Int          @default(1)
   censorId    BigInt?      @map("censor_id")
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
@@ -183,7 +186,7 @@ model Task {
   assigneeds  Assigneeds[]
   files       Files[]
   comments    Comments[]
-  tags        Tags[]
+  tags        TaskTag[]
   board       Board        @relation(fields: [boardId], references: [id], onDelete: Cascade)
   creator     User         @relation("CreatedTasks", fields: [creatorId], references: [id], onDelete: Restrict)
   cycle       Cycle?       @relation(fields: [cycleId], references: [id], onDelete: SetNull)
@@ -196,17 +199,28 @@ model Task {
 }
 
 model Tags {
-  id     String @id @default(uuid())
-  name   String @db.VarChar(255)
-  taskId BigInt @map("task_id")
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id    String    @id @default(uuid())
+  name  String    @db.VarChar(255)
+  tasks TaskTag[]
 
   @@map("tags")
+}
+
+model TaskTag {
+  taskId BigInt @map("task_id")
+  tagId  String @map("tag_id")
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  tag    Tags   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, tagId])
+  @@index([tagId])
+  @@map("task_tag")
 }
 
 model Comments {
   id       BigInt @id @default(autoincrement())
   content  String @db.Text
+  isDelete Boolean @default(false)
   taskId   BigInt @map("task_id")
   sendById BigInt @map("send_by_id")
   task     Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
@@ -286,14 +300,20 @@ model Message {
   content       String?         @db.Text
   senderId      BigInt          @map("sender_id")
   roomId        BigInt          @map("room_id")
+  replicaId     BigInt?         @map("replica_id")
+  isDelete      Boolean         @default(false)
   createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt     DateTime?       @map("updated_at") @db.Timestamp(6)
   sender        User            @relation(fields: [senderId], references: [id], onDelete: Cascade)
   room          ChatRoom        @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  replyToId     String?         @map("reply_to_id") @db.Text
+  replyTo       Message?        @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies       Message[]       @relation("MessageReplies")
   imageandvideo ImageAndVideo[]
 
   @@index([senderId])
   @@index([roomId, createdAt])
+  @@index([replyToId])
   @@map("message")
 }
 

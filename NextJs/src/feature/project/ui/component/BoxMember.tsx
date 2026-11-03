@@ -2,24 +2,21 @@
 
 import { checkMember, addMember } from '../../../project/sevice/project.action';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Search, UsersRound } from 'lucide-react';
 import type { projectMember, projectMemberSearchResult } from '../../sevice/project.type';
+import { useSocket } from '../../../../lib/socket/socketConText';
+import { on } from 'events';
 
 type MemberMatch = Extract<projectMemberSearchResult, { user: unknown }>;
 
 const isMemberMatch = (result: projectMemberSearchResult | null): result is MemberMatch =>
     typeof result === 'object' && result !== null && 'user' in result && 'projectId' in result;
 
-export const BoxMember = ({
-    members,
-    projectUuid,
-}: {
-    members: projectMember[];
-    projectUuid: string;
-}) => {
+export const BoxMember = ({ members, projectId }: { members: projectMember[]; projectId: any }) => {
     const [memberSearch, setMemberSearch] = useState('');
     const [searchResult, setSearchResult] = useState<projectMemberSearchResult | null>(null);
+    const [online, setOnline] = useState<string[]>([]);
 
     const showMessage = (message: string) => {
         setSearchResult(message);
@@ -37,7 +34,7 @@ export const BoxMember = ({
             return;
         }
         try {
-            const result = await checkMember(projectUuid, name);
+            const result = await checkMember(projectId, name);
             if (typeof result === 'object' && result !== null && 'message' in result) {
                 showMessage(result.message);
                 return;
@@ -73,6 +70,21 @@ export const BoxMember = ({
         return name.toLowerCase().includes(memberSearch.trim().toLowerCase());
     });
     const matchingUser = isMemberMatch(searchResult) ? searchResult : null;
+
+    const socket = useSocket();
+
+    const getData = (data: any) => {
+        setOnline(data);
+    };
+
+    useEffect(() => {
+        if (!socket) return;
+        socket.emit('persence:query', { projectId });
+
+        socket.on('persence:snapshort', getData);
+    }, [socket]);
+
+    const setstatus = (id: string) => online.includes(id);
 
     return (
         <div className="boxMember-project flex h-full min-h-0 w-full flex-col gap-5 overflow-y-auto sm:gap-6 sm:p-2">
@@ -113,13 +125,20 @@ export const BoxMember = ({
                                         className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 p-3 transition hover:border-slate-200 hover:bg-white hover:shadow-sm"
                                     >
                                         {avatar ? (
-                                            <Image
-                                                src={avatar}
-                                                alt={name}
-                                                width={34}
-                                                height={34}
-                                                className="shrink-0 rounded-full object-cover"
-                                            />
+                                            <div className="relative content-center justify-items-center">
+                                                <Image
+                                                    src={avatar}
+                                                    alt={name}
+                                                    width={34}
+                                                    height={34}
+                                                    className="shrink-0 rounded-full object-cover"
+                                                />
+                                                <div className="size-3 rounded-full bg-white absolute p-0.5 right-0 bottom-0 flex items-center justify-center">
+                                                    <div
+                                                        className={`w-full h-full rounded-full ${setstatus(String(member.id)) ? ' bg-green-500 ' : 'bg-gray-300 '} `}
+                                                    ></div>
+                                                </div>
+                                            </div>
                                         ) : (
                                             <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-sm font-semibold text-indigo-700">
                                                 {name.charAt(0).toUpperCase()}

@@ -26,7 +26,7 @@ export class UsersRepository {
   async findUserByName(name: string) {
     return await prisma.user.findUnique({
       where: { name },
-      select: { name: true, image: true, uuid: true, id: true },
+      select: { name: true, avatar: true, uuid: true, id: true },
     });
   }
   async findUserByEmail(email: string) {

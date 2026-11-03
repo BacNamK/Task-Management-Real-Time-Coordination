@@ -14,8 +14,6 @@ import { ConOneModel } from './main/realtime/con1/conOne.model.js';
 import { APP_GUARD } from '@nestjs/core';
 import { WsAuthGuard } from './auth/ws.auth.guard.js';
 
-import { CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-yet';
 import { AppCacheModule } from './lib/redis.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();

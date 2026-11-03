@@ -78,6 +78,11 @@ export type Task = Prisma.TaskModel
  */
 export type Tags = Prisma.TagsModel
 /**
+ * Model TaskTag
+ * 
+ */
+export type TaskTag = Prisma.TaskTagModel
+/**
  * Model Comments
  * 
  */

@@ -2,7 +2,6 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
 } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
@@ -23,7 +22,10 @@ export class WsAuthGuard implements CanActivate {
     }
 
     const client: Socket = context.switchToWs().getClient<Socket>();
-    this.authenticate(client);
+    if (typeof client.data.user?.userId !== 'string') {
+      throw new WsException('UNAUTHENTICATED_SOCKET');
+    }
+
     return true;
   }
 

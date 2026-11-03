@@ -63,6 +63,7 @@ export const ModelName = {
   Cycle: 'Cycle',
   Task: 'Task',
   Tags: 'Tags',
+  TaskTag: 'TaskTag',
   Comments: 'Comments',
   Files: 'Files',
   ImageAndVideo: 'ImageAndVideo',
@@ -147,6 +148,7 @@ export const ProjectScalarFieldEnum = {
   uuid: 'uuid',
   name: 'name',
   description: 'description',
+  isDelete: 'isDelete',
   createdAt: 'createdAt'
 } as const
 
@@ -180,6 +182,7 @@ export const BoardScalarFieldEnum = {
   title: 'title',
   projectId: 'projectId',
   description: 'description',
+  isDelete: 'isDelete',
   createdAt: 'createdAt'
 } as const
 
@@ -205,6 +208,7 @@ export const TaskScalarFieldEnum = {
   title: 'title',
   position: 'position',
   description: 'description',
+  isDelete: 'isDelete',
   priority: 'priority',
   censorId: 'censorId',
   createdAt: 'createdAt',
@@ -220,16 +224,24 @@ export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof Task
 
 export const TagsScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  taskId: 'taskId'
+  name: 'name'
 } as const
 
 export type TagsScalarFieldEnum = (typeof TagsScalarFieldEnum)[keyof typeof TagsScalarFieldEnum]
 
 
+export const TaskTagScalarFieldEnum = {
+  taskId: 'taskId',
+  tagId: 'tagId'
+} as const
+
+export type TaskTagScalarFieldEnum = (typeof TaskTagScalarFieldEnum)[keyof typeof TaskTagScalarFieldEnum]
+
+
 export const CommentsScalarFieldEnum = {
   id: 'id',
   content: 'content',
+  isDelete: 'isDelete',
   taskId: 'taskId',
   sendById: 'sendById'
 } as const
@@ -294,8 +306,11 @@ export const MessageScalarFieldEnum = {
   content: 'content',
   senderId: 'senderId',
   roomId: 'roomId',
+  replicaId: 'replicaId',
+  isDelete: 'isDelete',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  replyToId: 'replyToId'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]

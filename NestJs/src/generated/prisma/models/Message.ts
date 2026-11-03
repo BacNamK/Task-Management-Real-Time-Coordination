@@ -29,11 +29,13 @@ export type AggregateMessage = {
 export type MessageAvgAggregateOutputType = {
   senderId: number | null
   roomId: number | null
+  replicaId: number | null
 }
 
 export type MessageSumAggregateOutputType = {
   senderId: bigint | null
   roomId: bigint | null
+  replicaId: bigint | null
 }
 
 export type MessageMinAggregateOutputType = {
@@ -41,8 +43,11 @@ export type MessageMinAggregateOutputType = {
   content: string | null
   senderId: bigint | null
   roomId: bigint | null
+  replicaId: bigint | null
+  isDelete: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  replyToId: string | null
 }
 
 export type MessageMaxAggregateOutputType = {
@@ -50,8 +55,11 @@ export type MessageMaxAggregateOutputType = {
   content: string | null
   senderId: bigint | null
   roomId: bigint | null
+  replicaId: bigint | null
+  isDelete: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  replyToId: string | null
 }
 
 export type MessageCountAggregateOutputType = {
@@ -59,8 +67,11 @@ export type MessageCountAggregateOutputType = {
   content: number
   senderId: number
   roomId: number
+  replicaId: number
+  isDelete: number
   createdAt: number
   updatedAt: number
+  replyToId: number
   _all: number
 }
 
@@ -68,11 +79,13 @@ export type MessageCountAggregateOutputType = {
 export type MessageAvgAggregateInputType = {
   senderId?: true
   roomId?: true
+  replicaId?: true
 }
 
 export type MessageSumAggregateInputType = {
   senderId?: true
   roomId?: true
+  replicaId?: true
 }
 
 export type MessageMinAggregateInputType = {
@@ -80,8 +93,11 @@ export type MessageMinAggregateInputType = {
   content?: true
   senderId?: true
   roomId?: true
+  replicaId?: true
+  isDelete?: true
   createdAt?: true
   updatedAt?: true
+  replyToId?: true
 }
 
 export type MessageMaxAggregateInputType = {
@@ -89,8 +105,11 @@ export type MessageMaxAggregateInputType = {
   content?: true
   senderId?: true
   roomId?: true
+  replicaId?: true
+  isDelete?: true
   createdAt?: true
   updatedAt?: true
+  replyToId?: true
 }
 
 export type MessageCountAggregateInputType = {
@@ -98,8 +117,11 @@ export type MessageCountAggregateInputType = {
   content?: true
   senderId?: true
   roomId?: true
+  replicaId?: true
+  isDelete?: true
   createdAt?: true
   updatedAt?: true
+  replyToId?: true
   _all?: true
 }
 
@@ -194,8 +216,11 @@ export type MessageGroupByOutputType = {
   content: string | null
   senderId: bigint
   roomId: bigint
+  replicaId: bigint | null
+  isDelete: boolean
   createdAt: Date
   updatedAt: Date | null
+  replyToId: string | null
   _count: MessageCountAggregateOutputType | null
   _avg: MessageAvgAggregateOutputType | null
   _sum: MessageSumAggregateOutputType | null
@@ -226,10 +251,15 @@ export type MessageWhereInput = {
   content?: Prisma.StringNullableFilter<"Message"> | string | null
   senderId?: Prisma.BigIntFilter<"Message"> | bigint | number
   roomId?: Prisma.BigIntFilter<"Message"> | bigint | number
+  replicaId?: Prisma.BigIntNullableFilter<"Message"> | bigint | number | null
+  isDelete?: Prisma.BoolFilter<"Message"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+  replyToId?: Prisma.StringNullableFilter<"Message"> | string | null
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   room?: Prisma.XOR<Prisma.ChatRoomScalarRelationFilter, Prisma.ChatRoomWhereInput>
+  replyTo?: Prisma.XOR<Prisma.MessageNullableScalarRelationFilter, Prisma.MessageWhereInput> | null
+  replies?: Prisma.MessageListRelationFilter
   imageandvideo?: Prisma.ImageAndVideoListRelationFilter
 }
 
@@ -238,10 +268,15 @@ export type MessageOrderByWithRelationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  replyToId?: Prisma.SortOrderInput | Prisma.SortOrder
   sender?: Prisma.UserOrderByWithRelationInput
   room?: Prisma.ChatRoomOrderByWithRelationInput
+  replyTo?: Prisma.MessageOrderByWithRelationInput
+  replies?: Prisma.MessageOrderByRelationAggregateInput
   imageandvideo?: Prisma.ImageAndVideoOrderByRelationAggregateInput
 }
 
@@ -253,10 +288,15 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringNullableFilter<"Message"> | string | null
   senderId?: Prisma.BigIntFilter<"Message"> | bigint | number
   roomId?: Prisma.BigIntFilter<"Message"> | bigint | number
+  replicaId?: Prisma.BigIntNullableFilter<"Message"> | bigint | number | null
+  isDelete?: Prisma.BoolFilter<"Message"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+  replyToId?: Prisma.StringNullableFilter<"Message"> | string | null
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   room?: Prisma.XOR<Prisma.ChatRoomScalarRelationFilter, Prisma.ChatRoomWhereInput>
+  replyTo?: Prisma.XOR<Prisma.MessageNullableScalarRelationFilter, Prisma.MessageWhereInput> | null
+  replies?: Prisma.MessageListRelationFilter
   imageandvideo?: Prisma.ImageAndVideoListRelationFilter
 }, "id">
 
@@ -265,8 +305,11 @@ export type MessageOrderByWithAggregationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  replyToId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MessageCountOrderByAggregateInput
   _avg?: Prisma.MessageAvgOrderByAggregateInput
   _max?: Prisma.MessageMaxOrderByAggregateInput
@@ -282,17 +325,24 @@ export type MessageScalarWhereWithAggregatesInput = {
   content?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   senderId?: Prisma.BigIntWithAggregatesFilter<"Message"> | bigint | number
   roomId?: Prisma.BigIntWithAggregatesFilter<"Message"> | bigint | number
+  replicaId?: Prisma.BigIntNullableWithAggregatesFilter<"Message"> | bigint | number | null
+  isDelete?: Prisma.BoolWithAggregatesFilter<"Message"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
   updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Message"> | Date | string | null
+  replyToId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
 }
 
 export type MessageCreateInput = {
   id?: string
   content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
   room: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
+  replyTo?: Prisma.MessageCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.MessageCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoCreateNestedManyWithoutMessageInput
 }
 
@@ -301,18 +351,26 @@ export type MessageUncheckedCreateInput = {
   content?: string | null
   senderId: bigint | number
   roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
+  replies?: Prisma.MessageUncheckedCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutMessageInput
 }
 
 export type MessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
   room?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  replyTo?: Prisma.MessageUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.MessageUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUpdateManyWithoutMessageNestedInput
 }
 
@@ -321,8 +379,12 @@ export type MessageUncheckedUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replies?: Prisma.MessageUncheckedUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutMessageNestedInput
 }
 
@@ -331,13 +393,18 @@ export type MessageCreateManyInput = {
   content?: string | null
   senderId: bigint | number
   roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
 }
 
 export type MessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -347,8 +414,11 @@ export type MessageUncheckedUpdateManyInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MessageListRelationFilter = {
@@ -366,18 +436,27 @@ export type MessageScalarRelationFilter = {
   isNot?: Prisma.MessageWhereInput
 }
 
+export type MessageNullableScalarRelationFilter = {
+  is?: Prisma.MessageWhereInput | null
+  isNot?: Prisma.MessageWhereInput | null
+}
+
 export type MessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  replyToId?: Prisma.SortOrder
 }
 
 export type MessageAvgOrderByAggregateInput = {
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrder
 }
 
 export type MessageMaxOrderByAggregateInput = {
@@ -385,8 +464,11 @@ export type MessageMaxOrderByAggregateInput = {
   content?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  replyToId?: Prisma.SortOrder
 }
 
 export type MessageMinOrderByAggregateInput = {
@@ -394,13 +476,17 @@ export type MessageMinOrderByAggregateInput = {
   content?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  replyToId?: Prisma.SortOrder
 }
 
 export type MessageSumOrderByAggregateInput = {
   senderId?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
+  replicaId?: Prisma.SortOrder
 }
 
 export type MessageCreateNestedManyWithoutSenderInput = {
@@ -501,12 +587,74 @@ export type MessageUncheckedUpdateManyWithoutRoomNestedInput = {
   deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
+export type MessageCreateNestedOneWithoutRepliesInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutRepliesInput, Prisma.MessageUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutRepliesInput
+  connect?: Prisma.MessageWhereUniqueInput
+}
+
+export type MessageCreateNestedManyWithoutReplyToInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput> | Prisma.MessageCreateWithoutReplyToInput[] | Prisma.MessageUncheckedCreateWithoutReplyToInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutReplyToInput | Prisma.MessageCreateOrConnectWithoutReplyToInput[]
+  createMany?: Prisma.MessageCreateManyReplyToInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUncheckedCreateNestedManyWithoutReplyToInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput> | Prisma.MessageCreateWithoutReplyToInput[] | Prisma.MessageUncheckedCreateWithoutReplyToInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutReplyToInput | Prisma.MessageCreateOrConnectWithoutReplyToInput[]
+  createMany?: Prisma.MessageCreateManyReplyToInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUpdateOneWithoutRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutRepliesInput, Prisma.MessageUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutRepliesInput
+  upsert?: Prisma.MessageUpsertWithoutRepliesInput
+  disconnect?: Prisma.MessageWhereInput | boolean
+  delete?: Prisma.MessageWhereInput | boolean
+  connect?: Prisma.MessageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MessageUpdateToOneWithWhereWithoutRepliesInput, Prisma.MessageUpdateWithoutRepliesInput>, Prisma.MessageUncheckedUpdateWithoutRepliesInput>
+}
+
+export type MessageUpdateManyWithoutReplyToNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput> | Prisma.MessageCreateWithoutReplyToInput[] | Prisma.MessageUncheckedCreateWithoutReplyToInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutReplyToInput | Prisma.MessageCreateOrConnectWithoutReplyToInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutReplyToInput | Prisma.MessageUpsertWithWhereUniqueWithoutReplyToInput[]
+  createMany?: Prisma.MessageCreateManyReplyToInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutReplyToInput | Prisma.MessageUpdateWithWhereUniqueWithoutReplyToInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutReplyToInput | Prisma.MessageUpdateManyWithWhereWithoutReplyToInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
+export type MessageUncheckedUpdateManyWithoutReplyToNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput> | Prisma.MessageCreateWithoutReplyToInput[] | Prisma.MessageUncheckedCreateWithoutReplyToInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutReplyToInput | Prisma.MessageCreateOrConnectWithoutReplyToInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutReplyToInput | Prisma.MessageUpsertWithWhereUniqueWithoutReplyToInput[]
+  createMany?: Prisma.MessageCreateManyReplyToInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutReplyToInput | Prisma.MessageUpdateWithWhereUniqueWithoutReplyToInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutReplyToInput | Prisma.MessageUpdateManyWithWhereWithoutReplyToInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
 export type MessageCreateWithoutSenderInput = {
   id?: string
   content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   room: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
+  replyTo?: Prisma.MessageCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.MessageCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoCreateNestedManyWithoutMessageInput
 }
 
@@ -514,8 +662,12 @@ export type MessageUncheckedCreateWithoutSenderInput = {
   id?: string
   content?: string | null
   roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
+  replies?: Prisma.MessageUncheckedCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutMessageInput
 }
 
@@ -553,17 +705,24 @@ export type MessageScalarWhereInput = {
   content?: Prisma.StringNullableFilter<"Message"> | string | null
   senderId?: Prisma.BigIntFilter<"Message"> | bigint | number
   roomId?: Prisma.BigIntFilter<"Message"> | bigint | number
+  replicaId?: Prisma.BigIntNullableFilter<"Message"> | bigint | number | null
+  isDelete?: Prisma.BoolFilter<"Message"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+  replyToId?: Prisma.StringNullableFilter<"Message"> | string | null
 }
 
 export type MessageCreateWithoutImageandvideoInput = {
   id?: string
   content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
   room: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
+  replyTo?: Prisma.MessageCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.MessageCreateNestedManyWithoutReplyToInput
 }
 
 export type MessageUncheckedCreateWithoutImageandvideoInput = {
@@ -571,8 +730,12 @@ export type MessageUncheckedCreateWithoutImageandvideoInput = {
   content?: string | null
   senderId: bigint | number
   roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
+  replies?: Prisma.MessageUncheckedCreateNestedManyWithoutReplyToInput
 }
 
 export type MessageCreateOrConnectWithoutImageandvideoInput = {
@@ -594,10 +757,14 @@ export type MessageUpdateToOneWithWhereWithoutImageandvideoInput = {
 export type MessageUpdateWithoutImageandvideoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
   room?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  replyTo?: Prisma.MessageUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.MessageUpdateManyWithoutReplyToNestedInput
 }
 
 export type MessageUncheckedUpdateWithoutImageandvideoInput = {
@@ -605,16 +772,24 @@ export type MessageUncheckedUpdateWithoutImageandvideoInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replies?: Prisma.MessageUncheckedUpdateManyWithoutReplyToNestedInput
 }
 
 export type MessageCreateWithoutRoomInput = {
   id?: string
   content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
+  replyTo?: Prisma.MessageCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.MessageCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoCreateNestedManyWithoutMessageInput
 }
 
@@ -622,8 +797,12 @@ export type MessageUncheckedCreateWithoutRoomInput = {
   id?: string
   content?: string | null
   senderId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
+  replies?: Prisma.MessageUncheckedCreateNestedManyWithoutReplyToInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutMessageInput
 }
 
@@ -653,20 +832,147 @@ export type MessageUpdateManyWithWhereWithoutRoomInput = {
   data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutRoomInput>
 }
 
+export type MessageCreateWithoutRepliesInput = {
+  id?: string
+  content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  sender: Prisma.UserCreateNestedOneWithoutMessagesInput
+  room: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
+  replyTo?: Prisma.MessageCreateNestedOneWithoutRepliesInput
+  imageandvideo?: Prisma.ImageAndVideoCreateNestedManyWithoutMessageInput
+}
+
+export type MessageUncheckedCreateWithoutRepliesInput = {
+  id?: string
+  content?: string | null
+  senderId: bigint | number
+  roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  replyToId?: string | null
+  imageandvideo?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutMessageInput
+}
+
+export type MessageCreateOrConnectWithoutRepliesInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutRepliesInput, Prisma.MessageUncheckedCreateWithoutRepliesInput>
+}
+
+export type MessageCreateWithoutReplyToInput = {
+  id?: string
+  content?: string | null
+  replicaId?: bigint | number | null
+  isDelete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  sender: Prisma.UserCreateNestedOneWithoutMessagesInput
+  room: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
+  replies?: Prisma.MessageCreateNestedManyWithoutReplyToInput
+  imageandvideo?: Prisma.ImageAndVideoCreateNestedManyWithoutMessageInput
+}
+
+export type MessageUncheckedCreateWithoutReplyToInput = {
+  id?: string
+  content?: string | null
+  senderId: bigint | number
+  roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  replies?: Prisma.MessageUncheckedCreateNestedManyWithoutReplyToInput
+  imageandvideo?: Prisma.ImageAndVideoUncheckedCreateNestedManyWithoutMessageInput
+}
+
+export type MessageCreateOrConnectWithoutReplyToInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput>
+}
+
+export type MessageCreateManyReplyToInputEnvelope = {
+  data: Prisma.MessageCreateManyReplyToInput | Prisma.MessageCreateManyReplyToInput[]
+  skipDuplicates?: boolean
+}
+
+export type MessageUpsertWithoutRepliesInput = {
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutRepliesInput, Prisma.MessageUncheckedUpdateWithoutRepliesInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutRepliesInput, Prisma.MessageUncheckedCreateWithoutRepliesInput>
+  where?: Prisma.MessageWhereInput
+}
+
+export type MessageUpdateToOneWithWhereWithoutRepliesInput = {
+  where?: Prisma.MessageWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutRepliesInput, Prisma.MessageUncheckedUpdateWithoutRepliesInput>
+}
+
+export type MessageUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
+  room?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  replyTo?: Prisma.MessageUpdateOneWithoutRepliesNestedInput
+  imageandvideo?: Prisma.ImageAndVideoUpdateManyWithoutMessageNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageandvideo?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutMessageNestedInput
+}
+
+export type MessageUpsertWithWhereUniqueWithoutReplyToInput = {
+  where: Prisma.MessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutReplyToInput, Prisma.MessageUncheckedUpdateWithoutReplyToInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutReplyToInput, Prisma.MessageUncheckedCreateWithoutReplyToInput>
+}
+
+export type MessageUpdateWithWhereUniqueWithoutReplyToInput = {
+  where: Prisma.MessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutReplyToInput, Prisma.MessageUncheckedUpdateWithoutReplyToInput>
+}
+
+export type MessageUpdateManyWithWhereWithoutReplyToInput = {
+  where: Prisma.MessageScalarWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutReplyToInput>
+}
+
 export type MessageCreateManySenderInput = {
   id?: string
   content?: string | null
   roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
 }
 
 export type MessageUpdateWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   room?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  replyTo?: Prisma.MessageUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.MessageUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUpdateManyWithoutMessageNestedInput
 }
 
@@ -674,8 +980,12 @@ export type MessageUncheckedUpdateWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replies?: Prisma.MessageUncheckedUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutMessageNestedInput
 }
 
@@ -683,24 +993,34 @@ export type MessageUncheckedUpdateManyWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MessageCreateManyRoomInput = {
   id?: string
   content?: string | null
   senderId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  replyToId?: string | null
 }
 
 export type MessageUpdateWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
+  replyTo?: Prisma.MessageUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.MessageUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUpdateManyWithoutMessageNestedInput
 }
 
@@ -708,8 +1028,12 @@ export type MessageUncheckedUpdateWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replies?: Prisma.MessageUncheckedUpdateManyWithoutReplyToNestedInput
   imageandvideo?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutMessageNestedInput
 }
 
@@ -717,6 +1041,57 @@ export type MessageUncheckedUpdateManyWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replyToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type MessageCreateManyReplyToInput = {
+  id?: string
+  content?: string | null
+  senderId: bigint | number
+  roomId: bigint | number
+  replicaId?: bigint | number | null
+  isDelete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+}
+
+export type MessageUpdateWithoutReplyToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
+  room?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  replies?: Prisma.MessageUpdateManyWithoutReplyToNestedInput
+  imageandvideo?: Prisma.ImageAndVideoUpdateManyWithoutMessageNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutReplyToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  replies?: Prisma.MessageUncheckedUpdateManyWithoutReplyToNestedInput
+  imageandvideo?: Prisma.ImageAndVideoUncheckedUpdateManyWithoutMessageNestedInput
+}
+
+export type MessageUncheckedUpdateManyWithoutReplyToInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  roomId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  replicaId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -727,10 +1102,12 @@ export type MessageUncheckedUpdateManyWithoutRoomInput = {
  */
 
 export type MessageCountOutputType = {
+  replies: number
   imageandvideo: number
 }
 
 export type MessageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  replies?: boolean | MessageCountOutputTypeCountRepliesArgs
   imageandvideo?: boolean | MessageCountOutputTypeCountImageandvideoArgs
 }
 
@@ -747,6 +1124,13 @@ export type MessageCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * MessageCountOutputType without action
  */
+export type MessageCountOutputTypeCountRepliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
+/**
+ * MessageCountOutputType without action
+ */
 export type MessageCountOutputTypeCountImageandvideoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ImageAndVideoWhereInput
 }
@@ -757,10 +1141,15 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   content?: boolean
   senderId?: boolean
   roomId?: boolean
+  replicaId?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  replyToId?: boolean
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
+  replies?: boolean | Prisma.Message$repliesArgs<ExtArgs>
   imageandvideo?: boolean | Prisma.Message$imageandvideoArgs<ExtArgs>
   _count?: boolean | Prisma.MessageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
@@ -770,10 +1159,14 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   content?: boolean
   senderId?: boolean
   roomId?: boolean
+  replicaId?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  replyToId?: boolean
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
 export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -781,10 +1174,14 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   content?: boolean
   senderId?: boolean
   roomId?: boolean
+  replicaId?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  replyToId?: boolean
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
 export type MessageSelectScalar = {
@@ -792,24 +1189,31 @@ export type MessageSelectScalar = {
   content?: boolean
   senderId?: boolean
   roomId?: boolean
+  replicaId?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  replyToId?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "senderId" | "roomId" | "createdAt" | "updatedAt", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "senderId" | "roomId" | "replicaId" | "isDelete" | "createdAt" | "updatedAt" | "replyToId", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
+  replies?: boolean | Prisma.Message$repliesArgs<ExtArgs>
   imageandvideo?: boolean | Prisma.Message$imageandvideoArgs<ExtArgs>
   _count?: boolean | Prisma.MessageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
 }
 export type MessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  replyTo?: boolean | Prisma.Message$replyToArgs<ExtArgs>
 }
 
 export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -817,6 +1221,8 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     sender: Prisma.$UserPayload<ExtArgs>
     room: Prisma.$ChatRoomPayload<ExtArgs>
+    replyTo: Prisma.$MessagePayload<ExtArgs> | null
+    replies: Prisma.$MessagePayload<ExtArgs>[]
     imageandvideo: Prisma.$ImageAndVideoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -824,8 +1230,11 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     content: string | null
     senderId: bigint
     roomId: bigint
+    replicaId: bigint | null
+    isDelete: boolean
     createdAt: Date
     updatedAt: Date | null
+    replyToId: string | null
   }, ExtArgs["result"]["message"]>
   composites: {}
 }
@@ -1222,6 +1631,8 @@ export interface Prisma__MessageClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sender<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   room<T extends Prisma.ChatRoomDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ChatRoomDefaultArgs<ExtArgs>>): Prisma.Prisma__ChatRoomClient<runtime.Types.Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  replyTo<T extends Prisma.Message$replyToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Message$replyToArgs<ExtArgs>>): Prisma.Prisma__MessageClient<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  replies<T extends Prisma.Message$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Message$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   imageandvideo<T extends Prisma.Message$imageandvideoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Message$imageandvideoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImageAndVideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1256,8 +1667,11 @@ export interface MessageFieldRefs {
   readonly content: Prisma.FieldRef<"Message", 'String'>
   readonly senderId: Prisma.FieldRef<"Message", 'BigInt'>
   readonly roomId: Prisma.FieldRef<"Message", 'BigInt'>
+  readonly replicaId: Prisma.FieldRef<"Message", 'BigInt'>
+  readonly isDelete: Prisma.FieldRef<"Message", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Message", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Message", 'DateTime'>
+  readonly replyToId: Prisma.FieldRef<"Message", 'String'>
 }
     
 
@@ -1656,6 +2070,49 @@ export type MessageDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Messages to delete.
    */
   limit?: number
+}
+
+/**
+ * Message.replyTo
+ */
+export type Message$replyToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+}
+
+/**
+ * Message.replies
+ */
+export type Message$repliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**

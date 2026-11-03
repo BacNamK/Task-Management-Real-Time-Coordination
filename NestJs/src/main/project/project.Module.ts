@@ -13,5 +13,6 @@ import { ChatRepository } from '../realtime/con1/chat/chat.repository.js';
     UsersRepository,
     ChatRepository,
   ],
+  exports: [projectRepository],
 })
 export class projectModule {}

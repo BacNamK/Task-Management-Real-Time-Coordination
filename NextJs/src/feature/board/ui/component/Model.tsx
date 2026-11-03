@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Info, MoveLeft, Pencil, Plus, Workflow } from 'lucide-react';
 
 import { Create } from '../../../task/ui/form/formTask';
-import { useItemsStore } from '../../../../hooks/workspaceHook';
+import { useItemsStore } from '../../../../hooks/projectHook';
 import EditColumnsBoard from '../../../cycle/ui/form/EditColumnsBoard';
 
 import { addAction } from '../../../cycle/service/cylce.action';

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useItemsStore } from '../../../hooks/workspaceHook';
+import { useItemsStore } from '../../../hooks/projectHook';
 import { FormCreateBoard } from '../../board/ui/form/Create';
 import BoxMember from './component/BoxMember';
 import BoxChat from '../../chat/ui/BoxChat';
@@ -23,6 +23,7 @@ import {
 import type { projectDetail } from '../sevice/project.type';
 
 const PageDetail = ({ data }: { data: projectDetail }) => {
+    console.log(data);
     const paragam = useParams<{ uuid: string }>();
 
     const [activeTab, setActiveTab] = useState<
@@ -321,7 +322,7 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                     )}
                     {activeTab === 'members' && (
                         <div className="h-full min-h-0 overflow-hidden shadow-sm">
-                            <BoxMember members={members} projectUuid={data.uuid} />
+                            <BoxMember members={members} projectId={data.id} />
                         </div>
                     )}
                     {activeTab === 'setting' && (

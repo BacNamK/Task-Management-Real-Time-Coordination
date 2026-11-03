@@ -1,21 +1,62 @@
 'use client';
 
 import { useContext, useEffect, useState, type FormEvent } from 'react';
-import { Send } from 'lucide-react';
 import { AuthContext } from '../../../components/context/ContextProvide';
 import { useSocket } from '../../../lib/socket/socketConText';
 import { type RoomType } from '../service/chat.type';
-import Image from 'next/image';
-type ChatMessage = {
-    id: any;
-    text: string;
-    time: string;
-    sender: any;
+import ChatMessageComposer from './component/ChatMessageComposer';
+import ChatMessageList from './component/ChatMessageList';
+import ChatRoomList from './component/ChatRoomList';
+import type { ChatMessage } from './component/chatMessage.type';
+
+const mergeMessages = (current: ChatMessage[], incoming: ChatMessage[]): ChatMessage[] => {
+    const byId = new Map(current.map((item) => [item.id, item]));
+
+    for (const item of incoming) {
+        const existing = byId.get(item.id);
+        if (existing?.deleted && !item.deleted) {
+            continue;
+        }
+
+        byId.set(
+            item.id,
+            existing?.replyTo &&
+                item.replyTo &&
+                existing.replyTo.id === item.replyTo.id &&
+                existing.replyTo.content === null &&
+                item.replyTo.content !== null
+                ? { ...item, replyTo: existing.replyTo }
+                : item
+        );
+    }
+
+    return [...byId.values()].sort(
+        (left, right) => new Date(left.createAt).getTime() - new Date(right.createAt).getTime()
+    );
 };
+
+const toChatMessage = (data: {
+    id: string;
+    roomUuid: string;
+    content: string;
+    createAt: string;
+    sender: ChatMessage['sender'];
+    replyTo: ChatMessage['replyTo'];
+    deleted: boolean;
+}): ChatMessage => ({
+    id: data.id,
+    roomUuid: data.roomUuid,
+    text: data.content,
+    createAt: data.createAt,
+    sender: data.sender,
+    replyTo: data.replyTo,
+    deleted: data.deleted,
+});
 
 const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
     const [room, setRoom] = useState<RoomType | undefined>(chatRooms[0]);
     const socket = useSocket();
     const user = useContext(AuthContext);
@@ -24,7 +65,61 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
     useEffect(() => {
         if (!socket || !room) return;
 
-        socket.emit('joinRoom', room.uuid);
+        const roomUuid = room.uuid;
+        setMessages([]);
+        setReplyTo(null);
+
+        const onChat = (data: Parameters<typeof toChatMessage>[0]) => {
+            if (data.roomUuid !== roomUuid) return;
+            setMessages((current) => mergeMessages(current, [toChatMessage(data)]));
+        };
+
+        const onMessagesLoaded = (data: {
+            roomUuid: string;
+            messages: Parameters<typeof toChatMessage>[0][];
+        }) => {
+            if (data.roomUuid !== roomUuid) return;
+            setMessages((current) => mergeMessages(current, data.messages.map(toChatMessage)));
+        };
+
+        const onMessageDeleted = (data: { messageId: string; roomUuid: string }) => {
+            if (data.roomUuid !== roomUuid) return;
+            setMessages((current) =>
+                current.map((item) => ({
+                    ...item,
+                    ...(item.id === data.messageId
+                        ? { text: 'Tin nhắn đã bị xóa', deleted: true }
+                        : {}),
+                    ...(item.replyTo?.id === data.messageId
+                        ? { replyTo: { ...item.replyTo, content: null } }
+                        : {}),
+                }))
+            );
+            setReplyTo((current) => (current?.id === data.messageId ? null : current));
+        };
+
+        const joinAndLoadMessages = () => {
+            socket.emit('joinRoom', roomUuid);
+            socket.emit('loadMessages', { roomUuid });
+        };
+
+        socket.on('chats', onChat);
+        socket.on('messagesLoaded', onMessagesLoaded);
+        socket.on('messageDeleted', onMessageDeleted);
+        socket.on('connect', joinAndLoadMessages);
+        if (socket.connected) {
+            joinAndLoadMessages();
+        }
+
+        return () => {
+            socket.off('connect', joinAndLoadMessages);
+            if (socket.connected) {
+                socket.emit('leaveRoom', roomUuid);
+            }
+            socket.off('chats', onChat);
+            socket.off('messagesLoaded', onMessagesLoaded);
+            socket.off('messageDeleted', onMessageDeleted);
+        };
     }, [socket, room]);
 
     const sendMessage = (event: FormEvent<HTMLFormElement>) => {
@@ -32,140 +127,40 @@ const BoxChat = ({ chatRooms }: { chatRooms: RoomType[] }) => {
         const text = message.trim();
         if (!text || !socket || !room) return;
 
-        setMessages((current) => [
-            ...current,
-            {
-                id: currentUser.id,
-                text,
-                sender: currentUser,
-                time: new Intl.DateTimeFormat(undefined, {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                }).format(new Date()),
-            },
-        ]);
-        setMessage('');
-
         const data = {
             content: text,
             roomUuid: room.uuid,
+            replyToId: replyTo?.id ?? null,
         };
 
         socket.emit('chats', data);
+        setMessage('');
+        setReplyTo(null);
     };
 
-    useEffect(() => {
-        if (!socket) return;
-
-        const onChat = (data: { content: string; createAt: string; sender: any }) => {
-            console.log(data);
-            setMessages((current) => [
-                ...current,
-                {
-                    id: data.sender.id,
-                    text: data.content,
-                    sender: data.sender,
-                    time: new Intl.DateTimeFormat(undefined, {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                    }).format(new Date(data.createAt)),
-                },
-            ]);
-        };
-
-        socket.on('chats', onChat);
-        return () => {
-            socket.off('chats', onChat);
-        };
-    }, [socket]);
+    const deleteMessage = (messageId: string) => {
+        if (!socket || !room) return;
+        socket.emit('deleteMessage', { messageId, roomUuid: room.uuid });
+    };
 
     return (
         <div className="w-full h-full flex">
             <section className="w-3/4 flex h-full min-h-0 flex-col overflow-hidden">
-                <div
-                    className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto bg-slate-50/70 px-4 py-5 sm:px-6"
-                    aria-live="polite"
-                    aria-label="Chat messages"
-                >
-                    {messages.map((item, index: number) => (
-                        <div key={index} className="flex w-full">
-                            {String(item.id) === currentUser.id ? (
-                                <div className="flex w-full items-end justify-end gap-2">
-                                    <div className="max-w-[75%] text-right">
-                                        <span className="mb-1 block text-xs text-slate-400">
-                                            {item.time}
-                                        </span>
-                                        <p className="whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-indigo-600 px-4 py-2.5 text-left text-sm leading-5 text-white shadow-sm">
-                                            {item.text}
-                                        </p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex w-full items-end justify-start gap-2">
-                                    <Image
-                                        src={item.sender.avatar}
-                                        height={32}
-                                        width={32}
-                                        alt=""
-                                        className="shrink-0 rounded-full object-cover"
-                                    ></Image>
-                                    <div className="max-w-[75%]">
-                                        <span className="mb-1 block text-xs text-slate-400">
-                                            {item.time}
-                                        </span>
-                                        <p className="whitespace-pre-wrap break-words rounded-2xl rounded-bl-md bg-white px-4 py-2.5 text-sm leading-5 text-slate-700 shadow-sm ring-1 ring-slate-200">
-                                            {item.text}
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                <form onSubmit={sendMessage} className="shrink-0 p-3 sm:p-4">
-                    <label htmlFor="chat-message" className="sr-only">
-                        Type a message
-                    </label>
-                    <div className="flex items-end gap-2 border-b-2 p-0.5 transition ">
-                        <textarea
-                            id="chat-message"
-                            value={message}
-                            onChange={(event) => setMessage(event.target.value)}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter' && !event.shiftKey) {
-                                    event.preventDefault();
-                                    event.currentTarget.form?.requestSubmit();
-                                }
-                            }}
-                            placeholder="Write a message..."
-                            rows={1}
-                            className="max-h-28 min-h-10 min-w-0 flex-1 resize-y bg-transparent px-2.5 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400"
-                        />
-                        <button
-                            type="submit"
-                            disabled={!message.trim()}
-                            aria-label="Send message"
-                            className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
-                        >
-                            <Send size={17} aria-hidden="true" />
-                        </button>
-                    </div>
-                </form>
+                <ChatMessageList
+                    messages={messages}
+                    currentUserId={currentUser?.id}
+                    onReply={setReplyTo}
+                    onDelete={deleteMessage}
+                />
+                <ChatMessageComposer
+                    message={message}
+                    replyTo={replyTo}
+                    onMessageChange={setMessage}
+                    onCancelReply={() => setReplyTo(null)}
+                    onSubmit={sendMessage}
+                />
             </section>
-            <section className="w-1/4 h-full p-4">
-                <div className="flex h-full w-full flex-col gap-2 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200">
-                    {chatRooms.map((item) => (
-                        <div
-                            key={item.id}
-                            onClick={() => setRoom(item)}
-                            className={`flex h-10 cursor-pointer items-center rounded-xl px-3 text-sm font-medium text-slate-600 transition-colors ${room?.id === item.id ? 'bg-amber-100 ' : ''}`}
-                        >
-                            <span># {item.name}</span>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            <ChatRoomList chatRooms={chatRooms} selectedRoom={room} onSelectRoom={setRoom} />
         </div>
     );
 };

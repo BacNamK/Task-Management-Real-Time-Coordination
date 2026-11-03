@@ -105,6 +105,7 @@ export class projectRepository {
         uuid: uuid,
       },
       select: {
+        id: true,
         uuid: true,
         name: true,
         createdAt: true,
@@ -149,6 +150,7 @@ export class projectRepository {
     if (!result) return null;
 
     return {
+      id: result.id.toString(),
       uuid: result.uuid,
       name: result.name,
       createdAt: result.createdAt,
@@ -232,5 +234,24 @@ export class projectRepository {
       where: { uuid: projectUuid },
       select: { id: true },
     });
+  }
+
+  async returnProjectMember(
+    userId: string,
+    projectId: string,
+  ): Promise<string[]> {
+    const userIdBigInt = BigInt(userId);
+    const listUserId = await prisma.projectMember.findMany({
+      where: { projectId: BigInt(projectId) },
+      select: {
+        userId: true,
+      },
+    });
+
+    if (!listUserId.some((member) => member.userId === userIdBigInt)) {
+      return [];
+    }
+
+    return listUserId.map((i) => i.userId.toString());
   }
 }

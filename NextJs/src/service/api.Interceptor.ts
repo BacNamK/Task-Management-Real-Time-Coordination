@@ -2,6 +2,7 @@ import 'server-only';
 
 import { getServiceToken } from './tokenServer.auth';
 import { getSessionUser } from '../lib/auth/auth.session';
+import { redirect } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PRIVATE_API_URL;
 
@@ -25,7 +26,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     const userId = session?.user?.id;
 
     if (!userId) {
-        throw new Error('User ID is not available. Please ensure the user is authenticated.');
+        redirect('/login');
     }
 
     const response = await fetch(`${BASE_URL}${endpoint}`, {

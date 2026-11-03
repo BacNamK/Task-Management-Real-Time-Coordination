@@ -1,4 +1,5 @@
 export interface project {
+    id: String;
     uuid: string;
     name: string;
     createdAt: Date;

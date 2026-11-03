@@ -2,6 +2,36 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@layer utilities {
+  /* Targets the entire scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px; /* Adjust width as needed */
+  }
+
+  /* Targets the scrollbar track (background) */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white rounded-full; /* Use Tailwind utilities here */
+  }
+
+  /* Targets the scrollbar thumb (draggable handle) */
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-500 rounded-full; /* Use Tailwind utilities here */
+  }
+
+  /* Optional: Hover state for the thumb */
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-black;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .form-switch-enter {
+    animation: formSwitchEnter 280ms ease-out;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @keyframes rotate-and-pause {

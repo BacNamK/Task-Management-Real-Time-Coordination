@@ -10,6 +10,7 @@ export class UserAction {
         if (!name) {
             throw new Error('Name is required');
         }
-        return await api.get(`${USER_API_PATH}/${name}`);
+        const params = new URLSearchParams({ value: name });
+        return await api.get(`${USER_API_PATH}/field?${params.toString()}`);
     }
 }

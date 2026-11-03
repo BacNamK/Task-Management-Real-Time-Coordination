@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useItemsStore } from '../../../../hooks/workspaceHook';
+import { useItemsStore } from '../../../../hooks/projectHook';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarDays, Columns3, PanelsTopLeft, UsersRound } from 'lucide-react';

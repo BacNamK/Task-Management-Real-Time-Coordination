@@ -27,11 +27,13 @@ export async function create(name: string) {
 }
 
 export async function checkMember(uuid: string, userName: string) {
+    const params = new URLSearchParams({ projectUuid: uuid, userName });
     return api.get<projectMemberSearchResult>(
-        `${project_API_PATH}/member/${encodeURIComponent(uuid)}/${encodeURIComponent(userName)}`
+        `${project_API_PATH}/checkMember?${params.toString()}`
     );
 }
 
 export async function addMember(id: string, userId: string) {
-    return api.post(`${project_API_PATH}/member/add/${id}/${userId}`);
+    const params = new URLSearchParams({ projectId: id, userId });
+    return api.post(`${project_API_PATH}/addMember?${params.toString()}`);
 }

@@ -41,6 +41,7 @@ export type BoardMinAggregateOutputType = {
   title: string | null
   projectId: bigint | null
   description: string | null
+  isDelete: boolean | null
   createdAt: Date | null
 }
 
@@ -49,6 +50,7 @@ export type BoardMaxAggregateOutputType = {
   title: string | null
   projectId: bigint | null
   description: string | null
+  isDelete: boolean | null
   createdAt: Date | null
 }
 
@@ -57,6 +59,7 @@ export type BoardCountAggregateOutputType = {
   title: number
   projectId: number
   description: number
+  isDelete: number
   createdAt: number
   _all: number
 }
@@ -77,6 +80,7 @@ export type BoardMinAggregateInputType = {
   title?: true
   projectId?: true
   description?: true
+  isDelete?: true
   createdAt?: true
 }
 
@@ -85,6 +89,7 @@ export type BoardMaxAggregateInputType = {
   title?: true
   projectId?: true
   description?: true
+  isDelete?: true
   createdAt?: true
 }
 
@@ -93,6 +98,7 @@ export type BoardCountAggregateInputType = {
   title?: true
   projectId?: true
   description?: true
+  isDelete?: true
   createdAt?: true
   _all?: true
 }
@@ -188,6 +194,7 @@ export type BoardGroupByOutputType = {
   title: string
   projectId: bigint
   description: string | null
+  isDelete: boolean
   createdAt: Date
   _count: BoardCountAggregateOutputType | null
   _avg: BoardAvgAggregateOutputType | null
@@ -219,6 +226,7 @@ export type BoardWhereInput = {
   title?: Prisma.StringFilter<"Board"> | string
   projectId?: Prisma.BigIntFilter<"Board"> | bigint | number
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  isDelete?: Prisma.BoolFilter<"Board"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.projectWhereInput>
   tasks?: Prisma.TaskListRelationFilter
@@ -230,6 +238,7 @@ export type BoardOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   project?: Prisma.projectOrderByWithRelationInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
@@ -244,6 +253,7 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Board"> | string
   projectId?: Prisma.BigIntFilter<"Board"> | bigint | number
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  isDelete?: Prisma.BoolFilter<"Board"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.projectWhereInput>
   tasks?: Prisma.TaskListRelationFilter
@@ -255,6 +265,7 @@ export type BoardOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.BoardCountOrderByAggregateInput
   _avg?: Prisma.BoardAvgOrderByAggregateInput
@@ -271,6 +282,7 @@ export type BoardScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Board"> | string
   projectId?: Prisma.BigIntWithAggregatesFilter<"Board"> | bigint | number
   description?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
+  isDelete?: Prisma.BoolWithAggregatesFilter<"Board"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
 }
 
@@ -278,6 +290,7 @@ export type BoardCreateInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutBoardsInput
   tasks?: Prisma.TaskCreateNestedManyWithoutBoardInput
@@ -289,6 +302,7 @@ export type BoardUncheckedCreateInput = {
   title: string
   projectId: bigint | number
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutBoardInput
   cycles?: Prisma.CycleUncheckedCreateNestedManyWithoutBoardInput
@@ -298,6 +312,7 @@ export type BoardUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutBoardsNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutBoardNestedInput
@@ -309,6 +324,7 @@ export type BoardUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutBoardNestedInput
   cycles?: Prisma.CycleUncheckedUpdateManyWithoutBoardNestedInput
@@ -319,6 +335,7 @@ export type BoardCreateManyInput = {
   title: string
   projectId: bigint | number
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
 }
 
@@ -326,6 +343,7 @@ export type BoardUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -334,6 +352,7 @@ export type BoardUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -352,6 +371,7 @@ export type BoardCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -365,6 +385,7 @@ export type BoardMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -373,6 +394,7 @@ export type BoardMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -460,6 +482,7 @@ export type BoardCreateWithoutProjectInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   tasks?: Prisma.TaskCreateNestedManyWithoutBoardInput
   cycles?: Prisma.CycleCreateNestedManyWithoutBoardInput
@@ -469,6 +492,7 @@ export type BoardUncheckedCreateWithoutProjectInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutBoardInput
   cycles?: Prisma.CycleUncheckedCreateNestedManyWithoutBoardInput
@@ -508,6 +532,7 @@ export type BoardScalarWhereInput = {
   title?: Prisma.StringFilter<"Board"> | string
   projectId?: Prisma.BigIntFilter<"Board"> | bigint | number
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  isDelete?: Prisma.BoolFilter<"Board"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
 }
 
@@ -515,6 +540,7 @@ export type BoardCreateWithoutCyclesInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutBoardsInput
   tasks?: Prisma.TaskCreateNestedManyWithoutBoardInput
@@ -525,6 +551,7 @@ export type BoardUncheckedCreateWithoutCyclesInput = {
   title: string
   projectId: bigint | number
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -549,6 +576,7 @@ export type BoardUpdateWithoutCyclesInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutBoardsNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutBoardNestedInput
@@ -559,6 +587,7 @@ export type BoardUncheckedUpdateWithoutCyclesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -567,6 +596,7 @@ export type BoardCreateWithoutTasksInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutBoardsInput
   cycles?: Prisma.CycleCreateNestedManyWithoutBoardInput
@@ -577,6 +607,7 @@ export type BoardUncheckedCreateWithoutTasksInput = {
   title: string
   projectId: bigint | number
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
   cycles?: Prisma.CycleUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -601,6 +632,7 @@ export type BoardUpdateWithoutTasksInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutBoardsNestedInput
   cycles?: Prisma.CycleUpdateManyWithoutBoardNestedInput
@@ -611,6 +643,7 @@ export type BoardUncheckedUpdateWithoutTasksInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cycles?: Prisma.CycleUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -619,6 +652,7 @@ export type BoardCreateManyProjectInput = {
   id?: bigint | number
   title: string
   description?: string | null
+  isDelete?: boolean
   createdAt?: Date | string
 }
 
@@ -626,6 +660,7 @@ export type BoardUpdateWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUpdateManyWithoutBoardNestedInput
   cycles?: Prisma.CycleUpdateManyWithoutBoardNestedInput
@@ -635,6 +670,7 @@ export type BoardUncheckedUpdateWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutBoardNestedInput
   cycles?: Prisma.CycleUncheckedUpdateManyWithoutBoardNestedInput
@@ -644,6 +680,7 @@ export type BoardUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -692,6 +729,7 @@ export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   title?: boolean
   projectId?: boolean
   description?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   project?: boolean | Prisma.projectDefaultArgs<ExtArgs>
   tasks?: boolean | Prisma.Board$tasksArgs<ExtArgs>
@@ -704,6 +742,7 @@ export type BoardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   title?: boolean
   projectId?: boolean
   description?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   project?: boolean | Prisma.projectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["board"]>
@@ -713,6 +752,7 @@ export type BoardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   title?: boolean
   projectId?: boolean
   description?: boolean
+  isDelete?: boolean
   createdAt?: boolean
   project?: boolean | Prisma.projectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["board"]>
@@ -722,10 +762,11 @@ export type BoardSelectScalar = {
   title?: boolean
   projectId?: boolean
   description?: boolean
+  isDelete?: boolean
   createdAt?: boolean
 }
 
-export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "projectId" | "description" | "createdAt", ExtArgs["result"]["board"]>
+export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "projectId" | "description" | "isDelete" | "createdAt", ExtArgs["result"]["board"]>
 export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.projectDefaultArgs<ExtArgs>
   tasks?: boolean | Prisma.Board$tasksArgs<ExtArgs>
@@ -751,6 +792,7 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     title: string
     projectId: bigint
     description: string | null
+    isDelete: boolean
     createdAt: Date
   }, ExtArgs["result"]["board"]>
   composites: {}
@@ -1182,6 +1224,7 @@ export interface BoardFieldRefs {
   readonly title: Prisma.FieldRef<"Board", 'String'>
   readonly projectId: Prisma.FieldRef<"Board", 'BigInt'>
   readonly description: Prisma.FieldRef<"Board", 'String'>
+  readonly isDelete: Prisma.FieldRef<"Board", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Board", 'DateTime'>
 }
     

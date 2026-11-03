@@ -36,8 +36,8 @@ export class projectController {
   @Post('/addMember')
   addMember(
     @Query('projectId') projectId: string,
-    @Query('userName') userName: string,
+    @Query('userId') userId: string,
   ) {
-    return this.Service.addMember(BigInt(projectId), userName);
+    return this.Service.addMember(BigInt(projectId), userId);
   }
 }

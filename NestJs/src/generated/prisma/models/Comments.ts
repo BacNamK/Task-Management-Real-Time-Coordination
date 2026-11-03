@@ -41,6 +41,7 @@ export type CommentsSumAggregateOutputType = {
 export type CommentsMinAggregateOutputType = {
   id: bigint | null
   content: string | null
+  isDelete: boolean | null
   taskId: bigint | null
   sendById: bigint | null
 }
@@ -48,6 +49,7 @@ export type CommentsMinAggregateOutputType = {
 export type CommentsMaxAggregateOutputType = {
   id: bigint | null
   content: string | null
+  isDelete: boolean | null
   taskId: bigint | null
   sendById: bigint | null
 }
@@ -55,6 +57,7 @@ export type CommentsMaxAggregateOutputType = {
 export type CommentsCountAggregateOutputType = {
   id: number
   content: number
+  isDelete: number
   taskId: number
   sendById: number
   _all: number
@@ -76,6 +79,7 @@ export type CommentsSumAggregateInputType = {
 export type CommentsMinAggregateInputType = {
   id?: true
   content?: true
+  isDelete?: true
   taskId?: true
   sendById?: true
 }
@@ -83,6 +87,7 @@ export type CommentsMinAggregateInputType = {
 export type CommentsMaxAggregateInputType = {
   id?: true
   content?: true
+  isDelete?: true
   taskId?: true
   sendById?: true
 }
@@ -90,6 +95,7 @@ export type CommentsMaxAggregateInputType = {
 export type CommentsCountAggregateInputType = {
   id?: true
   content?: true
+  isDelete?: true
   taskId?: true
   sendById?: true
   _all?: true
@@ -184,6 +190,7 @@ export type CommentsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type CommentsGroupByOutputType = {
   id: bigint
   content: string
+  isDelete: boolean
   taskId: bigint
   sendById: bigint
   _count: CommentsCountAggregateOutputType | null
@@ -214,6 +221,7 @@ export type CommentsWhereInput = {
   NOT?: Prisma.CommentsWhereInput | Prisma.CommentsWhereInput[]
   id?: Prisma.BigIntFilter<"Comments"> | bigint | number
   content?: Prisma.StringFilter<"Comments"> | string
+  isDelete?: Prisma.BoolFilter<"Comments"> | boolean
   taskId?: Prisma.BigIntFilter<"Comments"> | bigint | number
   sendById?: Prisma.BigIntFilter<"Comments"> | bigint | number
   task?: Prisma.XOR<Prisma.TaskScalarRelationFilter, Prisma.TaskWhereInput>
@@ -223,6 +231,7 @@ export type CommentsWhereInput = {
 export type CommentsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   taskId?: Prisma.SortOrder
   sendById?: Prisma.SortOrder
   task?: Prisma.TaskOrderByWithRelationInput
@@ -235,6 +244,7 @@ export type CommentsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CommentsWhereInput[]
   NOT?: Prisma.CommentsWhereInput | Prisma.CommentsWhereInput[]
   content?: Prisma.StringFilter<"Comments"> | string
+  isDelete?: Prisma.BoolFilter<"Comments"> | boolean
   taskId?: Prisma.BigIntFilter<"Comments"> | bigint | number
   sendById?: Prisma.BigIntFilter<"Comments"> | bigint | number
   task?: Prisma.XOR<Prisma.TaskScalarRelationFilter, Prisma.TaskWhereInput>
@@ -244,6 +254,7 @@ export type CommentsWhereUniqueInput = Prisma.AtLeast<{
 export type CommentsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   taskId?: Prisma.SortOrder
   sendById?: Prisma.SortOrder
   _count?: Prisma.CommentsCountOrderByAggregateInput
@@ -259,6 +270,7 @@ export type CommentsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CommentsScalarWhereWithAggregatesInput | Prisma.CommentsScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"Comments"> | bigint | number
   content?: Prisma.StringWithAggregatesFilter<"Comments"> | string
+  isDelete?: Prisma.BoolWithAggregatesFilter<"Comments"> | boolean
   taskId?: Prisma.BigIntWithAggregatesFilter<"Comments"> | bigint | number
   sendById?: Prisma.BigIntWithAggregatesFilter<"Comments"> | bigint | number
 }
@@ -266,6 +278,7 @@ export type CommentsScalarWhereWithAggregatesInput = {
 export type CommentsCreateInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   task: Prisma.TaskCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
 }
@@ -273,6 +286,7 @@ export type CommentsCreateInput = {
 export type CommentsUncheckedCreateInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   taskId: bigint | number
   sendById: bigint | number
 }
@@ -280,6 +294,7 @@ export type CommentsUncheckedCreateInput = {
 export type CommentsUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   task?: Prisma.TaskUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
 }
@@ -287,6 +302,7 @@ export type CommentsUpdateInput = {
 export type CommentsUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   taskId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   sendById?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
@@ -294,6 +310,7 @@ export type CommentsUncheckedUpdateInput = {
 export type CommentsCreateManyInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   taskId: bigint | number
   sendById: bigint | number
 }
@@ -301,11 +318,13 @@ export type CommentsCreateManyInput = {
 export type CommentsUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type CommentsUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   taskId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   sendById?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
@@ -323,6 +342,7 @@ export type CommentsOrderByRelationAggregateInput = {
 export type CommentsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   taskId?: Prisma.SortOrder
   sendById?: Prisma.SortOrder
 }
@@ -336,6 +356,7 @@ export type CommentsAvgOrderByAggregateInput = {
 export type CommentsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   taskId?: Prisma.SortOrder
   sendById?: Prisma.SortOrder
 }
@@ -343,6 +364,7 @@ export type CommentsMaxOrderByAggregateInput = {
 export type CommentsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  isDelete?: Prisma.SortOrder
   taskId?: Prisma.SortOrder
   sendById?: Prisma.SortOrder
 }
@@ -440,12 +462,14 @@ export type CommentsUncheckedUpdateManyWithoutTaskNestedInput = {
 export type CommentsCreateWithoutUserInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   task: Prisma.TaskCreateNestedOneWithoutCommentsInput
 }
 
 export type CommentsUncheckedCreateWithoutUserInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   taskId: bigint | number
 }
 
@@ -481,6 +505,7 @@ export type CommentsScalarWhereInput = {
   NOT?: Prisma.CommentsScalarWhereInput | Prisma.CommentsScalarWhereInput[]
   id?: Prisma.BigIntFilter<"Comments"> | bigint | number
   content?: Prisma.StringFilter<"Comments"> | string
+  isDelete?: Prisma.BoolFilter<"Comments"> | boolean
   taskId?: Prisma.BigIntFilter<"Comments"> | bigint | number
   sendById?: Prisma.BigIntFilter<"Comments"> | bigint | number
 }
@@ -488,12 +513,14 @@ export type CommentsScalarWhereInput = {
 export type CommentsCreateWithoutTaskInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
 }
 
 export type CommentsUncheckedCreateWithoutTaskInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   sendById: bigint | number
 }
 
@@ -526,48 +553,56 @@ export type CommentsUpdateManyWithWhereWithoutTaskInput = {
 export type CommentsCreateManyUserInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   taskId: bigint | number
 }
 
 export type CommentsUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   task?: Prisma.TaskUpdateOneRequiredWithoutCommentsNestedInput
 }
 
 export type CommentsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   taskId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
 
 export type CommentsUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   taskId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
 
 export type CommentsCreateManyTaskInput = {
   id?: bigint | number
   content: string
+  isDelete?: boolean
   sendById: bigint | number
 }
 
 export type CommentsUpdateWithoutTaskInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
 }
 
 export type CommentsUncheckedUpdateWithoutTaskInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendById?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
 
 export type CommentsUncheckedUpdateManyWithoutTaskInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendById?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
 }
 
@@ -576,6 +611,7 @@ export type CommentsUncheckedUpdateManyWithoutTaskInput = {
 export type CommentsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   content?: boolean
+  isDelete?: boolean
   taskId?: boolean
   sendById?: boolean
   task?: boolean | Prisma.TaskDefaultArgs<ExtArgs>
@@ -585,6 +621,7 @@ export type CommentsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type CommentsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   content?: boolean
+  isDelete?: boolean
   taskId?: boolean
   sendById?: boolean
   task?: boolean | Prisma.TaskDefaultArgs<ExtArgs>
@@ -594,6 +631,7 @@ export type CommentsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type CommentsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   content?: boolean
+  isDelete?: boolean
   taskId?: boolean
   sendById?: boolean
   task?: boolean | Prisma.TaskDefaultArgs<ExtArgs>
@@ -603,11 +641,12 @@ export type CommentsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type CommentsSelectScalar = {
   id?: boolean
   content?: boolean
+  isDelete?: boolean
   taskId?: boolean
   sendById?: boolean
 }
 
-export type CommentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "taskId" | "sendById", ExtArgs["result"]["comments"]>
+export type CommentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "isDelete" | "taskId" | "sendById", ExtArgs["result"]["comments"]>
 export type CommentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   task?: boolean | Prisma.TaskDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -630,6 +669,7 @@ export type $CommentsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
     content: string
+    isDelete: boolean
     taskId: bigint
     sendById: bigint
   }, ExtArgs["result"]["comments"]>
@@ -1059,6 +1099,7 @@ export interface Prisma__CommentsClient<T, Null = never, ExtArgs extends runtime
 export interface CommentsFieldRefs {
   readonly id: Prisma.FieldRef<"Comments", 'BigInt'>
   readonly content: Prisma.FieldRef<"Comments", 'String'>
+  readonly isDelete: Prisma.FieldRef<"Comments", 'Boolean'>
   readonly taskId: Prisma.FieldRef<"Comments", 'BigInt'>
   readonly sendById: Prisma.FieldRef<"Comments", 'BigInt'>
 }
