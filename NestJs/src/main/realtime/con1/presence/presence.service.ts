@@ -49,20 +49,24 @@ export class PresenceService {
       throw new WsException('INVALID_PROJECT_ID');
     }
 
-    const result = await this.ProjectRepository.returnProjectMember(
-      userId,
-      normalizedProjectId,
-    );
+    let roomProject = this.CaheManage.get(`projectRoom:${projectId}`);
 
-    const presenceByUser = await Promise.all(
-      result.map(async (memberId) => ({
-        memberId,
-        isOnline: (await this.CaheManage.get(`presence:${memberId}`)) != null,
-      })),
-    );
+    if (!roomProject) {
+      const result: { users: string[]; project: string[] } =
+        await this.ProjectRepository.returnProjectMember(normalizedProjectId);
 
-    return presenceByUser
-      .filter(({ isOnline }) => isOnline)
-      .map(({ memberId }) => memberId);
+      const presenceByUser = await Promise.all(
+        result.users.map(async (memberId) => ({
+          memberId,
+          isOnline: (await this.CaheManage.get(`presence:${memberId}`)) != null,
+        })),
+      );
+
+      roomProject = this.CaheManage.set(`projectRoom:${projectId}`, []);
+
+      return presenceByUser
+        .filter(({ isOnline }) => isOnline)
+        .map(({ memberId }) => memberId);
+    }
   }
 }

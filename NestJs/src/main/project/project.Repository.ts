@@ -237,21 +237,21 @@ export class projectRepository {
   }
 
   async returnProjectMember(
-    userId: string,
     projectId: string,
-  ): Promise<string[]> {
-    const userIdBigInt = BigInt(userId);
-    const listUserId = await prisma.projectMember.findMany({
+  ): Promise<{ users: string[]; project: string[] }> {
+    const list = await prisma.projectMember.findMany({
       where: { projectId: BigInt(projectId) },
       select: {
         userId: true,
+        projectId: true,
       },
     });
 
-    if (!listUserId.some((member) => member.userId === userIdBigInt)) {
-      return [];
-    }
+    const item: { users: string[]; project: string[] } = {
+      users: list.map((item) => String(item.userId)),
+      project: list.map((item) => String(item.projectId)),
+    };
 
-    return listUserId.map((i) => i.userId.toString());
+    return item;
   }
 }
