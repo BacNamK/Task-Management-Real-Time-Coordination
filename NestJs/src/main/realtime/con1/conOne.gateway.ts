@@ -11,6 +11,7 @@ import type { Namespace, Socket } from 'socket.io';
 import { WsAuthGuard } from '../../../auth/ws.auth.guard.js';
 import { PresenceService } from './presence/presence.service.js';
 import { UserId } from '../../../common/decorators/decorator-id.js';
+import { projectRepository } from '../../project/project.Repository.js';
 
 // kết nối 1 sử lí các sự kiện thông báo,trực tuyến,tin nhắn,gọi
 
@@ -27,6 +28,7 @@ export class ConnectionOne
   constructor(
     private readonly wsAuthGuard: WsAuthGuard,
     private readonly presenceService: PresenceService,
+    private readonly projectRepository: projectRepository,
   ) {}
 
   @WebSocketServer()
@@ -53,5 +55,11 @@ export class ConnectionOne
         (socket) => socket.data.user?.userId === userId,
       );
     await this.presenceService.clearPresence(client, hasOtherConnections);
+
+    const projectUuids =
+      typeof userId === 'string'
+        ? await this.projectRepository.returnProjectMemberUuid(userId)
+        : [];
+    this.server.to(projectUuids).emit('userOff', userId);
   }
 }

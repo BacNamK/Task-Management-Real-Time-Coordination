@@ -24,7 +24,6 @@ export const BoxMember = ({
 }) => {
     const [memberSearch, setMemberSearch] = useState('');
     const [searchResult, setSearchResult] = useState<projectMemberSearchResult | null>(null);
-    const [online, setOnline] = useState<string[]>(actives);
 
     const showMessage = (message: string) => {
         setSearchResult(message);
@@ -79,11 +78,11 @@ export const BoxMember = ({
     });
     const matchingUser = isMemberMatch(searchResult) ? searchResult : null;
 
-    const getData = (data: any) => {
-        setOnline(data);
+    const setstatus = (id: string) => {
+        console.log(actives.includes(id));
+        if (actives.includes(id)) return true;
+        return false;
     };
-
-    const setstatus = (id: string) => online.includes(id);
 
     return (
         <div className="boxMember-project flex h-full min-h-0 w-full flex-col gap-5 overflow-y-auto sm:gap-6 sm:p-2">
@@ -149,6 +148,7 @@ export const BoxMember = ({
                                             </p>
                                             <p className="mt-0.5 text-xs text-slate-500">
                                                 {member.role ?? 'Member'}
+                                                {member.id}
                                             </p>
                                         </div>
                                     </div>

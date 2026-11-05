@@ -35,9 +35,9 @@ export class PresenceGateway {
     await this.presenceService.refreshPresence(client);
     await client.join(projectUuid);
 
-    const userActives =
+    const snapshort =
       await this.presenceService.getPersenceProject(projectUuid);
-    this.server.to(projectUuid).emit('userActives', userActives);
+    client.emit('project:snapshort', snapshort);
   }
 
   @SubscribeMessage('leaveProject')

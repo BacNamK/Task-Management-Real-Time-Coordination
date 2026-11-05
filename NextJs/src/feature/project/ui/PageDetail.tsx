@@ -59,15 +59,25 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleUserActives = (userId: any) => {
+        const handleSnapshort = (data: any) => {
+            setUserActiveId(data);
+        };
+
+        const handleUserActive = (userId: string) => {
             setUserActiveId((prev) => (prev.includes(userId) ? prev : [...prev, userId]));
+        };
+
+        const hanldeUserOff = (userId: string) => {
+            setUserActiveId((prev) => prev.filter((id) => id !== userId));
         };
 
         const joinProject = () => {
             socket.emit('joinProject', data.uuid);
         };
 
-        socket.on('userActives', handleUserActives);
+        socket.on('project:snapshort', handleSnapshort);
+        socket.on('userActive', handleUserActive);
+        socket.on('userOff', hanldeUserOff);
         socket.on('connect', joinProject);
 
         if (socket.connected) {
@@ -79,7 +89,9 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
             if (socket.connected) {
                 socket.emit('leaveProject', data.uuid);
             }
-            socket.off('userActives', handleUserActives);
+            socket.off('userActive', handleUserActive);
+            socket.off('userOff', hanldeUserOff);
+            socket.off('project:snapshort', handleSnapshort);
         };
     }, [socket, data.uuid]);
 
