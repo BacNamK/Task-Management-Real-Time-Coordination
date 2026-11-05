@@ -21,9 +21,9 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import type { projectDetail } from '../sevice/project.type';
+import { useSocket } from '../../../lib/socket/socketConText';
 
 const PageDetail = ({ data }: { data: projectDetail }) => {
-    console.log(data);
     const paragam = useParams<{ uuid: string }>();
 
     const [activeTab, setActiveTab] = useState<
@@ -51,6 +51,37 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
         { id: 'members', label: 'Members', icon: UsersRound },
         { id: 'setting', label: 'Settings', icon: Settings },
     ];
+
+    const [userActiveIds, setUserActiveId] = useState<string[]>([]);
+
+    const socket = useSocket();
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleUserActives = (userId: any) => {
+            setUserActiveId((prev) => (prev.includes(userId) ? prev : [...prev, userId]));
+        };
+
+        const joinProject = () => {
+            socket.emit('joinProject', data.uuid);
+        };
+
+        socket.on('userActives', handleUserActives);
+        socket.on('connect', joinProject);
+
+        if (socket.connected) {
+            joinProject();
+        }
+
+        return () => {
+            socket.off('connect', joinProject);
+            if (socket.connected) {
+                socket.emit('leaveProject', data.uuid);
+            }
+            socket.off('userActives', handleUserActives);
+        };
+    }, [socket, data.uuid]);
 
     return (
         <div className="PageDetail-project flex h-full min-h-0 w-full overflow-hidden bg-slate-50/60">
@@ -322,7 +353,11 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                     )}
                     {activeTab === 'members' && (
                         <div className="h-full min-h-0 overflow-hidden shadow-sm">
-                            <BoxMember members={members} projectId={data.id} />
+                            <BoxMember
+                                members={members}
+                                projectId={data.id}
+                                actives={userActiveIds}
+                            />
                         </div>
                     )}
                     {activeTab === 'setting' && (

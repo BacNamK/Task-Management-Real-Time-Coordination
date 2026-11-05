@@ -13,10 +13,18 @@ type MemberMatch = Extract<projectMemberSearchResult, { user: unknown }>;
 const isMemberMatch = (result: projectMemberSearchResult | null): result is MemberMatch =>
     typeof result === 'object' && result !== null && 'user' in result && 'projectId' in result;
 
-export const BoxMember = ({ members, projectId }: { members: projectMember[]; projectId: any }) => {
+export const BoxMember = ({
+    members,
+    projectId,
+    actives,
+}: {
+    members: projectMember[];
+    projectId: any;
+    actives: string[];
+}) => {
     const [memberSearch, setMemberSearch] = useState('');
     const [searchResult, setSearchResult] = useState<projectMemberSearchResult | null>(null);
-    const [online, setOnline] = useState<string[]>([]);
+    const [online, setOnline] = useState<string[]>(actives);
 
     const showMessage = (message: string) => {
         setSearchResult(message);
@@ -71,18 +79,9 @@ export const BoxMember = ({ members, projectId }: { members: projectMember[]; pr
     });
     const matchingUser = isMemberMatch(searchResult) ? searchResult : null;
 
-    const socket = useSocket();
-
     const getData = (data: any) => {
         setOnline(data);
     };
-
-    useEffect(() => {
-        if (!socket) return;
-        socket.emit('persence:query', { projectId });
-
-        socket.on('persence:snapshort', getData);
-    }, [socket]);
 
     const setstatus = (id: string) => online.includes(id);
 

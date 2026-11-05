@@ -27,15 +27,24 @@ export class PresenceGateway {
     return { ok: true };
   }
 
-  @SubscribeMessage('persence:query')
-  async handlePersitent(
-    @ConnectedSocket() socket: Socket,
-    @MessageBody() payload: { projectId: unknown },
+  @SubscribeMessage('joinProject')
+  async handlePersenceProject(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() projectUuid: string,
   ) {
-    const list = await this.presenceService.listUserId(
-      socket,
-      payload?.projectId,
-    );
-    socket.emit('persence:snapshort', list);
+    await this.presenceService.refreshPresence(client);
+    await client.join(projectUuid);
+
+    const userActives =
+      await this.presenceService.getPersenceProject(projectUuid);
+    this.server.to(projectUuid).emit('userActives', userActives);
+  }
+
+  @SubscribeMessage('leaveProject')
+  async handleLeaveProject(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() projectUuid: string,
+  ) {
+    await client.leave(projectUuid);
   }
 }

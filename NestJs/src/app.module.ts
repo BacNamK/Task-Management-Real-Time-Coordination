@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { WsAuthGuard } from './auth/ws.auth.guard.js';
 
 import { AppCacheModule } from './lib/redis.module.js';
+import { RedisModule } from './redis/redis.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -35,6 +36,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     UsersAuthModule,
     ConOneModel,
     AppCacheModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useExisting: WsAuthGuard }],

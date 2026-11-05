@@ -10,6 +10,7 @@ import {
 import type { Namespace, Socket } from 'socket.io';
 import { WsAuthGuard } from '../../../auth/ws.auth.guard.js';
 import { PresenceService } from './presence/presence.service.js';
+import { UserId } from '../../../common/decorators/decorator-id.js';
 
 // kết nối 1 sử lí các sự kiện thông báo,trực tuyến,tin nhắn,gọi
 
@@ -38,7 +39,9 @@ export class ConnectionOne
 
   async handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
-    await this.presenceService.refreshPresence(client);
+    const { userId, projectUuids } =
+      await this.presenceService.refreshPresence(client);
+    this.server.to(projectUuids).emit('userActive', userId);
   }
 
   async handleDisconnect(client: Socket) {
