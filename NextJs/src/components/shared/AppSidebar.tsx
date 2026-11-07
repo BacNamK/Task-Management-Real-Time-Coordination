@@ -1,15 +1,6 @@
 'use client';
 
-import {
-    BookOpen,
-    Box,
-    BriefcaseBusiness,
-    ChevronRight,
-    HomeIcon,
-    Settings,
-    Workflow,
-    WorkflowIcon,
-} from 'lucide-react';
+import { Bell, Box, BriefcaseBusiness, ChevronRight, Settings, WorkflowIcon } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -24,8 +15,11 @@ import {
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { useSocket } from '../../lib/socket/socketConText';
+import { useEffect } from 'react';
 
 type SidebarUser = {
+    id: string;
     name?: string | null;
     image?: string | null;
 };
@@ -33,6 +27,21 @@ type SidebarUser = {
 export function AppSidebar({ user }: { user?: SidebarUser }) {
     const router = useRouter();
     const pathname = usePathname();
+
+    const socket = useSocket();
+
+    useEffect(() => {
+        if (!socket || !user?.id) return;
+
+        const log = (data: any) => {
+            console.log(data);
+        };
+        socket.on('notification', log);
+
+        return () => {
+            socket.off('notification', log);
+        };
+    }, [socket, user?.id]);
 
     if (pathname === '/login') return null;
 
@@ -56,7 +65,7 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
 
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarMenu className="grid w-full gap-y-1">
+                    <SidebarMenu className="grid w-full gap-y-2">
                         <SidebarMenuItem>
                             <SidebarMenuButton
                                 tooltip="My Tasks"
@@ -65,6 +74,15 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
                             >
                                 <WorkflowIcon />
                                 <span>My Tasks</span>
+                            </SidebarMenuButton>
+
+                            <SidebarMenuButton
+                                tooltip="Notification"
+                                isActive={pathname === '/notification'}
+                                onClick={() => router.push('/notification')}
+                            >
+                                <Bell size={17} />
+                                <span>Notification</span>
                             </SidebarMenuButton>
 
                             {/* submenu */}
@@ -80,16 +98,6 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
                             >
                                 <Box />
                                 <span>Projects</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-
-                        <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Documnet">
-                                <BookOpen />
-                                <div className="w-full flex items-center justify-between">
-                                    <span className="block">Document</span>
-                                    <ChevronRight />
-                                </div>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
 

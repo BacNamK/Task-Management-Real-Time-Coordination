@@ -2,11 +2,9 @@
 
 import { checkMember, addMember } from '../../../project/sevice/project.action';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Search, UsersRound } from 'lucide-react';
 import type { projectMember, projectMemberSearchResult } from '../../sevice/project.type';
-import { useSocket } from '../../../../lib/socket/socketConText';
-import { on } from 'events';
 
 type MemberMatch = Extract<projectMemberSearchResult, { user: unknown }>;
 
@@ -79,7 +77,6 @@ export const BoxMember = ({
     const matchingUser = isMemberMatch(searchResult) ? searchResult : null;
 
     const setstatus = (id: string) => {
-        console.log(actives.includes(id));
         if (actives.includes(id)) return true;
         return false;
     };

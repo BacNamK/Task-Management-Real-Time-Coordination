@@ -73,7 +73,7 @@ export class PresenceService {
   }
 
   private getPresenceKey(client: Socket): string {
-    return `presence:${this.getUserId(client)}`;
+    return `persence:${this.getUserId(client)}`;
   }
 
   async setPersenceProjects(userId: string): Promise<string[]> {

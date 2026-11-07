@@ -27,7 +27,7 @@ export async function create(name: string) {
 }
 
 export async function checkMember(uuid: string, userName: string) {
-    const params = new URLSearchParams({ projectUuid: uuid, userName });
+    const params = new URLSearchParams({ projectUuid: uuid, userName: userName });
     return api.get<projectMemberSearchResult>(
         `${project_API_PATH}/checkMember?${params.toString()}`
     );

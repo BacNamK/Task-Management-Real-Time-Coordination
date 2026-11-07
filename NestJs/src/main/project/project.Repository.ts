@@ -179,8 +179,8 @@ export class projectRepository {
     };
   }
 
-  async checkMember(projectUuid: string, userName: string) {
-    if (!projectUuid || !userName) {
+  async checkMember(projectId: string, userName: string) {
+    if (!projectId || !userName) {
       return;
     }
     const user = await this.usersRepository.findUserByName(userName);
@@ -190,7 +190,7 @@ export class projectRepository {
 
     const project = await prisma.project.findUnique({
       where: {
-        uuid: projectUuid,
+        id: BigInt(projectId),
       },
       select: {
         id: true,
@@ -218,18 +218,29 @@ export class projectRepository {
     return serializeBigInt({ user, projectId: project.id });
   }
 
-  async addMember(projectId: any, userId: any) {
-    await prisma.projectMember.create({
-      data: {
-        projectId,
-        userId: BigInt(userId),
-        role: 'MEMBER',
-        permissionId: 3, // Assuming 3 is the ID for the default permission for members
-      },
+  async addMember(projectId: string, userId: string, actorId: string) {
+    return prisma.$transaction(async (tx) => {
+      const noti = await tx.notification.create({
+        data: {
+          type: 'MEMBER_JOINED',
+          title: 'You have an invitation to join a project',
+          entityType: 'user',
+          entityId: userId,
+          actorId: BigInt(actorId),
+        },
+      });
+
+      const receipt = await tx.notificationReceipt.create({
+        data: {
+          notificationId: noti.id,
+          recipientId: userId,
+        },
+      });
+      return { noti, receipt };
     });
   }
 
-  async returnId(projectUuid: string) {
+  async findProject(projectUuid: string) {
     return await prisma.project.findUnique({
       where: { uuid: projectUuid },
       select: { id: true },

@@ -12,7 +12,7 @@ export class BoardRepository {
   ) {}
 
   async create(boarName: string, projectUuid: string) {
-    const project = await this.projectRepository.returnId(projectUuid);
+    const project = await this.projectRepository.findProject(projectUuid);
 
     if (!project) {
       throw new Error('project not found');

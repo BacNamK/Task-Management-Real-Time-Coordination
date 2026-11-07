@@ -41,6 +41,7 @@ export class ConnectionOne
 
   async handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
+    await client.join(`user:${client.data.user.userId}`);
     const { userId, projectUuids } =
       await this.presenceService.refreshPresence(client);
     this.server.to(projectUuids).emit('userActive', userId);

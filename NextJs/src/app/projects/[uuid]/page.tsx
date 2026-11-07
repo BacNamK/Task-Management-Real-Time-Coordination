@@ -1,5 +1,7 @@
 // app/projects/[uuid]/page.tsx
 
+export const dynamic = 'force-dynamic';
+
 import PageMain from '../../../feature/project/ui/PageDetail';
 import { target } from '../../../feature/project/sevice/project.action';
 import { ApiError } from '../../../service/api.Interceptor';

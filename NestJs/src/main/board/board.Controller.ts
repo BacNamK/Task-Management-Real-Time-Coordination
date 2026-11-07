@@ -21,7 +21,6 @@ export class BoardController {
 
   @Post('/create')
   async create(@Body() formData: { boardName: string; projectUuid: string }) {
-    console.log(formData);
     return await this.boardService.create(
       formData.boardName,
       formData.projectUuid,

@@ -48,13 +48,13 @@ export class projectService {
     return project;
   }
 
-  async checkMember(projectUuid: string, userName: string) {
-    const member = await this.Repository.checkMember(projectUuid, userName);
+  async checkMember(projectId: string, userName: string) {
+    const member = await this.Repository.checkMember(projectId, userName);
 
     return member;
   }
 
-  async addMember(projectId: bigint, userId: string) {
-    return await this.Repository.addMember(projectId, userId);
+  async addMember(projectId: string, userId: string, actorId: string) {
+    return await this.Repository.addMember(projectId, userId, actorId);
   }
 }

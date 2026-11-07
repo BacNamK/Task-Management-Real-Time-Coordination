@@ -1,13 +1,23 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { projectService } from './project.Service.js';
 import { projectRepository } from './project.Repository.js';
 import { CreateDto } from './project.Dto.js';
 import { UserId } from '../../common/decorators/decorator-id.js';
+import { NotificationGateway } from '../realtime/con1/notification/notification.gateway.js';
 @Controller('/projects')
 export class projectController {
   constructor(
     private readonly Service: projectService,
     private readonly Repository: projectRepository,
+    private readonly Notification: NotificationGateway,
   ) {}
 
   @Post('/create')
@@ -27,17 +37,21 @@ export class projectController {
 
   @Get('/checkMember')
   checkMember(
-    @Query('projectUuid') projectUuid: string,
+    @Query('projectUuid') projectId: string,
     @Query('userName') userName: string,
   ) {
-    return this.Service.checkMember(projectUuid, userName);
+    return this.Service.checkMember(projectId, userName);
   }
 
   @Post('/addMember')
-  addMember(
+  @HttpCode(HttpStatus.OK)
+  async addMember(
     @Query('projectId') projectId: string,
     @Query('userId') userId: string,
+    @UserId() actorId: string,
   ) {
-    return this.Service.addMember(BigInt(projectId), userId);
+    const data = await this.Service.addMember(projectId, userId, actorId);
+    this.Notification.handleToEntity(userId, data.noti);
+    return { success: true };
   }
 }
