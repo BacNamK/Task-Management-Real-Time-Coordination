@@ -16,6 +16,7 @@ import { WsAuthGuard } from './auth/ws.auth.guard.js';
 
 import { AppCacheModule } from './lib/redis.module.js';
 import { RedisModule } from './redis/redis.module.js';
+import { NotificationsModule } from './main/notification/notification.Module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -37,6 +38,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ConOneModel,
     AppCacheModule,
     RedisModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useExisting: WsAuthGuard }],

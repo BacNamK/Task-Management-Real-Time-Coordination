@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { projectRepository } from './project.Repository.js';
 import { ChatRepository } from '../realtime/con1/chat/chat.repository.js';
-import { ProjectType } from './project.Types.js';
 import { serializeBigInt } from '../../common/utils/bigint.util.js';
 
 @Injectable()

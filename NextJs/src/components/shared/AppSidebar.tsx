@@ -15,8 +15,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { useSocket } from '../../lib/socket/socketConText';
-import { useEffect } from 'react';
+import { useNotifications } from '../context/ContextProvide';
 
 type SidebarUser = {
     id: string;
@@ -27,21 +26,7 @@ type SidebarUser = {
 export function AppSidebar({ user }: { user?: SidebarUser }) {
     const router = useRouter();
     const pathname = usePathname();
-
-    const socket = useSocket();
-
-    useEffect(() => {
-        if (!socket || !user?.id) return;
-
-        const log = (data: any) => {
-            console.log(data);
-        };
-        socket.on('notification', log);
-
-        return () => {
-            socket.off('notification', log);
-        };
-    }, [socket, user?.id]);
+    const { hasNewNotification, clearNewNotification } = useNotifications();
 
     if (pathname === '/login') return null;
 
@@ -77,12 +62,21 @@ export function AppSidebar({ user }: { user?: SidebarUser }) {
                             </SidebarMenuButton>
 
                             <SidebarMenuButton
+                                className="relative"
                                 tooltip="Notification"
                                 isActive={pathname === '/notification'}
-                                onClick={() => router.push('/notification')}
+                                onClick={() => {
+                                    router.push('/notification');
+                                    clearNewNotification();
+                                }}
                             >
                                 <Bell size={17} />
-                                <span>Notification</span>
+                                <div className="w-full flex justify-between items-center">
+                                    <span>Notification</span>
+                                    <span
+                                        className={`absolute right-2 size-2 rounded-full ${hasNewNotification ? 'bg-red-500' : ''} group-data-[collapsible=icon]:right-1 group-data-[collapsible=icon]:bottom-1`}
+                                    ></span>
+                                </div>
                             </SidebarMenuButton>
 
                             {/* submenu */}

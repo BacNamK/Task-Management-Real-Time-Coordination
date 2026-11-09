@@ -377,7 +377,6 @@ model NotificationReceipt {
 }
 
 enum ActionRequestType {
-  WORKSPACE_INVITATION
   PROJECT_INVITATION
   TASK_TRANSFER
   TASK_APPROVAL
@@ -397,13 +396,6 @@ model ActionRequest {
 
   type   ActionRequestType
   status ActionRequestStatus @default(PENDING)
-
-  senderId    BigInt      @map("sender_id")
-  recipientId String
-
-  // Đối tượng nghiệp vụ liên quan
-  entityType String?
-  entityId   String?
 
   title    String
   message  String?
