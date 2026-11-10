@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Model } from '../../../../feature/board/ui/component/Model';
 import { find } from '../../../../feature/board/service/board.action';
 
-export default async function Page({
+export default async function PageId({
     params,
 }: {
     params: Promise<{ uuid: string; id: string }>;

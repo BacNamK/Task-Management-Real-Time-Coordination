@@ -1,6 +1,6 @@
 'use client';
 
-import { Item } from './Item';
+import { Item } from './ProjectItem';
 import { FolderKanban, UsersRound } from 'lucide-react';
 import type { projectCollections, projectListItem } from '../../sevice/project.type';
 import { FormCreate } from '../form/Create';
@@ -26,7 +26,7 @@ const ProjectSection = ({
                 {title.includes('Owned') && (
                     <FormCreate
                         onCreate={(project) =>
-                            setprojects((prev) => ({
+                            setprojects((prev: any) => ({
                                 ...prev,
                                 yourOwn: [
                                     {
@@ -43,7 +43,7 @@ const ProjectSection = ({
 
             {projects.length > 0 ? (
                 <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {projects.map((item) => (
+                    {projects.map((item: any) => (
                         <Item item={item} key={item.project.uuid} />
                     ))}
                 </div>

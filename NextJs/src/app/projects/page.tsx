@@ -1,5 +1,5 @@
 ﻿import { getAll } from '../../feature/project/sevice/project.action';
-import ProjectPageClient from '../../feature/project/ui/PageMain';
+import ProjectPageClient from '../../feature/project/PageClient';
 
 const Page = async () => {
     const projectAll = await getAll();

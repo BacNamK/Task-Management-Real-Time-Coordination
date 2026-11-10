@@ -2,12 +2,12 @@
 
 export const dynamic = 'force-dynamic';
 
-import PageMain from '../../../feature/project/ui/PageDetail';
+import PageMain from '../../../feature/project/ui/ProjectDetail';
 import { target } from '../../../feature/project/sevice/project.action';
 import { ApiError } from '../../../service/api.Interceptor';
 import { notFound } from 'next/navigation';
 
-export default async function Page({ params }: { params: Promise<{ uuid: string }> }) {
+export default async function PageUuid({ params }: { params: Promise<{ uuid: string }> }) {
     // uuid của project
     const { uuid } = await params;
 

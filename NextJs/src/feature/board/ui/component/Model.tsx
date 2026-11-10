@@ -96,7 +96,7 @@ export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: s
                             <Link
                                 aria-label="Back to project"
                                 className="rounded-md p-2 text-slate-600 shadow"
-                                href={`/projects/${projectUuid}`}
+                                href={`/projects/${projectUuid}?view=boards`}
                             >
                                 <MoveLeft />
                             </Link>
