@@ -2,7 +2,6 @@ import 'server-only';
 import jwt from 'jsonwebtoken';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { getSessionUser } from '../lib/auth/auth.session';
 
 const privateKey = readFileSync(join(process.cwd(), 'keys', 'private.pem'), 'utf8');
 
@@ -18,9 +17,7 @@ async function createServiceToken(userId?: string): Promise<string> {
     });
 }
 
-export async function getServiceToken(): Promise<string> {
-    const session = await getSessionUser();
-    const userId = session?.user?.id;
+export async function getServiceToken(userId?: string): Promise<string> {
     const cacheKey = userId ?? '';
     const cached = tokenCache.get(cacheKey);
 

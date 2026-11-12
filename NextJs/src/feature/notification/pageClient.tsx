@@ -13,6 +13,7 @@ export const PageClient = ({
 }: {
     initialNotifications: NotificationInboxItem[];
 }) => {
+    console.log(initialNotifications);
     const { notifications: liveNotifications } = useNotifications();
     const [filter, setFilter] = useState<Filter>('all');
     const [readNotifications, setReadNotifications] = useState<string[]>([]);
@@ -92,12 +93,16 @@ export const PageClient = ({
                         {visibleNotifications.map((notification) => {
                             const isRead =
                                 notification.isRead || readNotifications.includes(notification.id);
-                            const date = new Intl.DateTimeFormat('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                                timeZone: 'UTC',
-                            }).format(new Date(notification.createdAt));
+                            const createdAt = new Date(notification.createdAt);
+                            const hasValidDate = Number.isFinite(createdAt.getTime());
+                            const date = hasValidDate
+                                ? new Intl.DateTimeFormat('en-US', {
+                                      month: 'short',
+                                      day: 'numeric',
+                                      year: 'numeric',
+                                      timeZone: 'UTC',
+                                  }).format(createdAt)
+                                : 'Unknown date';
 
                             return (
                                 <article
@@ -107,10 +112,10 @@ export const PageClient = ({
                                     }`}
                                 >
                                     <div className="relative flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-100 text-indigo-700">
-                                        {notification.actorAvatar ? (
+                                        {notification.sender?.avatar ? (
                                             <Image
-                                                src={notification.actorAvatar}
-                                                alt={notification.actorName ?? ''}
+                                                src={notification.sender.avatar}
+                                                alt={notification.sender.name ?? ''}
                                                 width={20}
                                                 height={20}
                                                 className="size-full object-cover"
@@ -130,15 +135,17 @@ export const PageClient = ({
                                                         Project invitation
                                                     </span>
                                                     <span className="text-[11px] font-medium text-slate-400">
-                                                        {notification.type.replaceAll('_', ' ')}
+                                                        {typeof notification.type === 'string'
+                                                            ? notification.type.replaceAll('_', ' ')
+                                                            : 'NOTIFICATION'}
                                                     </span>
                                                 </div>
                                                 <h2 className="text-sm font-semibold leading-6 text-slate-900 sm:text-base">
                                                     {notification.title}
                                                 </h2>
-                                                {notification.actorName && (
+                                                {notification.sender && (
                                                     <p className="mt-1 text-xs font-medium text-slate-500">
-                                                        {notification.actorName}
+                                                        {notification.sender.name}
                                                     </p>
                                                 )}
                                                 {notification.message && (
@@ -148,7 +155,11 @@ export const PageClient = ({
                                                 )}
                                             </div>
                                             <time
-                                                dateTime={notification.createdAt}
+                                                dateTime={
+                                                    hasValidDate
+                                                        ? createdAt.toISOString()
+                                                        : undefined
+                                                }
                                                 className="shrink-0 text-xs text-slate-400"
                                             >
                                                 {date}

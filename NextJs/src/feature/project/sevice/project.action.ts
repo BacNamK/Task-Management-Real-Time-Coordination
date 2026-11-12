@@ -1,4 +1,4 @@
-﻿'use server';
+'use server';
 
 import { api } from '../../../service/api.Interceptor';
 import type {
@@ -33,7 +33,7 @@ export async function checkMember(uuid: string, userName: string) {
     );
 }
 
-export async function addMember(id: string, userId: string) {
-    const params = new URLSearchParams({ projectId: id, userId });
+export async function addMember(uuid: string, userId: string) {
+    const params = new URLSearchParams({ projectUuid: uuid, userId });
     return api.post(`${project_API_PATH}/addMember?${params.toString()}`);
 }

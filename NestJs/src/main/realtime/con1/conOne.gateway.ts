@@ -59,7 +59,7 @@ export class ConnectionOne
 
     const projectUuids =
       typeof userId === 'string'
-        ? await this.projectRepository.returnProjectMemberUuid(userId)
+        ? await this.projectRepository.returnProjectsMemberUuid(userId)
         : [];
     this.server.to(projectUuids).emit('userOff', userId);
   }

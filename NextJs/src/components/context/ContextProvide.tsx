@@ -7,12 +7,13 @@ export type NotificationData = {
     actorId: string;
     actorName?: string;
     actorAvatar?: string | null;
+    sender?: { name: string | null; avatar: string | null };
     createdAt: string;
     entityId: string | null;
     entityType: string | null;
     id: string;
     message: string | null;
-    metadata: Record<string, unknown> | null;
+    metadata: Record<string, unknown> | string | null;
     title: string;
     type: string;
 };
@@ -52,6 +53,7 @@ function isNotificationData(data: unknown): data is NotificationData {
         typeof notification.id === 'string' &&
         (typeof notification.message === 'string' || notification.message === null) &&
         (notification.metadata === null ||
+            typeof notification.metadata === 'string' ||
             (typeof notification.metadata === 'object' &&
                 !Array.isArray(notification.metadata))) &&
         typeof notification.title === 'string' &&

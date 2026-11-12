@@ -157,7 +157,6 @@ export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeo
 
 export const ProjectMemberScalarFieldEnum = {
   id: 'id',
-  uuid: 'uuid',
   projectId: 'projectId',
   userId: 'userId',
   role: 'role',
@@ -205,6 +204,7 @@ export type CycleScalarFieldEnum = (typeof CycleScalarFieldEnum)[keyof typeof Cy
 
 export const TaskScalarFieldEnum = {
   id: 'id',
+  uuid: 'uuid',
   title: 'title',
   position: 'position',
   description: 'description',
@@ -355,8 +355,9 @@ export const ActionRequestScalarFieldEnum = {
   id: 'id',
   type: 'type',
   status: 'status',
+  notificationId: 'notificationId',
   senderId: 'senderId',
-  recipientId: 'recipientId',
+  receiptId: 'receiptId',
   entityType: 'entityType',
   entityId: 'entityId',
   title: 'title',

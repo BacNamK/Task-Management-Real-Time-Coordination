@@ -164,7 +164,7 @@ const PageDetail = ({ data }: { data: projectDetail }) => {
                         </div>
                     )}
                     {activeTab === 'members' && (
-                        <Members members={members} projectId={data.id} actives={userActiveIds} />
+                        <Members members={members} projectUuid={data.uuid} actives={userActiveIds} />
                     )}
                     {activeTab === 'setting' && (
                         <section className="mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">

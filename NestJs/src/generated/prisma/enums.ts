@@ -49,7 +49,6 @@ export type NotificationType = (typeof NotificationType)[keyof typeof Notificati
 
 
 export const ActionRequestType = {
-  WORKSPACE_INVITATION: 'WORKSPACE_INVITATION',
   PROJECT_INVITATION: 'PROJECT_INVITATION',
   TASK_TRANSFER: 'TASK_TRANSFER',
   TASK_APPROVAL: 'TASK_APPROVAL',

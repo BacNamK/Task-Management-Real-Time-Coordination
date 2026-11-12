@@ -8,7 +8,7 @@ import type { MessageEmit, MessageSendType } from '../conOnce.types.js';
 
 @Injectable()
 export class ChatRepository {
-  async createRoom(project_Id: number) {
+  async createRoom(project_Id: bigint) {
     await prisma.chatRoom.create({
       data: { name: 'Lobby', projectId: project_Id, isDirect: false },
     });
@@ -58,10 +58,7 @@ export class ChatRepository {
     });
   }
 
-  async loadMessages(
-    roomUuid: string,
-    userId: string,
-  ): Promise<MessageEmit[]> {
+  async loadMessages(roomUuid: string, userId: string): Promise<MessageEmit[]> {
     const room = await prisma.chatRoom.findUnique({
       where: { uuid: roomUuid },
       select: { id: true, projectId: true },
@@ -117,9 +114,7 @@ export class ChatRepository {
       replyTo: message.replyTo
         ? {
             id: message.replyTo.id,
-            content: message.replyTo.isDelete
-              ? null
-              : message.replyTo.content,
+            content: message.replyTo.isDelete ? null : message.replyTo.content,
           }
         : null,
       createAt: message.createdAt.toISOString(),

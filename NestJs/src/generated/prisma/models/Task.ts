@@ -48,6 +48,7 @@ export type TaskSumAggregateOutputType = {
 
 export type TaskMinAggregateOutputType = {
   id: bigint | null
+  uuid: string | null
   title: string | null
   position: number | null
   description: string | null
@@ -64,6 +65,7 @@ export type TaskMinAggregateOutputType = {
 
 export type TaskMaxAggregateOutputType = {
   id: bigint | null
+  uuid: string | null
   title: string | null
   position: number | null
   description: string | null
@@ -80,6 +82,7 @@ export type TaskMaxAggregateOutputType = {
 
 export type TaskCountAggregateOutputType = {
   id: number
+  uuid: number
   title: number
   position: number
   description: number
@@ -118,6 +121,7 @@ export type TaskSumAggregateInputType = {
 
 export type TaskMinAggregateInputType = {
   id?: true
+  uuid?: true
   title?: true
   position?: true
   description?: true
@@ -134,6 +138,7 @@ export type TaskMinAggregateInputType = {
 
 export type TaskMaxAggregateInputType = {
   id?: true
+  uuid?: true
   title?: true
   position?: true
   description?: true
@@ -150,6 +155,7 @@ export type TaskMaxAggregateInputType = {
 
 export type TaskCountAggregateInputType = {
   id?: true
+  uuid?: true
   title?: true
   position?: true
   description?: true
@@ -253,6 +259,7 @@ export type TaskGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type TaskGroupByOutputType = {
   id: bigint
+  uuid: string
   title: string
   position: number
   description: string | null
@@ -292,6 +299,7 @@ export type TaskWhereInput = {
   OR?: Prisma.TaskWhereInput[]
   NOT?: Prisma.TaskWhereInput | Prisma.TaskWhereInput[]
   id?: Prisma.BigIntFilter<"Task"> | bigint | number
+  uuid?: Prisma.StringFilter<"Task"> | string
   title?: Prisma.StringFilter<"Task"> | string
   position?: Prisma.IntFilter<"Task"> | number
   description?: Prisma.StringNullableFilter<"Task"> | string | null
@@ -316,6 +324,7 @@ export type TaskWhereInput = {
 
 export type TaskOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -340,6 +349,7 @@ export type TaskOrderByWithRelationInput = {
 
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
+  uuid?: string
   AND?: Prisma.TaskWhereInput | Prisma.TaskWhereInput[]
   OR?: Prisma.TaskWhereInput[]
   NOT?: Prisma.TaskWhereInput | Prisma.TaskWhereInput[]
@@ -363,10 +373,11 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   cycle?: Prisma.XOR<Prisma.CycleNullableScalarRelationFilter, Prisma.CycleWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id">
+}, "id" | "uuid">
 
 export type TaskOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -391,6 +402,7 @@ export type TaskScalarWhereWithAggregatesInput = {
   OR?: Prisma.TaskScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TaskScalarWhereWithAggregatesInput | Prisma.TaskScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"Task"> | bigint | number
+  uuid?: Prisma.StringWithAggregatesFilter<"Task"> | string
   title?: Prisma.StringWithAggregatesFilter<"Task"> | string
   position?: Prisma.IntWithAggregatesFilter<"Task"> | number
   description?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
@@ -407,6 +419,7 @@ export type TaskScalarWhereWithAggregatesInput = {
 
 export type TaskCreateInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -427,6 +440,7 @@ export type TaskCreateInput = {
 
 export type TaskUncheckedCreateInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -447,6 +461,7 @@ export type TaskUncheckedCreateInput = {
 
 export type TaskUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -467,6 +482,7 @@ export type TaskUpdateInput = {
 
 export type TaskUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -487,6 +503,7 @@ export type TaskUncheckedUpdateInput = {
 
 export type TaskCreateManyInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -503,6 +520,7 @@ export type TaskCreateManyInput = {
 
 export type TaskUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -515,6 +533,7 @@ export type TaskUpdateManyMutationInput = {
 
 export type TaskUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -541,6 +560,7 @@ export type TaskOrderByRelationAggregateInput = {
 
 export type TaskCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -567,6 +587,7 @@ export type TaskAvgOrderByAggregateInput = {
 
 export type TaskMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -583,6 +604,7 @@ export type TaskMaxOrderByAggregateInput = {
 
 export type TaskMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   title?: Prisma.SortOrder
   position?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -846,6 +868,7 @@ export type TaskUpdateOneRequiredWithoutAssigneedsNestedInput = {
 
 export type TaskCreateWithoutCreatorInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -865,6 +888,7 @@ export type TaskCreateWithoutCreatorInput = {
 
 export type TaskUncheckedCreateWithoutCreatorInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -894,6 +918,7 @@ export type TaskCreateManyCreatorInputEnvelope = {
 
 export type TaskCreateWithoutUserInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -913,6 +938,7 @@ export type TaskCreateWithoutUserInput = {
 
 export type TaskUncheckedCreateWithoutUserInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -961,6 +987,7 @@ export type TaskScalarWhereInput = {
   OR?: Prisma.TaskScalarWhereInput[]
   NOT?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
   id?: Prisma.BigIntFilter<"Task"> | bigint | number
+  uuid?: Prisma.StringFilter<"Task"> | string
   title?: Prisma.StringFilter<"Task"> | string
   position?: Prisma.IntFilter<"Task"> | number
   description?: Prisma.StringNullableFilter<"Task"> | string | null
@@ -993,6 +1020,7 @@ export type TaskUpdateManyWithWhereWithoutUserInput = {
 
 export type TaskCreateWithoutBoardInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1012,6 +1040,7 @@ export type TaskCreateWithoutBoardInput = {
 
 export type TaskUncheckedCreateWithoutBoardInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1057,6 +1086,7 @@ export type TaskUpdateManyWithWhereWithoutBoardInput = {
 
 export type TaskCreateWithoutCycleInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1076,6 +1106,7 @@ export type TaskCreateWithoutCycleInput = {
 
 export type TaskUncheckedCreateWithoutCycleInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1121,6 +1152,7 @@ export type TaskUpdateManyWithWhereWithoutCycleInput = {
 
 export type TaskCreateWithoutTagsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1140,6 +1172,7 @@ export type TaskCreateWithoutTagsInput = {
 
 export type TaskUncheckedCreateWithoutTagsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1175,6 +1208,7 @@ export type TaskUpdateToOneWithWhereWithoutTagsInput = {
 
 export type TaskUpdateWithoutTagsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1194,6 +1228,7 @@ export type TaskUpdateWithoutTagsInput = {
 
 export type TaskUncheckedUpdateWithoutTagsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1213,6 +1248,7 @@ export type TaskUncheckedUpdateWithoutTagsInput = {
 
 export type TaskCreateWithoutCommentsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1232,6 +1268,7 @@ export type TaskCreateWithoutCommentsInput = {
 
 export type TaskUncheckedCreateWithoutCommentsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1267,6 +1304,7 @@ export type TaskUpdateToOneWithWhereWithoutCommentsInput = {
 
 export type TaskUpdateWithoutCommentsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1286,6 +1324,7 @@ export type TaskUpdateWithoutCommentsInput = {
 
 export type TaskUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1305,6 +1344,7 @@ export type TaskUncheckedUpdateWithoutCommentsInput = {
 
 export type TaskCreateWithoutFilesInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1324,6 +1364,7 @@ export type TaskCreateWithoutFilesInput = {
 
 export type TaskUncheckedCreateWithoutFilesInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1359,6 +1400,7 @@ export type TaskUpdateToOneWithWhereWithoutFilesInput = {
 
 export type TaskUpdateWithoutFilesInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1378,6 +1420,7 @@ export type TaskUpdateWithoutFilesInput = {
 
 export type TaskUncheckedUpdateWithoutFilesInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1397,6 +1440,7 @@ export type TaskUncheckedUpdateWithoutFilesInput = {
 
 export type TaskCreateWithoutAssigneedsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1416,6 +1460,7 @@ export type TaskCreateWithoutAssigneedsInput = {
 
 export type TaskUncheckedCreateWithoutAssigneedsInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1451,6 +1496,7 @@ export type TaskUpdateToOneWithWhereWithoutAssigneedsInput = {
 
 export type TaskUpdateWithoutAssigneedsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1470,6 +1516,7 @@ export type TaskUpdateWithoutAssigneedsInput = {
 
 export type TaskUncheckedUpdateWithoutAssigneedsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1489,6 +1536,7 @@ export type TaskUncheckedUpdateWithoutAssigneedsInput = {
 
 export type TaskCreateManyCreatorInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1504,6 +1552,7 @@ export type TaskCreateManyCreatorInput = {
 
 export type TaskCreateManyUserInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1519,6 +1568,7 @@ export type TaskCreateManyUserInput = {
 
 export type TaskUpdateWithoutCreatorInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1538,6 +1588,7 @@ export type TaskUpdateWithoutCreatorInput = {
 
 export type TaskUncheckedUpdateWithoutCreatorInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1557,6 +1608,7 @@ export type TaskUncheckedUpdateWithoutCreatorInput = {
 
 export type TaskUncheckedUpdateManyWithoutCreatorInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1572,6 +1624,7 @@ export type TaskUncheckedUpdateManyWithoutCreatorInput = {
 
 export type TaskUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1591,6 +1644,7 @@ export type TaskUpdateWithoutUserInput = {
 
 export type TaskUncheckedUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1610,6 +1664,7 @@ export type TaskUncheckedUpdateWithoutUserInput = {
 
 export type TaskUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1625,6 +1680,7 @@ export type TaskUncheckedUpdateManyWithoutUserInput = {
 
 export type TaskCreateManyBoardInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1640,6 +1696,7 @@ export type TaskCreateManyBoardInput = {
 
 export type TaskUpdateWithoutBoardInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1659,6 +1716,7 @@ export type TaskUpdateWithoutBoardInput = {
 
 export type TaskUncheckedUpdateWithoutBoardInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1678,6 +1736,7 @@ export type TaskUncheckedUpdateWithoutBoardInput = {
 
 export type TaskUncheckedUpdateManyWithoutBoardInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1693,6 +1752,7 @@ export type TaskUncheckedUpdateManyWithoutBoardInput = {
 
 export type TaskCreateManyCycleInput = {
   id?: bigint | number
+  uuid?: string
   title: string
   position: number
   description?: string | null
@@ -1708,6 +1768,7 @@ export type TaskCreateManyCycleInput = {
 
 export type TaskUpdateWithoutCycleInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1727,6 +1788,7 @@ export type TaskUpdateWithoutCycleInput = {
 
 export type TaskUncheckedUpdateWithoutCycleInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1746,6 +1808,7 @@ export type TaskUncheckedUpdateWithoutCycleInput = {
 
 export type TaskUncheckedUpdateManyWithoutCycleInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1819,6 +1882,7 @@ export type TaskCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Exten
 
 export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  uuid?: boolean
   title?: boolean
   position?: boolean
   description?: boolean
@@ -1844,6 +1908,7 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  uuid?: boolean
   title?: boolean
   position?: boolean
   description?: boolean
@@ -1864,6 +1929,7 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  uuid?: boolean
   title?: boolean
   position?: boolean
   description?: boolean
@@ -1884,6 +1950,7 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type TaskSelectScalar = {
   id?: boolean
+  uuid?: boolean
   title?: boolean
   position?: boolean
   description?: boolean
@@ -1898,7 +1965,7 @@ export type TaskSelectScalar = {
   boardId?: boolean
 }
 
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "position" | "description" | "isDelete" | "priority" | "censorId" | "createdAt" | "dueDate" | "updatedAt" | "creatorId" | "cycleId" | "boardId", ExtArgs["result"]["task"]>
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "title" | "position" | "description" | "isDelete" | "priority" | "censorId" | "createdAt" | "dueDate" | "updatedAt" | "creatorId" | "cycleId" | "boardId", ExtArgs["result"]["task"]>
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assigneeds?: boolean | Prisma.Task$assigneedsArgs<ExtArgs>
   files?: boolean | Prisma.Task$filesArgs<ExtArgs>
@@ -1937,6 +2004,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
+    uuid: string
     title: string
     position: number
     description: string | null
@@ -2381,6 +2449,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface TaskFieldRefs {
   readonly id: Prisma.FieldRef<"Task", 'BigInt'>
+  readonly uuid: Prisma.FieldRef<"Task", 'String'>
   readonly title: Prisma.FieldRef<"Task", 'String'>
   readonly position: Prisma.FieldRef<"Task", 'Int'>
   readonly description: Prisma.FieldRef<"Task", 'String'>

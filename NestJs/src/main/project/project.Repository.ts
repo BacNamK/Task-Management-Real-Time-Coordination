@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { prisma } from '../../lib/prisma.Client.js';
 import { UsersRepository } from '../users/users.Repository.js';
 import { serializeBigInt } from '../../common/utils/bigint.util.js';
@@ -179,8 +183,8 @@ export class projectRepository {
     };
   }
 
-  async checkMember(projectId: string, userName: string) {
-    if (!projectId || !userName) {
+  async checkMember(projectUuid: string, userName: string) {
+    if (!projectUuid || !userName) {
       return;
     }
     const user = await this.usersRepository.findUserByName(userName);
@@ -190,7 +194,7 @@ export class projectRepository {
 
     const project = await prisma.project.findUnique({
       where: {
-        id: BigInt(projectId),
+        uuid: projectUuid,
       },
       select: {
         id: true,
@@ -199,7 +203,7 @@ export class projectRepository {
     });
 
     if (!project) {
-      throw new Error('project not found');
+      throw new NotFoundException('PROJECT_NOT_FOUND');
     }
 
     const checkMember = await prisma.projectMember.findUnique({
@@ -218,14 +222,20 @@ export class projectRepository {
     return serializeBigInt({ user, projectId: project.id });
   }
 
-  async addMember(projectId: string, userId: string, actorId: string) {
+  async addMember(projectUuid: string, userId: string, actorId: string) {
+    if (!projectUuid) throw new NotFoundException('PROJECT_NOT_FOUND');
+    const project = await prisma.project.findUnique({
+      where: { uuid: projectUuid },
+      select: { id: true, uuid: true },
+    });
+    if (!project) throw new NotFoundException('PROJECT_NOT_FOUND');
     return prisma.$transaction(async (tx) => {
       const noti = await tx.notification.create({
         data: {
           type: 'MEMBER_JOINED',
           title: 'You have an invitation to join a project',
-          entityType: 'user',
-          entityId: userId,
+          entityType: 'project',
+          entityId: project.id.toString(),
           actorId: BigInt(actorId),
         },
       });
@@ -233,10 +243,24 @@ export class projectRepository {
       const receipt = await tx.notificationReceipt.create({
         data: {
           notificationId: noti.id,
-          recipientId: userId,
+          recipientId: BigInt(userId),
         },
       });
-      return { noti, receipt };
+
+      const actionRequest = await tx.actionRequest.create({
+        data: {
+          title: '',
+          senderId: BigInt(actorId),
+          receiptId: receipt.id,
+          type: 'PROJECT_INVITATION',
+          entityType: 'project',
+          entityId: project.id.toString(),
+          metadata: `/projects/${project.uuid}/preview`,
+          expiresAt: new Date(Date.now() + 3 * 60 * 60 * 24 * 1000),
+        },
+      });
+
+      return { noti, receipt, actionRequest };
     });
   }
 
@@ -247,7 +271,7 @@ export class projectRepository {
     });
   }
 
-  async returnProjectMemberUuid(userId: string): Promise<string[]> {
+  async returnProjectsMemberUuid(userId: string): Promise<string[]> {
     const list = await prisma.projectMember.findMany({
       where: { userId: BigInt(userId) },
       select: {
@@ -258,5 +282,33 @@ export class projectRepository {
     });
 
     return list.map((item) => String(item.project.uuid));
+  }
+
+  async findActionRequest(userId: string, projectUuid: string) {
+    const projectId = await this.findProject(projectUuid);
+    await prisma.actionRequest.findFirst({
+      where: {
+        receiptId: userId,
+        entityType: 'project',
+        entityId: String(projectId),
+      },
+    });
+    return await prisma.project.findUnique({
+      where: { uuid: projectUuid },
+      select: {
+        uuid: true,
+        name: true,
+        description: true,
+        members: {
+          where: { role: 'OWNER' },
+          select: {
+            role: true,
+            user: {
+              select: { name: true, avatar: true },
+            },
+          },
+        },
+      },
+    });
   }
 }

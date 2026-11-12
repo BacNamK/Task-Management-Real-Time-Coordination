@@ -22,7 +22,7 @@ export class projectService {
     // Bắt lỗi
 
     //
-    await this.ChatRepository.createRoom(Number(project.id));
+    await this.ChatRepository.createRoom(BigInt(project.id));
 
     return serializeBigInt(project);
   }
@@ -47,13 +47,17 @@ export class projectService {
     return project;
   }
 
-  async checkMember(projectId: string, userName: string) {
-    const member = await this.Repository.checkMember(projectId, userName);
+  async checkMember(projectUuid: string, userName: string) {
+    const member = await this.Repository.checkMember(projectUuid, userName);
 
     return member;
   }
 
-  async addMember(projectId: string, userId: string, actorId: string) {
-    return await this.Repository.addMember(projectId, userId, actorId);
+  async addMember(projectUuid: string, userId: string, actorId: string) {
+    return await this.Repository.addMember(projectUuid, userId, actorId);
+  }
+
+  async verify(userId: string, projectUuid: string) {
+    return await this.Repository.findActionRequest(userId, projectUuid);
   }
 }

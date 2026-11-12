@@ -38,8 +38,9 @@ export type ActionRequestMinAggregateOutputType = {
   id: string | null
   type: $Enums.ActionRequestType | null
   status: $Enums.ActionRequestStatus | null
+  notificationId: string | null
   senderId: bigint | null
-  recipientId: string | null
+  receiptId: string | null
   entityType: string | null
   entityId: string | null
   title: string | null
@@ -54,8 +55,9 @@ export type ActionRequestMaxAggregateOutputType = {
   id: string | null
   type: $Enums.ActionRequestType | null
   status: $Enums.ActionRequestStatus | null
+  notificationId: string | null
   senderId: bigint | null
-  recipientId: string | null
+  receiptId: string | null
   entityType: string | null
   entityId: string | null
   title: string | null
@@ -70,8 +72,9 @@ export type ActionRequestCountAggregateOutputType = {
   id: number
   type: number
   status: number
+  notificationId: number
   senderId: number
-  recipientId: number
+  receiptId: number
   entityType: number
   entityId: number
   title: number
@@ -97,8 +100,9 @@ export type ActionRequestMinAggregateInputType = {
   id?: true
   type?: true
   status?: true
+  notificationId?: true
   senderId?: true
-  recipientId?: true
+  receiptId?: true
   entityType?: true
   entityId?: true
   title?: true
@@ -113,8 +117,9 @@ export type ActionRequestMaxAggregateInputType = {
   id?: true
   type?: true
   status?: true
+  notificationId?: true
   senderId?: true
-  recipientId?: true
+  receiptId?: true
   entityType?: true
   entityId?: true
   title?: true
@@ -129,8 +134,9 @@ export type ActionRequestCountAggregateInputType = {
   id?: true
   type?: true
   status?: true
+  notificationId?: true
   senderId?: true
-  recipientId?: true
+  receiptId?: true
   entityType?: true
   entityId?: true
   title?: true
@@ -233,8 +239,9 @@ export type ActionRequestGroupByOutputType = {
   id: string
   type: $Enums.ActionRequestType
   status: $Enums.ActionRequestStatus
+  notificationId: string | null
   senderId: bigint
-  recipientId: string
+  receiptId: string
   entityType: string | null
   entityId: string | null
   title: string
@@ -273,8 +280,9 @@ export type ActionRequestWhereInput = {
   id?: Prisma.StringFilter<"ActionRequest"> | string
   type?: Prisma.EnumActionRequestTypeFilter<"ActionRequest"> | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFilter<"ActionRequest"> | $Enums.ActionRequestStatus
+  notificationId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   senderId?: Prisma.BigIntFilter<"ActionRequest"> | bigint | number
-  recipientId?: Prisma.StringFilter<"ActionRequest"> | string
+  receiptId?: Prisma.StringFilter<"ActionRequest"> | string
   entityType?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   entityId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   title?: Prisma.StringFilter<"ActionRequest"> | string
@@ -285,14 +293,16 @@ export type ActionRequestWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ActionRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ActionRequest"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  notificationReceipt?: Prisma.XOR<Prisma.NotificationReceiptNullableScalarRelationFilter, Prisma.NotificationReceiptWhereInput> | null
 }
 
 export type ActionRequestOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notificationId?: Prisma.SortOrderInput | Prisma.SortOrder
   senderId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
+  receiptId?: Prisma.SortOrder
   entityType?: Prisma.SortOrderInput | Prisma.SortOrder
   entityId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -303,6 +313,7 @@ export type ActionRequestOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  notificationReceipt?: Prisma.NotificationReceiptOrderByWithRelationInput
 }
 
 export type ActionRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -312,8 +323,9 @@ export type ActionRequestWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ActionRequestWhereInput | Prisma.ActionRequestWhereInput[]
   type?: Prisma.EnumActionRequestTypeFilter<"ActionRequest"> | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFilter<"ActionRequest"> | $Enums.ActionRequestStatus
+  notificationId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   senderId?: Prisma.BigIntFilter<"ActionRequest"> | bigint | number
-  recipientId?: Prisma.StringFilter<"ActionRequest"> | string
+  receiptId?: Prisma.StringFilter<"ActionRequest"> | string
   entityType?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   entityId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   title?: Prisma.StringFilter<"ActionRequest"> | string
@@ -324,14 +336,16 @@ export type ActionRequestWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ActionRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ActionRequest"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  notificationReceipt?: Prisma.XOR<Prisma.NotificationReceiptNullableScalarRelationFilter, Prisma.NotificationReceiptWhereInput> | null
 }, "id">
 
 export type ActionRequestOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notificationId?: Prisma.SortOrderInput | Prisma.SortOrder
   senderId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
+  receiptId?: Prisma.SortOrder
   entityType?: Prisma.SortOrderInput | Prisma.SortOrder
   entityId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -355,8 +369,9 @@ export type ActionRequestScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ActionRequest"> | string
   type?: Prisma.EnumActionRequestTypeWithAggregatesFilter<"ActionRequest"> | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusWithAggregatesFilter<"ActionRequest"> | $Enums.ActionRequestStatus
+  notificationId?: Prisma.StringNullableWithAggregatesFilter<"ActionRequest"> | string | null
   senderId?: Prisma.BigIntWithAggregatesFilter<"ActionRequest"> | bigint | number
-  recipientId?: Prisma.StringWithAggregatesFilter<"ActionRequest"> | string
+  receiptId?: Prisma.StringWithAggregatesFilter<"ActionRequest"> | string
   entityType?: Prisma.StringNullableWithAggregatesFilter<"ActionRequest"> | string | null
   entityId?: Prisma.StringNullableWithAggregatesFilter<"ActionRequest"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"ActionRequest"> | string
@@ -372,7 +387,7 @@ export type ActionRequestCreateInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
-  recipientId: string
+  notificationId?: string | null
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -383,14 +398,16 @@ export type ActionRequestCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutActionrequestInput
+  notificationReceipt?: Prisma.NotificationReceiptCreateNestedOneWithoutActionrequestInput
 }
 
 export type ActionRequestUncheckedCreateInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
+  notificationId?: string | null
   senderId: bigint | number
-  recipientId: string
+  receiptId: string
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -406,7 +423,7 @@ export type ActionRequestUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -417,14 +434,16 @@ export type ActionRequestUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutActionrequestNestedInput
+  notificationReceipt?: Prisma.NotificationReceiptUpdateOneWithoutActionrequestNestedInput
 }
 
 export type ActionRequestUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiptId?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -440,8 +459,9 @@ export type ActionRequestCreateManyInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
+  notificationId?: string | null
   senderId: bigint | number
-  recipientId: string
+  receiptId: string
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -457,7 +477,7 @@ export type ActionRequestUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -473,8 +493,9 @@ export type ActionRequestUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiptId?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -500,8 +521,9 @@ export type ActionRequestCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notificationId?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
+  receiptId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -521,8 +543,9 @@ export type ActionRequestMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notificationId?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
+  receiptId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -537,8 +560,9 @@ export type ActionRequestMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notificationId?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
+  receiptId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -595,6 +619,48 @@ export type ActionRequestUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ActionRequestScalarWhereInput | Prisma.ActionRequestScalarWhereInput[]
 }
 
+export type ActionRequestCreateNestedManyWithoutNotificationReceiptInput = {
+  create?: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput> | Prisma.ActionRequestCreateWithoutNotificationReceiptInput[] | Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput[]
+  connectOrCreate?: Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput | Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput[]
+  createMany?: Prisma.ActionRequestCreateManyNotificationReceiptInputEnvelope
+  connect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+}
+
+export type ActionRequestUncheckedCreateNestedManyWithoutNotificationReceiptInput = {
+  create?: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput> | Prisma.ActionRequestCreateWithoutNotificationReceiptInput[] | Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput[]
+  connectOrCreate?: Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput | Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput[]
+  createMany?: Prisma.ActionRequestCreateManyNotificationReceiptInputEnvelope
+  connect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+}
+
+export type ActionRequestUpdateManyWithoutNotificationReceiptNestedInput = {
+  create?: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput> | Prisma.ActionRequestCreateWithoutNotificationReceiptInput[] | Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput[]
+  connectOrCreate?: Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput | Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput[]
+  upsert?: Prisma.ActionRequestUpsertWithWhereUniqueWithoutNotificationReceiptInput | Prisma.ActionRequestUpsertWithWhereUniqueWithoutNotificationReceiptInput[]
+  createMany?: Prisma.ActionRequestCreateManyNotificationReceiptInputEnvelope
+  set?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  disconnect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  delete?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  connect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  update?: Prisma.ActionRequestUpdateWithWhereUniqueWithoutNotificationReceiptInput | Prisma.ActionRequestUpdateWithWhereUniqueWithoutNotificationReceiptInput[]
+  updateMany?: Prisma.ActionRequestUpdateManyWithWhereWithoutNotificationReceiptInput | Prisma.ActionRequestUpdateManyWithWhereWithoutNotificationReceiptInput[]
+  deleteMany?: Prisma.ActionRequestScalarWhereInput | Prisma.ActionRequestScalarWhereInput[]
+}
+
+export type ActionRequestUncheckedUpdateManyWithoutNotificationReceiptNestedInput = {
+  create?: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput> | Prisma.ActionRequestCreateWithoutNotificationReceiptInput[] | Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput[]
+  connectOrCreate?: Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput | Prisma.ActionRequestCreateOrConnectWithoutNotificationReceiptInput[]
+  upsert?: Prisma.ActionRequestUpsertWithWhereUniqueWithoutNotificationReceiptInput | Prisma.ActionRequestUpsertWithWhereUniqueWithoutNotificationReceiptInput[]
+  createMany?: Prisma.ActionRequestCreateManyNotificationReceiptInputEnvelope
+  set?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  disconnect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  delete?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  connect?: Prisma.ActionRequestWhereUniqueInput | Prisma.ActionRequestWhereUniqueInput[]
+  update?: Prisma.ActionRequestUpdateWithWhereUniqueWithoutNotificationReceiptInput | Prisma.ActionRequestUpdateWithWhereUniqueWithoutNotificationReceiptInput[]
+  updateMany?: Prisma.ActionRequestUpdateManyWithWhereWithoutNotificationReceiptInput | Prisma.ActionRequestUpdateManyWithWhereWithoutNotificationReceiptInput[]
+  deleteMany?: Prisma.ActionRequestScalarWhereInput | Prisma.ActionRequestScalarWhereInput[]
+}
+
 export type EnumActionRequestTypeFieldUpdateOperationsInput = {
   set?: $Enums.ActionRequestType
 }
@@ -607,7 +673,7 @@ export type ActionRequestCreateWithoutUserInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
-  recipientId: string
+  notificationId?: string | null
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -617,13 +683,15 @@ export type ActionRequestCreateWithoutUserInput = {
   expiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  notificationReceipt?: Prisma.NotificationReceiptCreateNestedOneWithoutActionrequestInput
 }
 
 export type ActionRequestUncheckedCreateWithoutUserInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
-  recipientId: string
+  notificationId?: string | null
+  receiptId: string
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -668,8 +736,9 @@ export type ActionRequestScalarWhereInput = {
   id?: Prisma.StringFilter<"ActionRequest"> | string
   type?: Prisma.EnumActionRequestTypeFilter<"ActionRequest"> | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFilter<"ActionRequest"> | $Enums.ActionRequestStatus
+  notificationId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   senderId?: Prisma.BigIntFilter<"ActionRequest"> | bigint | number
-  recipientId?: Prisma.StringFilter<"ActionRequest"> | string
+  receiptId?: Prisma.StringFilter<"ActionRequest"> | string
   entityType?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   entityId?: Prisma.StringNullableFilter<"ActionRequest"> | string | null
   title?: Prisma.StringFilter<"ActionRequest"> | string
@@ -681,11 +750,72 @@ export type ActionRequestScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ActionRequest"> | Date | string
 }
 
+export type ActionRequestCreateWithoutNotificationReceiptInput = {
+  id?: string
+  type: $Enums.ActionRequestType
+  status?: $Enums.ActionRequestStatus
+  notificationId?: string | null
+  entityType?: string | null
+  entityId?: string | null
+  title: string
+  message?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Date | string | null
+  expiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutActionrequestInput
+}
+
+export type ActionRequestUncheckedCreateWithoutNotificationReceiptInput = {
+  id?: string
+  type: $Enums.ActionRequestType
+  status?: $Enums.ActionRequestStatus
+  notificationId?: string | null
+  senderId: bigint | number
+  entityType?: string | null
+  entityId?: string | null
+  title: string
+  message?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Date | string | null
+  expiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ActionRequestCreateOrConnectWithoutNotificationReceiptInput = {
+  where: Prisma.ActionRequestWhereUniqueInput
+  create: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput>
+}
+
+export type ActionRequestCreateManyNotificationReceiptInputEnvelope = {
+  data: Prisma.ActionRequestCreateManyNotificationReceiptInput | Prisma.ActionRequestCreateManyNotificationReceiptInput[]
+  skipDuplicates?: boolean
+}
+
+export type ActionRequestUpsertWithWhereUniqueWithoutNotificationReceiptInput = {
+  where: Prisma.ActionRequestWhereUniqueInput
+  update: Prisma.XOR<Prisma.ActionRequestUpdateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedUpdateWithoutNotificationReceiptInput>
+  create: Prisma.XOR<Prisma.ActionRequestCreateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedCreateWithoutNotificationReceiptInput>
+}
+
+export type ActionRequestUpdateWithWhereUniqueWithoutNotificationReceiptInput = {
+  where: Prisma.ActionRequestWhereUniqueInput
+  data: Prisma.XOR<Prisma.ActionRequestUpdateWithoutNotificationReceiptInput, Prisma.ActionRequestUncheckedUpdateWithoutNotificationReceiptInput>
+}
+
+export type ActionRequestUpdateManyWithWhereWithoutNotificationReceiptInput = {
+  where: Prisma.ActionRequestScalarWhereInput
+  data: Prisma.XOR<Prisma.ActionRequestUpdateManyMutationInput, Prisma.ActionRequestUncheckedUpdateManyWithoutNotificationReceiptInput>
+}
+
 export type ActionRequestCreateManyUserInput = {
   id?: string
   type: $Enums.ActionRequestType
   status?: $Enums.ActionRequestStatus
-  recipientId: string
+  notificationId?: string | null
+  receiptId: string
   entityType?: string | null
   entityId?: string | null
   title: string
@@ -701,7 +831,7 @@ export type ActionRequestUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -711,13 +841,15 @@ export type ActionRequestUpdateWithoutUserInput = {
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notificationReceipt?: Prisma.NotificationReceiptUpdateOneWithoutActionrequestNestedInput
 }
 
 export type ActionRequestUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptId?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -733,7 +865,76 @@ export type ActionRequestUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
   status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptId?: Prisma.StringFieldUpdateOperationsInput | string
+  entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ActionRequestCreateManyNotificationReceiptInput = {
+  id?: string
+  type: $Enums.ActionRequestType
+  status?: $Enums.ActionRequestStatus
+  notificationId?: string | null
+  senderId: bigint | number
+  entityType?: string | null
+  entityId?: string | null
+  title: string
+  message?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Date | string | null
+  expiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ActionRequestUpdateWithoutNotificationReceiptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
+  status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutActionrequestNestedInput
+}
+
+export type ActionRequestUncheckedUpdateWithoutNotificationReceiptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
+  status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ActionRequestUncheckedUpdateManyWithoutNotificationReceiptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumActionRequestTypeFieldUpdateOperationsInput | $Enums.ActionRequestType
+  status?: Prisma.EnumActionRequestStatusFieldUpdateOperationsInput | $Enums.ActionRequestStatus
+  notificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -751,8 +952,9 @@ export type ActionRequestSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   type?: boolean
   status?: boolean
+  notificationId?: boolean
   senderId?: boolean
-  recipientId?: boolean
+  receiptId?: boolean
   entityType?: boolean
   entityId?: boolean
   title?: boolean
@@ -763,14 +965,16 @@ export type ActionRequestSelect<ExtArgs extends runtime.Types.Extensions.Interna
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }, ExtArgs["result"]["actionRequest"]>
 
 export type ActionRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
   status?: boolean
+  notificationId?: boolean
   senderId?: boolean
-  recipientId?: boolean
+  receiptId?: boolean
   entityType?: boolean
   entityId?: boolean
   title?: boolean
@@ -781,14 +985,16 @@ export type ActionRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }, ExtArgs["result"]["actionRequest"]>
 
 export type ActionRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
   status?: boolean
+  notificationId?: boolean
   senderId?: boolean
-  recipientId?: boolean
+  receiptId?: boolean
   entityType?: boolean
   entityId?: boolean
   title?: boolean
@@ -799,14 +1005,16 @@ export type ActionRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }, ExtArgs["result"]["actionRequest"]>
 
 export type ActionRequestSelectScalar = {
   id?: boolean
   type?: boolean
   status?: boolean
+  notificationId?: boolean
   senderId?: boolean
-  recipientId?: boolean
+  receiptId?: boolean
   entityType?: boolean
   entityId?: boolean
   title?: boolean
@@ -818,28 +1026,33 @@ export type ActionRequestSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ActionRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "status" | "senderId" | "recipientId" | "entityType" | "entityId" | "title" | "message" | "metadata" | "respondedAt" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["actionRequest"]>
+export type ActionRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "status" | "notificationId" | "senderId" | "receiptId" | "entityType" | "entityId" | "title" | "message" | "metadata" | "respondedAt" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["actionRequest"]>
 export type ActionRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }
 export type ActionRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }
 export type ActionRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notificationReceipt?: boolean | Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>
 }
 
 export type $ActionRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ActionRequest"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    notificationReceipt: Prisma.$NotificationReceiptPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     type: $Enums.ActionRequestType
     status: $Enums.ActionRequestStatus
+    notificationId: string | null
     senderId: bigint
-    recipientId: string
+    receiptId: string
     entityType: string | null
     entityId: string | null
     title: string
@@ -1244,6 +1457,7 @@ readonly fields: ActionRequestFieldRefs;
 export interface Prisma__ActionRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  notificationReceipt<T extends Prisma.ActionRequest$notificationReceiptArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ActionRequest$notificationReceiptArgs<ExtArgs>>): Prisma.Prisma__NotificationReceiptClient<runtime.Types.Result.GetResult<Prisma.$NotificationReceiptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1276,8 +1490,9 @@ export interface ActionRequestFieldRefs {
   readonly id: Prisma.FieldRef<"ActionRequest", 'String'>
   readonly type: Prisma.FieldRef<"ActionRequest", 'ActionRequestType'>
   readonly status: Prisma.FieldRef<"ActionRequest", 'ActionRequestStatus'>
+  readonly notificationId: Prisma.FieldRef<"ActionRequest", 'String'>
   readonly senderId: Prisma.FieldRef<"ActionRequest", 'BigInt'>
-  readonly recipientId: Prisma.FieldRef<"ActionRequest", 'String'>
+  readonly receiptId: Prisma.FieldRef<"ActionRequest", 'String'>
   readonly entityType: Prisma.FieldRef<"ActionRequest", 'String'>
   readonly entityId: Prisma.FieldRef<"ActionRequest", 'String'>
   readonly title: Prisma.FieldRef<"ActionRequest", 'String'>
@@ -1685,6 +1900,25 @@ export type ActionRequestDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many ActionRequests to delete.
    */
   limit?: number
+}
+
+/**
+ * ActionRequest.notificationReceipt
+ */
+export type ActionRequest$notificationReceiptArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NotificationReceipt
+   */
+  select?: Prisma.NotificationReceiptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NotificationReceipt
+   */
+  omit?: Prisma.NotificationReceiptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationReceiptInclude<ExtArgs> | null
+  where?: Prisma.NotificationReceiptWhereInput
 }
 
 /**

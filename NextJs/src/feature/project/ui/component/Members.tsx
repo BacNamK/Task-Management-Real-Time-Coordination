@@ -13,11 +13,11 @@ const isMemberMatch = (result: projectMemberSearchResult | null): result is Memb
 
 export const Members = ({
     members,
-    projectId,
+    projectUuid,
     actives,
 }: {
     members: projectMember[];
-    projectId: any;
+    projectUuid: string;
     actives: string[];
 }) => {
     const [memberSearch, setMemberSearch] = useState('');
@@ -39,7 +39,7 @@ export const Members = ({
             return;
         }
         try {
-            const result = await checkMember(projectId, name);
+            const result = await checkMember(projectUuid, name);
             if (typeof result === 'object' && result !== null && 'message' in result) {
                 showMessage(result.message);
                 return;
@@ -62,7 +62,7 @@ export const Members = ({
             return;
         }
         try {
-            await addMember(searchResult.projectId, searchResult.user.id);
+            await addMember(projectUuid, searchResult.user.id);
             showMessage('Member added successfully');
         } catch (error) {
             console.error('Failed to add project member:', error);

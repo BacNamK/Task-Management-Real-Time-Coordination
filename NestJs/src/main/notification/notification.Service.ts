@@ -10,6 +10,6 @@ export class NotificationService {
       throw new BadRequestException('INVALID_USER_ID');
     }
 
-    return this.repository.findByRecipientId(recipientId);
+    return this.repository.findByRecipientId(BigInt(recipientId));
   }
 }

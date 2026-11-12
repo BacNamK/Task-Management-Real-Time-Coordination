@@ -47,7 +47,7 @@ export class PresenceService {
     if (!hasOtherConnections) {
       const userId = this.getUserId(client);
       const projectUuids =
-        await this.ProjectRepository.returnProjectMemberUuid(userId);
+        await this.ProjectRepository.returnProjectsMemberUuid(userId);
 
       const projectKeys = projectUuids.map(
         (projectUuid: string) => `projectActive:${projectUuid}`,
@@ -78,7 +78,7 @@ export class PresenceService {
 
   async setPersenceProjects(userId: string): Promise<string[]> {
     const projectUuids: string[] =
-      await this.ProjectRepository.returnProjectMemberUuid(userId);
+      await this.ProjectRepository.returnProjectsMemberUuid(userId);
 
     for (const projectUuid of projectUuids) {
       await this.redis.zadd(

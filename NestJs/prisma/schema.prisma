@@ -47,8 +47,9 @@ model User {
   task                 Task[]
   comments             Comments[]
   imageAndVideos       ImageAndVideo[]
-  notification          Notification []
-  actionrequest         ActionRequest[]
+  notification         Notification[]
+  actionrequest        ActionRequest[]
+  notificationReceipts NotificationReceipt[]
 
   @@map("user")
 }
@@ -114,7 +115,6 @@ model project {
 
 model projectMember {
   id           BigInt            @id @default(autoincrement())
-  uuid         String            @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   projectId    BigInt            @map("project_id")
   userId       BigInt            @map("user_id")
   role         projectMemberRole @default(MEMBER)
@@ -171,6 +171,7 @@ model Cycle {
 
 model Task {
   id          BigInt       @id @default(autoincrement())
+  uuid         String            @unique @default(dbgenerated("gen_random_uuid()")) @db.Text
   title       String       @db.VarChar
   position    Int
   description String?      @db.Text
@@ -218,13 +219,13 @@ model TaskTag {
 }
 
 model Comments {
-  id       BigInt @id @default(autoincrement())
-  content  String @db.Text
+  id       BigInt  @id @default(autoincrement())
+  content  String  @db.Text
   isDelete Boolean @default(false)
-  taskId   BigInt @map("task_id")
-  sendById BigInt @map("send_by_id")
-  task     Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user     User   @relation(fields: [sendById], references: [id], onDelete: Cascade)
+  taskId   BigInt  @map("task_id")
+  sendById BigInt  @map("send_by_id")
+  task     Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user     User    @relation(fields: [sendById], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -340,9 +341,9 @@ enum NotificationType {
 
 model Notification {
   id   String           @id @default(uuid())
-  type NotificationTypex
+  type NotificationType
 
-  actorId BigInt       @map("actor_id")
+  actorId BigInt  @map("actor_id")
   title   String
   message String?
 
@@ -353,7 +354,7 @@ model Notification {
 
   createdAt DateTime @default(now())
 
-  user       User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [actorId], references: [id], onDelete: Cascade)
 
   receipts NotificationReceipt[]
 
@@ -364,12 +365,14 @@ model NotificationReceipt {
   id String @id @default(uuid())
 
   notificationId String @map("notification_id")
-  recipientId    String @map("recipient_id")
+  recipientId    BigInt @map("recipient_id")
 
   isRead Boolean   @default(false)
   readAt DateTime?
 
-  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  notification  Notification    @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  recipient      User            @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  actionrequest ActionRequest[]
 
   @@unique([notificationId, recipientId])
   @@index([recipientId, isRead, notificationId])
@@ -397,6 +400,13 @@ model ActionRequest {
   type   ActionRequestType
   status ActionRequestStatus @default(PENDING)
 
+  notificationId String? @map("notification_id")
+  senderId       BigInt  @map("sender_id")
+  receiptId      String  @map("receipt_id")
+
+  entityType String?
+  entityId   String?
+
   title    String
   message  String?
   metadata Json?
@@ -407,9 +417,11 @@ model ActionRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user       User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
-  @@index([recipientId, status, createdAt])
+  notificationReceipt NotificationReceipt? @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+
+  @@index([receiptId, status, createdAt])
   @@index([senderId, createdAt])
   @@index([entityType, entityId])
   @@map("actionrequest")

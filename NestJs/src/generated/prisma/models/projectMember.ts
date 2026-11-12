@@ -42,7 +42,6 @@ export type ProjectMemberSumAggregateOutputType = {
 
 export type ProjectMemberMinAggregateOutputType = {
   id: bigint | null
-  uuid: string | null
   projectId: bigint | null
   userId: bigint | null
   role: $Enums.projectMemberRole | null
@@ -52,7 +51,6 @@ export type ProjectMemberMinAggregateOutputType = {
 
 export type ProjectMemberMaxAggregateOutputType = {
   id: bigint | null
-  uuid: string | null
   projectId: bigint | null
   userId: bigint | null
   role: $Enums.projectMemberRole | null
@@ -62,7 +60,6 @@ export type ProjectMemberMaxAggregateOutputType = {
 
 export type ProjectMemberCountAggregateOutputType = {
   id: number
-  uuid: number
   projectId: number
   userId: number
   role: number
@@ -88,7 +85,6 @@ export type ProjectMemberSumAggregateInputType = {
 
 export type ProjectMemberMinAggregateInputType = {
   id?: true
-  uuid?: true
   projectId?: true
   userId?: true
   role?: true
@@ -98,7 +94,6 @@ export type ProjectMemberMinAggregateInputType = {
 
 export type ProjectMemberMaxAggregateInputType = {
   id?: true
-  uuid?: true
   projectId?: true
   userId?: true
   role?: true
@@ -108,7 +103,6 @@ export type ProjectMemberMaxAggregateInputType = {
 
 export type ProjectMemberCountAggregateInputType = {
   id?: true
-  uuid?: true
   projectId?: true
   userId?: true
   role?: true
@@ -205,7 +199,6 @@ export type projectMemberGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type ProjectMemberGroupByOutputType = {
   id: bigint
-  uuid: string
   projectId: bigint
   userId: bigint
   role: $Enums.projectMemberRole
@@ -238,7 +231,6 @@ export type projectMemberWhereInput = {
   OR?: Prisma.projectMemberWhereInput[]
   NOT?: Prisma.projectMemberWhereInput | Prisma.projectMemberWhereInput[]
   id?: Prisma.BigIntFilter<"projectMember"> | bigint | number
-  uuid?: Prisma.StringFilter<"projectMember"> | string
   projectId?: Prisma.BigIntFilter<"projectMember"> | bigint | number
   userId?: Prisma.BigIntFilter<"projectMember"> | bigint | number
   role?: Prisma.EnumprojectMemberRoleFilter<"projectMember"> | $Enums.projectMemberRole
@@ -251,7 +243,6 @@ export type projectMemberWhereInput = {
 
 export type projectMemberOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  uuid?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -264,7 +255,6 @@ export type projectMemberOrderByWithRelationInput = {
 
 export type projectMemberWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
-  uuid?: string
   projectId_userId?: Prisma.projectMemberProjectIdUserIdCompoundUniqueInput
   AND?: Prisma.projectMemberWhereInput | Prisma.projectMemberWhereInput[]
   OR?: Prisma.projectMemberWhereInput[]
@@ -277,11 +267,10 @@ export type projectMemberWhereUniqueInput = Prisma.AtLeast<{
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.projectWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   permission?: Prisma.XOR<Prisma.PermissionScalarRelationFilter, Prisma.PermissionWhereInput>
-}, "id" | "uuid" | "projectId_userId">
+}, "id" | "projectId_userId">
 
 export type projectMemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  uuid?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -299,7 +288,6 @@ export type projectMemberScalarWhereWithAggregatesInput = {
   OR?: Prisma.projectMemberScalarWhereWithAggregatesInput[]
   NOT?: Prisma.projectMemberScalarWhereWithAggregatesInput | Prisma.projectMemberScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"projectMember"> | bigint | number
-  uuid?: Prisma.StringWithAggregatesFilter<"projectMember"> | string
   projectId?: Prisma.BigIntWithAggregatesFilter<"projectMember"> | bigint | number
   userId?: Prisma.BigIntWithAggregatesFilter<"projectMember"> | bigint | number
   role?: Prisma.EnumprojectMemberRoleWithAggregatesFilter<"projectMember"> | $Enums.projectMemberRole
@@ -309,7 +297,6 @@ export type projectMemberScalarWhereWithAggregatesInput = {
 
 export type projectMemberCreateInput = {
   id?: bigint | number
-  uuid?: string
   role?: $Enums.projectMemberRole
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutMembersInput
@@ -319,7 +306,6 @@ export type projectMemberCreateInput = {
 
 export type projectMemberUncheckedCreateInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   userId: bigint | number
   role?: $Enums.projectMemberRole
@@ -329,7 +315,6 @@ export type projectMemberUncheckedCreateInput = {
 
 export type projectMemberUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutMembersNestedInput
@@ -339,7 +324,6 @@ export type projectMemberUpdateInput = {
 
 export type projectMemberUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
@@ -349,7 +333,6 @@ export type projectMemberUncheckedUpdateInput = {
 
 export type projectMemberCreateManyInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   userId: bigint | number
   role?: $Enums.projectMemberRole
@@ -359,14 +342,12 @@ export type projectMemberCreateManyInput = {
 
 export type projectMemberUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type projectMemberUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
@@ -391,7 +372,6 @@ export type projectMemberProjectIdUserIdCompoundUniqueInput = {
 
 export type projectMemberCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  uuid?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -408,7 +388,6 @@ export type projectMemberAvgOrderByAggregateInput = {
 
 export type projectMemberMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  uuid?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -418,7 +397,6 @@ export type projectMemberMaxOrderByAggregateInput = {
 
 export type projectMemberMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  uuid?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -565,7 +543,6 @@ export type projectMemberUncheckedUpdateManyWithoutPermissionNestedInput = {
 
 export type projectMemberCreateWithoutUserInput = {
   id?: bigint | number
-  uuid?: string
   role?: $Enums.projectMemberRole
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutMembersInput
@@ -574,7 +551,6 @@ export type projectMemberCreateWithoutUserInput = {
 
 export type projectMemberUncheckedCreateWithoutUserInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   role?: $Enums.projectMemberRole
   permissionId: number
@@ -612,7 +588,6 @@ export type projectMemberScalarWhereInput = {
   OR?: Prisma.projectMemberScalarWhereInput[]
   NOT?: Prisma.projectMemberScalarWhereInput | Prisma.projectMemberScalarWhereInput[]
   id?: Prisma.BigIntFilter<"projectMember"> | bigint | number
-  uuid?: Prisma.StringFilter<"projectMember"> | string
   projectId?: Prisma.BigIntFilter<"projectMember"> | bigint | number
   userId?: Prisma.BigIntFilter<"projectMember"> | bigint | number
   role?: Prisma.EnumprojectMemberRoleFilter<"projectMember"> | $Enums.projectMemberRole
@@ -622,7 +597,6 @@ export type projectMemberScalarWhereInput = {
 
 export type projectMemberCreateWithoutProjectInput = {
   id?: bigint | number
-  uuid?: string
   role?: $Enums.projectMemberRole
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProjectMembersInput
@@ -631,7 +605,6 @@ export type projectMemberCreateWithoutProjectInput = {
 
 export type projectMemberUncheckedCreateWithoutProjectInput = {
   id?: bigint | number
-  uuid?: string
   userId: bigint | number
   role?: $Enums.projectMemberRole
   permissionId: number
@@ -666,7 +639,6 @@ export type projectMemberUpdateManyWithWhereWithoutProjectInput = {
 
 export type projectMemberCreateWithoutPermissionInput = {
   id?: bigint | number
-  uuid?: string
   role?: $Enums.projectMemberRole
   createdAt?: Date | string
   project: Prisma.projectCreateNestedOneWithoutMembersInput
@@ -675,7 +647,6 @@ export type projectMemberCreateWithoutPermissionInput = {
 
 export type projectMemberUncheckedCreateWithoutPermissionInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   userId: bigint | number
   role?: $Enums.projectMemberRole
@@ -710,7 +681,6 @@ export type projectMemberUpdateManyWithWhereWithoutPermissionInput = {
 
 export type projectMemberCreateManyUserInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   role?: $Enums.projectMemberRole
   permissionId: number
@@ -719,7 +689,6 @@ export type projectMemberCreateManyUserInput = {
 
 export type projectMemberUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutMembersNestedInput
@@ -728,7 +697,6 @@ export type projectMemberUpdateWithoutUserInput = {
 
 export type projectMemberUncheckedUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   permissionId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -737,7 +705,6 @@ export type projectMemberUncheckedUpdateWithoutUserInput = {
 
 export type projectMemberUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   permissionId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -746,7 +713,6 @@ export type projectMemberUncheckedUpdateManyWithoutUserInput = {
 
 export type projectMemberCreateManyProjectInput = {
   id?: bigint | number
-  uuid?: string
   userId: bigint | number
   role?: $Enums.projectMemberRole
   permissionId: number
@@ -755,7 +721,6 @@ export type projectMemberCreateManyProjectInput = {
 
 export type projectMemberUpdateWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProjectMembersNestedInput
@@ -764,7 +729,6 @@ export type projectMemberUpdateWithoutProjectInput = {
 
 export type projectMemberUncheckedUpdateWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   permissionId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -773,7 +737,6 @@ export type projectMemberUncheckedUpdateWithoutProjectInput = {
 
 export type projectMemberUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   permissionId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -782,7 +745,6 @@ export type projectMemberUncheckedUpdateManyWithoutProjectInput = {
 
 export type projectMemberCreateManyPermissionInput = {
   id?: bigint | number
-  uuid?: string
   projectId: bigint | number
   userId: bigint | number
   role?: $Enums.projectMemberRole
@@ -791,7 +753,6 @@ export type projectMemberCreateManyPermissionInput = {
 
 export type projectMemberUpdateWithoutPermissionInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.projectUpdateOneRequiredWithoutMembersNestedInput
@@ -800,7 +761,6 @@ export type projectMemberUpdateWithoutPermissionInput = {
 
 export type projectMemberUncheckedUpdateWithoutPermissionInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
@@ -809,7 +769,6 @@ export type projectMemberUncheckedUpdateWithoutPermissionInput = {
 
 export type projectMemberUncheckedUpdateManyWithoutPermissionInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uuid?: Prisma.StringFieldUpdateOperationsInput | string
   projectId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   role?: Prisma.EnumprojectMemberRoleFieldUpdateOperationsInput | $Enums.projectMemberRole
@@ -820,7 +779,6 @@ export type projectMemberUncheckedUpdateManyWithoutPermissionInput = {
 
 export type projectMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  uuid?: boolean
   projectId?: boolean
   userId?: boolean
   role?: boolean
@@ -833,7 +791,6 @@ export type projectMemberSelect<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type projectMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  uuid?: boolean
   projectId?: boolean
   userId?: boolean
   role?: boolean
@@ -846,7 +803,6 @@ export type projectMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 
 export type projectMemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  uuid?: boolean
   projectId?: boolean
   userId?: boolean
   role?: boolean
@@ -859,7 +815,6 @@ export type projectMemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 
 export type projectMemberSelectScalar = {
   id?: boolean
-  uuid?: boolean
   projectId?: boolean
   userId?: boolean
   role?: boolean
@@ -867,7 +822,7 @@ export type projectMemberSelectScalar = {
   createdAt?: boolean
 }
 
-export type projectMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "projectId" | "userId" | "role" | "permissionId" | "createdAt", ExtArgs["result"]["projectMember"]>
+export type projectMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "userId" | "role" | "permissionId" | "createdAt", ExtArgs["result"]["projectMember"]>
 export type projectMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.projectDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -893,7 +848,6 @@ export type $projectMemberPayload<ExtArgs extends runtime.Types.Extensions.Inter
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
-    uuid: string
     projectId: bigint
     userId: bigint
     role: $Enums.projectMemberRole
@@ -1326,7 +1280,6 @@ export interface Prisma__projectMemberClient<T, Null = never, ExtArgs extends ru
  */
 export interface projectMemberFieldRefs {
   readonly id: Prisma.FieldRef<"projectMember", 'BigInt'>
-  readonly uuid: Prisma.FieldRef<"projectMember", 'String'>
   readonly projectId: Prisma.FieldRef<"projectMember", 'BigInt'>
   readonly userId: Prisma.FieldRef<"projectMember", 'BigInt'>
   readonly role: Prisma.FieldRef<"projectMember", 'projectMemberRole'>

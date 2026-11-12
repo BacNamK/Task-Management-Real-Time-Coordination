@@ -20,14 +20,24 @@ export type NotificationReceiptModel = runtime.Types.Result.DefaultSelection<Pri
 
 export type AggregateNotificationReceipt = {
   _count: NotificationReceiptCountAggregateOutputType | null
+  _avg: NotificationReceiptAvgAggregateOutputType | null
+  _sum: NotificationReceiptSumAggregateOutputType | null
   _min: NotificationReceiptMinAggregateOutputType | null
   _max: NotificationReceiptMaxAggregateOutputType | null
+}
+
+export type NotificationReceiptAvgAggregateOutputType = {
+  recipientId: number | null
+}
+
+export type NotificationReceiptSumAggregateOutputType = {
+  recipientId: bigint | null
 }
 
 export type NotificationReceiptMinAggregateOutputType = {
   id: string | null
   notificationId: string | null
-  recipientId: string | null
+  recipientId: bigint | null
   isRead: boolean | null
   readAt: Date | null
 }
@@ -35,7 +45,7 @@ export type NotificationReceiptMinAggregateOutputType = {
 export type NotificationReceiptMaxAggregateOutputType = {
   id: string | null
   notificationId: string | null
-  recipientId: string | null
+  recipientId: bigint | null
   isRead: boolean | null
   readAt: Date | null
 }
@@ -49,6 +59,14 @@ export type NotificationReceiptCountAggregateOutputType = {
   _all: number
 }
 
+
+export type NotificationReceiptAvgAggregateInputType = {
+  recipientId?: true
+}
+
+export type NotificationReceiptSumAggregateInputType = {
+  recipientId?: true
+}
 
 export type NotificationReceiptMinAggregateInputType = {
   id?: true
@@ -113,6 +131,18 @@ export type NotificationReceiptAggregateArgs<ExtArgs extends runtime.Types.Exten
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: NotificationReceiptAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: NotificationReceiptSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: NotificationReceiptMinAggregateInputType
@@ -143,6 +173,8 @@ export type NotificationReceiptGroupByArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   _count?: NotificationReceiptCountAggregateInputType | true
+  _avg?: NotificationReceiptAvgAggregateInputType
+  _sum?: NotificationReceiptSumAggregateInputType
   _min?: NotificationReceiptMinAggregateInputType
   _max?: NotificationReceiptMaxAggregateInputType
 }
@@ -150,10 +182,12 @@ export type NotificationReceiptGroupByArgs<ExtArgs extends runtime.Types.Extensi
 export type NotificationReceiptGroupByOutputType = {
   id: string
   notificationId: string
-  recipientId: string
+  recipientId: bigint
   isRead: boolean
   readAt: Date | null
   _count: NotificationReceiptCountAggregateOutputType | null
+  _avg: NotificationReceiptAvgAggregateOutputType | null
+  _sum: NotificationReceiptSumAggregateOutputType | null
   _min: NotificationReceiptMinAggregateOutputType | null
   _max: NotificationReceiptMaxAggregateOutputType | null
 }
@@ -179,10 +213,12 @@ export type NotificationReceiptWhereInput = {
   NOT?: Prisma.NotificationReceiptWhereInput | Prisma.NotificationReceiptWhereInput[]
   id?: Prisma.StringFilter<"NotificationReceipt"> | string
   notificationId?: Prisma.StringFilter<"NotificationReceipt"> | string
-  recipientId?: Prisma.StringFilter<"NotificationReceipt"> | string
+  recipientId?: Prisma.BigIntFilter<"NotificationReceipt"> | bigint | number
   isRead?: Prisma.BoolFilter<"NotificationReceipt"> | boolean
   readAt?: Prisma.DateTimeNullableFilter<"NotificationReceipt"> | Date | string | null
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
+  recipient?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  actionrequest?: Prisma.ActionRequestListRelationFilter
 }
 
 export type NotificationReceiptOrderByWithRelationInput = {
@@ -192,6 +228,8 @@ export type NotificationReceiptOrderByWithRelationInput = {
   isRead?: Prisma.SortOrder
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   notification?: Prisma.NotificationOrderByWithRelationInput
+  recipient?: Prisma.UserOrderByWithRelationInput
+  actionrequest?: Prisma.ActionRequestOrderByRelationAggregateInput
 }
 
 export type NotificationReceiptWhereUniqueInput = Prisma.AtLeast<{
@@ -201,10 +239,12 @@ export type NotificationReceiptWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.NotificationReceiptWhereInput[]
   NOT?: Prisma.NotificationReceiptWhereInput | Prisma.NotificationReceiptWhereInput[]
   notificationId?: Prisma.StringFilter<"NotificationReceipt"> | string
-  recipientId?: Prisma.StringFilter<"NotificationReceipt"> | string
+  recipientId?: Prisma.BigIntFilter<"NotificationReceipt"> | bigint | number
   isRead?: Prisma.BoolFilter<"NotificationReceipt"> | boolean
   readAt?: Prisma.DateTimeNullableFilter<"NotificationReceipt"> | Date | string | null
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
+  recipient?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  actionrequest?: Prisma.ActionRequestListRelationFilter
 }, "id" | "notificationId_recipientId">
 
 export type NotificationReceiptOrderByWithAggregationInput = {
@@ -214,8 +254,10 @@ export type NotificationReceiptOrderByWithAggregationInput = {
   isRead?: Prisma.SortOrder
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.NotificationReceiptCountOrderByAggregateInput
+  _avg?: Prisma.NotificationReceiptAvgOrderByAggregateInput
   _max?: Prisma.NotificationReceiptMaxOrderByAggregateInput
   _min?: Prisma.NotificationReceiptMinOrderByAggregateInput
+  _sum?: Prisma.NotificationReceiptSumOrderByAggregateInput
 }
 
 export type NotificationReceiptScalarWhereWithAggregatesInput = {
@@ -224,54 +266,57 @@ export type NotificationReceiptScalarWhereWithAggregatesInput = {
   NOT?: Prisma.NotificationReceiptScalarWhereWithAggregatesInput | Prisma.NotificationReceiptScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"NotificationReceipt"> | string
   notificationId?: Prisma.StringWithAggregatesFilter<"NotificationReceipt"> | string
-  recipientId?: Prisma.StringWithAggregatesFilter<"NotificationReceipt"> | string
+  recipientId?: Prisma.BigIntWithAggregatesFilter<"NotificationReceipt"> | bigint | number
   isRead?: Prisma.BoolWithAggregatesFilter<"NotificationReceipt"> | boolean
   readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"NotificationReceipt"> | Date | string | null
 }
 
 export type NotificationReceiptCreateInput = {
   id?: string
-  recipientId: string
   isRead?: boolean
   readAt?: Date | string | null
   notification: Prisma.NotificationCreateNestedOneWithoutReceiptsInput
+  recipient: Prisma.UserCreateNestedOneWithoutNotificationReceiptsInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutNotificationReceiptInput
 }
 
 export type NotificationReceiptUncheckedCreateInput = {
   id?: string
   notificationId: string
-  recipientId: string
+  recipientId: bigint | number
   isRead?: boolean
   readAt?: Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutNotificationReceiptInput
 }
 
 export type NotificationReceiptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notification?: Prisma.NotificationUpdateOneRequiredWithoutReceiptsNestedInput
+  recipient?: Prisma.UserUpdateOneRequiredWithoutNotificationReceiptsNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutNotificationReceiptNestedInput
 }
 
 export type NotificationReceiptUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutNotificationReceiptNestedInput
 }
 
 export type NotificationReceiptCreateManyInput = {
   id?: string
   notificationId: string
-  recipientId: string
+  recipientId: bigint | number
   isRead?: boolean
   readAt?: Date | string | null
 }
 
 export type NotificationReceiptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -279,7 +324,7 @@ export type NotificationReceiptUpdateManyMutationInput = {
 export type NotificationReceiptUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -296,7 +341,7 @@ export type NotificationReceiptOrderByRelationAggregateInput = {
 
 export type NotificationReceiptNotificationIdRecipientIdCompoundUniqueInput = {
   notificationId: string
-  recipientId: string
+  recipientId: bigint | number
 }
 
 export type NotificationReceiptCountOrderByAggregateInput = {
@@ -305,6 +350,10 @@ export type NotificationReceiptCountOrderByAggregateInput = {
   recipientId?: Prisma.SortOrder
   isRead?: Prisma.SortOrder
   readAt?: Prisma.SortOrder
+}
+
+export type NotificationReceiptAvgOrderByAggregateInput = {
+  recipientId?: Prisma.SortOrder
 }
 
 export type NotificationReceiptMaxOrderByAggregateInput = {
@@ -321,6 +370,57 @@ export type NotificationReceiptMinOrderByAggregateInput = {
   recipientId?: Prisma.SortOrder
   isRead?: Prisma.SortOrder
   readAt?: Prisma.SortOrder
+}
+
+export type NotificationReceiptSumOrderByAggregateInput = {
+  recipientId?: Prisma.SortOrder
+}
+
+export type NotificationReceiptNullableScalarRelationFilter = {
+  is?: Prisma.NotificationReceiptWhereInput | null
+  isNot?: Prisma.NotificationReceiptWhereInput | null
+}
+
+export type NotificationReceiptCreateNestedManyWithoutRecipientInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput> | Prisma.NotificationReceiptCreateWithoutRecipientInput[] | Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput[]
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput | Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput[]
+  createMany?: Prisma.NotificationReceiptCreateManyRecipientInputEnvelope
+  connect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+}
+
+export type NotificationReceiptUncheckedCreateNestedManyWithoutRecipientInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput> | Prisma.NotificationReceiptCreateWithoutRecipientInput[] | Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput[]
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput | Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput[]
+  createMany?: Prisma.NotificationReceiptCreateManyRecipientInputEnvelope
+  connect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+}
+
+export type NotificationReceiptUpdateManyWithoutRecipientNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput> | Prisma.NotificationReceiptCreateWithoutRecipientInput[] | Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput[]
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput | Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput[]
+  upsert?: Prisma.NotificationReceiptUpsertWithWhereUniqueWithoutRecipientInput | Prisma.NotificationReceiptUpsertWithWhereUniqueWithoutRecipientInput[]
+  createMany?: Prisma.NotificationReceiptCreateManyRecipientInputEnvelope
+  set?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  disconnect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  delete?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  connect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  update?: Prisma.NotificationReceiptUpdateWithWhereUniqueWithoutRecipientInput | Prisma.NotificationReceiptUpdateWithWhereUniqueWithoutRecipientInput[]
+  updateMany?: Prisma.NotificationReceiptUpdateManyWithWhereWithoutRecipientInput | Prisma.NotificationReceiptUpdateManyWithWhereWithoutRecipientInput[]
+  deleteMany?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
+}
+
+export type NotificationReceiptUncheckedUpdateManyWithoutRecipientNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput> | Prisma.NotificationReceiptCreateWithoutRecipientInput[] | Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput[]
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput | Prisma.NotificationReceiptCreateOrConnectWithoutRecipientInput[]
+  upsert?: Prisma.NotificationReceiptUpsertWithWhereUniqueWithoutRecipientInput | Prisma.NotificationReceiptUpsertWithWhereUniqueWithoutRecipientInput[]
+  createMany?: Prisma.NotificationReceiptCreateManyRecipientInputEnvelope
+  set?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  disconnect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  delete?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  connect?: Prisma.NotificationReceiptWhereUniqueInput | Prisma.NotificationReceiptWhereUniqueInput[]
+  update?: Prisma.NotificationReceiptUpdateWithWhereUniqueWithoutRecipientInput | Prisma.NotificationReceiptUpdateWithWhereUniqueWithoutRecipientInput[]
+  updateMany?: Prisma.NotificationReceiptUpdateManyWithWhereWithoutRecipientInput | Prisma.NotificationReceiptUpdateManyWithWhereWithoutRecipientInput[]
+  deleteMany?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
 }
 
 export type NotificationReceiptCreateNestedManyWithoutNotificationInput = {
@@ -365,18 +465,89 @@ export type NotificationReceiptUncheckedUpdateManyWithoutNotificationNestedInput
   deleteMany?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
 }
 
-export type NotificationReceiptCreateWithoutNotificationInput = {
+export type NotificationReceiptCreateNestedOneWithoutActionrequestInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedCreateWithoutActionrequestInput>
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutActionrequestInput
+  connect?: Prisma.NotificationReceiptWhereUniqueInput
+}
+
+export type NotificationReceiptUpdateOneWithoutActionrequestNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedCreateWithoutActionrequestInput>
+  connectOrCreate?: Prisma.NotificationReceiptCreateOrConnectWithoutActionrequestInput
+  upsert?: Prisma.NotificationReceiptUpsertWithoutActionrequestInput
+  disconnect?: Prisma.NotificationReceiptWhereInput | boolean
+  delete?: Prisma.NotificationReceiptWhereInput | boolean
+  connect?: Prisma.NotificationReceiptWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.NotificationReceiptUpdateToOneWithWhereWithoutActionrequestInput, Prisma.NotificationReceiptUpdateWithoutActionrequestInput>, Prisma.NotificationReceiptUncheckedUpdateWithoutActionrequestInput>
+}
+
+export type NotificationReceiptCreateWithoutRecipientInput = {
   id?: string
-  recipientId: string
   isRead?: boolean
   readAt?: Date | string | null
+  notification: Prisma.NotificationCreateNestedOneWithoutReceiptsInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutNotificationReceiptInput
+}
+
+export type NotificationReceiptUncheckedCreateWithoutRecipientInput = {
+  id?: string
+  notificationId: string
+  isRead?: boolean
+  readAt?: Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutNotificationReceiptInput
+}
+
+export type NotificationReceiptCreateOrConnectWithoutRecipientInput = {
+  where: Prisma.NotificationReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput>
+}
+
+export type NotificationReceiptCreateManyRecipientInputEnvelope = {
+  data: Prisma.NotificationReceiptCreateManyRecipientInput | Prisma.NotificationReceiptCreateManyRecipientInput[]
+  skipDuplicates?: boolean
+}
+
+export type NotificationReceiptUpsertWithWhereUniqueWithoutRecipientInput = {
+  where: Prisma.NotificationReceiptWhereUniqueInput
+  update: Prisma.XOR<Prisma.NotificationReceiptUpdateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedUpdateWithoutRecipientInput>
+  create: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedCreateWithoutRecipientInput>
+}
+
+export type NotificationReceiptUpdateWithWhereUniqueWithoutRecipientInput = {
+  where: Prisma.NotificationReceiptWhereUniqueInput
+  data: Prisma.XOR<Prisma.NotificationReceiptUpdateWithoutRecipientInput, Prisma.NotificationReceiptUncheckedUpdateWithoutRecipientInput>
+}
+
+export type NotificationReceiptUpdateManyWithWhereWithoutRecipientInput = {
+  where: Prisma.NotificationReceiptScalarWhereInput
+  data: Prisma.XOR<Prisma.NotificationReceiptUpdateManyMutationInput, Prisma.NotificationReceiptUncheckedUpdateManyWithoutRecipientInput>
+}
+
+export type NotificationReceiptScalarWhereInput = {
+  AND?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
+  OR?: Prisma.NotificationReceiptScalarWhereInput[]
+  NOT?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
+  id?: Prisma.StringFilter<"NotificationReceipt"> | string
+  notificationId?: Prisma.StringFilter<"NotificationReceipt"> | string
+  recipientId?: Prisma.BigIntFilter<"NotificationReceipt"> | bigint | number
+  isRead?: Prisma.BoolFilter<"NotificationReceipt"> | boolean
+  readAt?: Prisma.DateTimeNullableFilter<"NotificationReceipt"> | Date | string | null
+}
+
+export type NotificationReceiptCreateWithoutNotificationInput = {
+  id?: string
+  isRead?: boolean
+  readAt?: Date | string | null
+  recipient: Prisma.UserCreateNestedOneWithoutNotificationReceiptsInput
+  actionrequest?: Prisma.ActionRequestCreateNestedManyWithoutNotificationReceiptInput
 }
 
 export type NotificationReceiptUncheckedCreateWithoutNotificationInput = {
   id?: string
-  recipientId: string
+  recipientId: bigint | number
   isRead?: boolean
   readAt?: Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedCreateNestedManyWithoutNotificationReceiptInput
 }
 
 export type NotificationReceiptCreateOrConnectWithoutNotificationInput = {
@@ -405,45 +576,143 @@ export type NotificationReceiptUpdateManyWithWhereWithoutNotificationInput = {
   data: Prisma.XOR<Prisma.NotificationReceiptUpdateManyMutationInput, Prisma.NotificationReceiptUncheckedUpdateManyWithoutNotificationInput>
 }
 
-export type NotificationReceiptScalarWhereInput = {
-  AND?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
-  OR?: Prisma.NotificationReceiptScalarWhereInput[]
-  NOT?: Prisma.NotificationReceiptScalarWhereInput | Prisma.NotificationReceiptScalarWhereInput[]
-  id?: Prisma.StringFilter<"NotificationReceipt"> | string
-  notificationId?: Prisma.StringFilter<"NotificationReceipt"> | string
-  recipientId?: Prisma.StringFilter<"NotificationReceipt"> | string
-  isRead?: Prisma.BoolFilter<"NotificationReceipt"> | boolean
-  readAt?: Prisma.DateTimeNullableFilter<"NotificationReceipt"> | Date | string | null
+export type NotificationReceiptCreateWithoutActionrequestInput = {
+  id?: string
+  isRead?: boolean
+  readAt?: Date | string | null
+  notification: Prisma.NotificationCreateNestedOneWithoutReceiptsInput
+  recipient: Prisma.UserCreateNestedOneWithoutNotificationReceiptsInput
+}
+
+export type NotificationReceiptUncheckedCreateWithoutActionrequestInput = {
+  id?: string
+  notificationId: string
+  recipientId: bigint | number
+  isRead?: boolean
+  readAt?: Date | string | null
+}
+
+export type NotificationReceiptCreateOrConnectWithoutActionrequestInput = {
+  where: Prisma.NotificationReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedCreateWithoutActionrequestInput>
+}
+
+export type NotificationReceiptUpsertWithoutActionrequestInput = {
+  update: Prisma.XOR<Prisma.NotificationReceiptUpdateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedUpdateWithoutActionrequestInput>
+  create: Prisma.XOR<Prisma.NotificationReceiptCreateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedCreateWithoutActionrequestInput>
+  where?: Prisma.NotificationReceiptWhereInput
+}
+
+export type NotificationReceiptUpdateToOneWithWhereWithoutActionrequestInput = {
+  where?: Prisma.NotificationReceiptWhereInput
+  data: Prisma.XOR<Prisma.NotificationReceiptUpdateWithoutActionrequestInput, Prisma.NotificationReceiptUncheckedUpdateWithoutActionrequestInput>
+}
+
+export type NotificationReceiptUpdateWithoutActionrequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notification?: Prisma.NotificationUpdateOneRequiredWithoutReceiptsNestedInput
+  recipient?: Prisma.UserUpdateOneRequiredWithoutNotificationReceiptsNestedInput
+}
+
+export type NotificationReceiptUncheckedUpdateWithoutActionrequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type NotificationReceiptCreateManyRecipientInput = {
+  id?: string
+  notificationId: string
+  isRead?: boolean
+  readAt?: Date | string | null
+}
+
+export type NotificationReceiptUpdateWithoutRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notification?: Prisma.NotificationUpdateOneRequiredWithoutReceiptsNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutNotificationReceiptNestedInput
+}
+
+export type NotificationReceiptUncheckedUpdateWithoutRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.StringFieldUpdateOperationsInput | string
+  isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutNotificationReceiptNestedInput
+}
+
+export type NotificationReceiptUncheckedUpdateManyWithoutRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationId?: Prisma.StringFieldUpdateOperationsInput | string
+  isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type NotificationReceiptCreateManyNotificationInput = {
   id?: string
-  recipientId: string
+  recipientId: bigint | number
   isRead?: boolean
   readAt?: Date | string | null
 }
 
 export type NotificationReceiptUpdateWithoutNotificationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recipient?: Prisma.UserUpdateOneRequiredWithoutNotificationReceiptsNestedInput
+  actionrequest?: Prisma.ActionRequestUpdateManyWithoutNotificationReceiptNestedInput
 }
 
 export type NotificationReceiptUncheckedUpdateWithoutNotificationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actionrequest?: Prisma.ActionRequestUncheckedUpdateManyWithoutNotificationReceiptNestedInput
 }
 
 export type NotificationReceiptUncheckedUpdateManyWithoutNotificationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  recipientId?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+
+/**
+ * Count Type NotificationReceiptCountOutputType
+ */
+
+export type NotificationReceiptCountOutputType = {
+  actionrequest: number
+}
+
+export type NotificationReceiptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  actionrequest?: boolean | NotificationReceiptCountOutputTypeCountActionrequestArgs
+}
+
+/**
+ * NotificationReceiptCountOutputType without action
+ */
+export type NotificationReceiptCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NotificationReceiptCountOutputType
+   */
+  select?: Prisma.NotificationReceiptCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * NotificationReceiptCountOutputType without action
+ */
+export type NotificationReceiptCountOutputTypeCountActionrequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActionRequestWhereInput
+}
 
 
 export type NotificationReceiptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -453,6 +722,9 @@ export type NotificationReceiptSelect<ExtArgs extends runtime.Types.Extensions.I
   isRead?: boolean
   readAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  actionrequest?: boolean | Prisma.NotificationReceipt$actionrequestArgs<ExtArgs>
+  _count?: boolean | Prisma.NotificationReceiptCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationReceipt"]>
 
 export type NotificationReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -462,6 +734,7 @@ export type NotificationReceiptSelectCreateManyAndReturn<ExtArgs extends runtime
   isRead?: boolean
   readAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationReceipt"]>
 
 export type NotificationReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -471,6 +744,7 @@ export type NotificationReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime
   isRead?: boolean
   readAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationReceipt"]>
 
 export type NotificationReceiptSelectScalar = {
@@ -484,23 +758,30 @@ export type NotificationReceiptSelectScalar = {
 export type NotificationReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "notificationId" | "recipientId" | "isRead" | "readAt", ExtArgs["result"]["notificationReceipt"]>
 export type NotificationReceiptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  actionrequest?: boolean | Prisma.NotificationReceipt$actionrequestArgs<ExtArgs>
+  _count?: boolean | Prisma.NotificationReceiptCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type NotificationReceiptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type NotificationReceiptIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $NotificationReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "NotificationReceipt"
   objects: {
     notification: Prisma.$NotificationPayload<ExtArgs>
+    recipient: Prisma.$UserPayload<ExtArgs>
+    actionrequest: Prisma.$ActionRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     notificationId: string
-    recipientId: string
+    recipientId: bigint
     isRead: boolean
     readAt: Date | null
   }, ExtArgs["result"]["notificationReceipt"]>
@@ -898,6 +1179,8 @@ readonly fields: NotificationReceiptFieldRefs;
 export interface Prisma__NotificationReceiptClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   notification<T extends Prisma.NotificationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationDefaultArgs<ExtArgs>>): Prisma.Prisma__NotificationClient<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  recipient<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  actionrequest<T extends Prisma.NotificationReceipt$actionrequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationReceipt$actionrequestArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -929,7 +1212,7 @@ export interface Prisma__NotificationReceiptClient<T, Null = never, ExtArgs exte
 export interface NotificationReceiptFieldRefs {
   readonly id: Prisma.FieldRef<"NotificationReceipt", 'String'>
   readonly notificationId: Prisma.FieldRef<"NotificationReceipt", 'String'>
-  readonly recipientId: Prisma.FieldRef<"NotificationReceipt", 'String'>
+  readonly recipientId: Prisma.FieldRef<"NotificationReceipt", 'BigInt'>
   readonly isRead: Prisma.FieldRef<"NotificationReceipt", 'Boolean'>
   readonly readAt: Prisma.FieldRef<"NotificationReceipt", 'DateTime'>
 }
@@ -1330,6 +1613,30 @@ export type NotificationReceiptDeleteManyArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many NotificationReceipts to delete.
    */
   limit?: number
+}
+
+/**
+ * NotificationReceipt.actionrequest
+ */
+export type NotificationReceipt$actionrequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActionRequest
+   */
+  select?: Prisma.ActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActionRequest
+   */
+  omit?: Prisma.ActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActionRequestInclude<ExtArgs> | null
+  where?: Prisma.ActionRequestWhereInput
+  orderBy?: Prisma.ActionRequestOrderByWithRelationInput | Prisma.ActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.ActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActionRequestScalarFieldEnum | Prisma.ActionRequestScalarFieldEnum[]
 }
 
 /**
