@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { prisma } from '../../lib/prisma.Client.js';
 import { UsersRepository } from '../users/users.Repository.js';
 import { serializeBigInt } from '../../common/utils/bigint.util.js';
@@ -286,13 +282,22 @@ export class projectRepository {
 
   async findActionRequest(userId: string, projectUuid: string) {
     const projectId = await this.findProject(projectUuid);
-    await prisma.actionRequest.findFirst({
+    const receiptId = await prisma.notificationReceipt.findFirst({
       where: {
-        receiptId: userId,
-        entityType: 'project',
-        entityId: String(projectId),
+        recipientId: BigInt(userId),
+      },
+      select: {
+        notificationId: true,
       },
     });
+    const action = await prisma.actionRequest.findFirst({
+      where: {
+        notificationId: receiptId?.notificationId,
+        entityType: 'project',
+        entityId: String(projectId?.id),
+      },
+    });
+
     return await prisma.project.findUnique({
       where: { uuid: projectUuid },
       select: {

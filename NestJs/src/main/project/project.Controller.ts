@@ -43,7 +43,6 @@ export class projectController {
   }
 
   @Post('/addMember')
-  @HttpCode(HttpStatus.OK)
   async addMember(
     @Query('projectUuid') projectUuid: string,
     @Query('userId') userId: string,
@@ -55,7 +54,6 @@ export class projectController {
   }
 
   @Get('/:uuid/preview')
-  @HttpCode(HttpStatus.NOT_FOUND)
   async preview(@UserId() userId: string, @Param('uuid') uuid: string) {
     const result = await this.Service.verify(userId, uuid);
 
