@@ -12,3 +12,7 @@ export async function getNotifications() {
 export async function acceptInviteProject(acctionId: string) {
     return api.post(`${NOTIFICATION_API_PATH}/acceptinvite`, { acctionId });
 }
+
+export async function updateSatatus(listIds: [id: string]) {
+    return api.patch(`${NOTIFICATION_API_PATH}/updatesatus`, listIds);
+}

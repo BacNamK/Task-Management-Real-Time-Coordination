@@ -41,5 +41,5 @@ export class TaskDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TaskAssigneeDto)
-  readonly assigneeds: TaskAssigneeDto[];
+  readonly assigneeds!: TaskAssigneeDto[];
 }

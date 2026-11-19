@@ -1,4 +1,4 @@
-import { flatten, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { prisma } from '../../lib/prisma.Client.js';
 
 @Injectable()
@@ -11,6 +11,7 @@ export class NotificationRepository {
           select: {
             id: true,
             metadata: true,
+            status: true,
             expiresAt: true,
           },
           orderBy: { createdAt: 'desc' },
@@ -41,12 +42,13 @@ export class NotificationRepository {
 
     return receipts.map(({ notification, actionrequest, isRead, readAt }) => ({
       id: notification.id,
-      actionrequestId: actionrequest[0].id,
+      actionrequestId: actionrequest[0]?.id ?? null,
       title: notification.title,
       message: notification.message,
       createdAt: notification.createdAt.toISOString(),
       metadata: actionrequest[0]?.metadata ?? null,
       expiredAt: actionrequest[0]?.expiresAt || null,
+      status: actionrequest[0]?.status,
       sender: notification.user,
       isRead,
       readAt,
@@ -64,16 +66,29 @@ export class NotificationRepository {
       select: {
         entityId: true,
         expiresAt: true,
+        metadata: true,
       },
     });
 
     if (!check || (check.expiresAt && check.expiresAt < new Date())) return;
+
+    const path = check.metadata;
+
+    function changePath(): string {
+      if (typeof path !== 'string') return String(path);
+
+      // projects/uuid/preview
+      const idx = path.lastIndexOf('/');
+      return idx !== -1 ? path.substring(0, idx) : path;
+      // project/uuid
+    }
 
     const member = await prisma.$transaction(async (tx) => {
       await tx.actionRequest.update({
         where: { id: acctionId },
         data: {
           status: 'ACCEPTED',
+          metadata: changePath(),
           respondedAt: new Date(),
         },
       });
@@ -98,5 +113,43 @@ export class NotificationRepository {
       userId: member.userId.toString(),
       projectId: member.projectId.toString(),
     };
+  }
+  async updateSatus(listIds: string[]) {
+    console.log(listIds);
+    await prisma.notificationReceipt.updateMany({
+      where: { notificationId: { in: listIds } },
+      data: {
+        isRead: true,
+      },
+    });
+  }
+
+  async notificationAssigneeds(
+    actorId: string,
+    task: { id: bigint | string; title: string },
+    assigneeIds: string[],
+  ) {
+    const recipients = [...new Set(assigneeIds)].filter((id) => id !== actorId);
+    if (!recipients.length) return;
+
+    return prisma.$transaction(
+      recipients.map((recipientId) =>
+        prisma.notification.create({
+          data: {
+            type: 'TASK_ASSIGNED',
+            actorId: BigInt(actorId),
+            title: 'You have been assigned a task.',
+            message: `You have been assigned to task "${task.title}".`,
+            entityType: 'TASK',
+            entityId: task.id.toString(),
+            metadata: { taskId: task.id.toString() },
+            receipts: {
+              create: { recipientId: BigInt(recipientId) },
+            },
+          },
+          include: { receipts: { select: { recipientId: true } } },
+        }),
+      ),
+    );
   }
 }

@@ -13,8 +13,24 @@ export class NotificationGateway {
   @WebSocketServer()
   server: Namespace;
 
-  handleToEntity(userId: string, data: unknown): void {
+  payloadUserActives(userId: string, data: unknown): void {
     const payload = JSON.parse(serializeBigInt(data));
     this.server.to(`user:${userId}`).emit('notification', payload);
+  }
+
+  handleAssigneeds(
+    notifications: Array<{
+      receipts: Array<{ recipientId: bigint }>;
+      [key: string]: unknown;
+    }>,
+  ): void {
+    for (const notification of notifications) {
+      const payload = JSON.parse(serializeBigInt(notification));
+      for (const { recipientId } of notification.receipts) {
+        this.server
+          .to(`user:${recipientId.toString()}`)
+          .emit('notification', payload);
+      }
+    }
   }
 }

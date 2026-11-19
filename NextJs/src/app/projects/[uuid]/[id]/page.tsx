@@ -5,9 +5,9 @@ import { find } from '../../../../feature/board/service/board.action';
 export default async function PageId({
     params,
 }: {
-    params: Promise<{ uuid: string; id: string }>;
+    params: Promise<{ uuid: string; id: string; taskName?: string }>;
 }) {
-    const { uuid, id: boardId } = await params;
+    const { uuid, id: boardId, taskName } = await params;
 
     // sub query
     const board = await find(boardId);

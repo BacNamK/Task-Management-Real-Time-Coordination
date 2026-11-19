@@ -1,4 +1,4 @@
-import { CircleDot, Flag, FlagTriangleRight, Stamp, Tag, UsersRound } from 'lucide-react';
+import { CircleDot, Flag, Stamp, Tag, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import type { Task } from '../../service/task.type';
 
@@ -53,7 +53,7 @@ const Prototype = ({ task, stage }: { task: Task; stage: any }) => {
                         <span className="text-xs font-semibold">Stage</span>
                     </div>
                     <span className="text-xs bg-gray-200 rounded-full text-center p-0.5 pl-2 pr-2">
-                        {stage[0].name}
+                        {stage[0]?.name || 'Queue'}
                     </span>
                 </div>
 
@@ -85,7 +85,7 @@ const Prototype = ({ task, stage }: { task: Task; stage: any }) => {
                             <span className="text-xs font-semibold">{task.censor.name}</span>
                         </div>
                     ) : (
-                        <span className="text-xs bg-gray-200 rounded-full text-center p-0.5 pl-2 pr-2">
+                        <span className="text-xs bg-gray-200 text-slate-500 rounded-full text-center p-0.5 pl-2 pr-2">
                             Task not yet at the final stage or not yet confirmed
                         </span>
                     )}

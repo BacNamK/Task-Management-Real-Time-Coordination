@@ -13,15 +13,23 @@ import { addAction } from '../../../cycle/service/cylce.action';
 import { DragDropProvider } from '@dnd-kit/react';
 import DroppableColumn from './DroppableColumn';
 import DraggableTask from './DraggableTask';
-import { changePosition } from '../../../task/service/task.action';
+import { changePositionTask as saveTaskPosition } from '../../../task/service/task.action';
 import type { BoardView, Cycle } from '../../service/board.type';
 import type { TaskChangePosition } from '../../../task/service/task.type';
 import type { Task } from '../../../task/service/task.type';
 
-export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: string }) => {
+export const Model = ({
+    board,
+    projectUuid,
+    targetName,
+}: {
+    board: BoardView;
+    projectUuid: string;
+    targetName?: string;
+}) => {
     const [tasks, setTasks] = useState<Task[]>(board.tasks);
 
-    const changePositionTask = (change: {
+    const queuePositionChange = (change: {
         id: string;
         cycleId: string | null;
         position: number;
@@ -38,9 +46,9 @@ export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: s
     const [taskChange, setTaskChange] = useState<TaskChangePosition>();
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
+        const timeout = setTimeout(async () => {
             if (!taskChange) return;
-            changePosition(taskChange.id, taskChange.cycleId, taskChange.position);
+            await saveTaskPosition(taskChange.id, taskChange.cycleId, taskChange.position);
         }, 1000);
         return () => clearTimeout(timeout);
     }, [taskChange]);
@@ -86,7 +94,7 @@ export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: s
                         return;
                     }
 
-                    changePositionTask({ id: taskId, cycleId, position: numericPosition });
+                    queuePositionChange({ id: taskId, cycleId, position: numericPosition });
                 }}
             >
                 {/* Board header */}
@@ -145,7 +153,11 @@ export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: s
                         {taskQueue.length > 0 ? (
                             taskQueue.map((task, index) => (
                                 <div key={task.id ?? index} className="w-56 shrink-0">
-                                    <DraggableTask task={task} cycleColumns={[]} />
+                                    <DraggableTask
+                                        task={task}
+                                        cycleColumns={[]}
+                                        targetName={targetName}
+                                    />
                                 </div>
                             ))
                         ) : (

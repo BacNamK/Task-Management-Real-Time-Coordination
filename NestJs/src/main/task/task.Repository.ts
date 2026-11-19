@@ -6,7 +6,7 @@ import { serializeBigInt } from '../../common/utils/bigint.util.js';
 export class TaskRepository {
   async create(data: any, userId: string) {
     const task = await prisma.$transaction(async (tx) => {
-      const createdTask = await tx.task.create({
+      const createTask = await tx.task.create({
         data: {
           title: data.title,
           description: data.description || null,
@@ -21,14 +21,14 @@ export class TaskRepository {
       if (data.assigneeds?.length) {
         await tx.assigneeds.createMany({
           data: data.assigneeds.map((assignee: { userId: string }) => ({
-            taskId: createdTask.id,
+            taskId: createTask.id,
             userId: BigInt(assignee.userId),
           })),
           skipDuplicates: true,
         });
       }
 
-      return createdTask;
+      return createTask;
     });
 
     return serializeBigInt(task);

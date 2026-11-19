@@ -2,21 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useSocket } from '../../lib/socket/socketConText';
-
-export type NotificationData = {
-    actorId: string;
-    sender?: { name: string | null; avatar: string | null };
-    createdAt: string;
-    entityId: string | null;
-    entityType: string | null;
-    id: string;
-    actionrequestId: string;
-    message: string | null;
-    metadata: string | null;
-    title: string;
-    type: string;
-};
-
+import { NotificationData } from '../../feature/notification/service/notification.type';
 export type AuthUser = {
     id?: string;
     name?: string | null;

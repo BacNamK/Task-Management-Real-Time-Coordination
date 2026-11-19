@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { UserId } from '../../common/decorators/decorator-id.js';
 import { NotificationService } from './notification.Service.js';
 import { NotificationRepository } from './notification.Repository.js';
+import { ok } from 'assert';
 
 @Controller('notifications')
 export class NotificationController {
@@ -28,5 +38,11 @@ export class NotificationController {
     if (!result) return { success: false };
 
     return { data: result, success: true };
+  }
+
+  @Patch('/updatesatus')
+  async updateStatus(@Body() body: string[]) {
+    await this.service.updateStatus(body);
+    return { success: true };
   }
 }

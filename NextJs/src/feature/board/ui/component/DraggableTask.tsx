@@ -8,11 +8,17 @@ import type { CycleColumn } from '../../service/board.type';
 function DraggableTask({
     task,
     cycleColumns,
+    targetName,
 }: {
     task: Task;
     cycleColumns: CycleColumn[];
+    targetName?: string;
 }) {
     const [showTaskDetail, setShowTaskDetail] = useState(false);
+
+    if (targetName) {
+        task.title === targetName ? setShowTaskDetail(true) : '';
+    }
 
     const { ref, isDragging } = useDraggable({
         id: task.id,

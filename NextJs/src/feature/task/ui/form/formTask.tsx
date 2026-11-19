@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import { useState, type Dispatch, type FormEvent, type SetStateAction } from 'react';
 import { Plus, UsersRound } from 'lucide-react';
-import { create } from '../../service/task.action';
+import { createTask } from '../../service/task.action';
 import type { projectMember } from '../../../project/sevice/project.type';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 type AssigneeOption = {
     id: string;
@@ -46,6 +47,14 @@ export const Create = ({ users, boardId, setIsOpen }: Props) => {
         );
     };
 
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    // Chuyển đổi searchParams thành chuỗi query
+    const queryString = searchParams.toString();
+
+    const fullUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -59,8 +68,9 @@ export const Create = ({ users, boardId, setIsOpen }: Props) => {
 
         const dueDateValue = String(formData.get('dueDate') ?? '');
         try {
-            await create({
+            await createTask({
                 title,
+                link: fullUrl,
                 description: String(formData.get('description') ?? ''),
                 dueDate: dueDateValue ? new Date(dueDateValue) : undefined,
                 position: 0,

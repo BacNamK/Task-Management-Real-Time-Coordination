@@ -6,6 +6,7 @@ import { useNotifications } from '../../components/context/ContextProvide';
 import type { NotificationInboxItem } from './service/notification.type';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { updateSatatus } from './service/notification.action';
 
 type Filter = 'all' | 'unread';
 
@@ -14,9 +15,11 @@ export const PageClient = ({
 }: {
     initialNotifications: NotificationInboxItem[];
 }) => {
+    console.log(initialNotifications);
     const router = useRouter();
 
-    console.log(initialNotifications);
+    // Trong PageClient:
+    const [now, setNow] = useState(() => Date.now());
 
     const { notifications: liveNotifications } = useNotifications();
     const [filter, setFilter] = useState<Filter>('all');
@@ -46,8 +49,12 @@ export const PageClient = ({
               )
             : notifications;
 
-    const markAsRead = (id: string) => {
+    const markAsRead = async (id: string) => {
+        // sử lí UI ở giao diện
         setReadNotifications((current) => (current.includes(id) ? current : [...current, id]));
+
+        // gửi api cập nhập lại trạng thái thông báo
+        await updateSatatus([id]);
     };
 
     const hanldeRedirect = (link: string, id: string) => {
@@ -132,6 +139,7 @@ export const PageClient = ({
                             return (
                                 <article
                                     key={notification.id}
+                                    onClick={() => markAsRead(notification.id)}
                                     className={`flex items-center gap-4 shadow p-4 rounded-md ${
                                         isRead ? '' : 'bg-blue-50'
                                     }`}
@@ -179,6 +187,26 @@ export const PageClient = ({
                                             </div>
                                         </div>
                                     </div>
+                                    {notification.status !== 'ACCEPTED' && (
+                                        <span className="text-sm p-2 ">
+                                            {(() => {
+                                                const remaining =
+                                                    new Date(notification.expiredAt).getTime() -
+                                                    now;
+
+                                                if (!Number.isFinite(remaining) || remaining <= 0)
+                                                    return '';
+
+                                                const totalSeconds = Math.floor(remaining / 1000);
+                                                const days = Math.floor(totalSeconds / 86400);
+                                                const hours = Math.floor(
+                                                    (totalSeconds % 86400) / 3600
+                                                );
+
+                                                return `${days} day ${hours} hours`;
+                                            })()}
+                                        </span>
+                                    )}
                                 </article>
                             );
                         })}

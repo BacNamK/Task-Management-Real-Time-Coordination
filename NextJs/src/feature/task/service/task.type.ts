@@ -20,6 +20,7 @@ export interface Task {
     censor: User;
     cycleId: string | null;
     boardId: string;
+    link: string | null;
     creatorId: string;
     createdAt: Date;
     dueDate?: Date;
@@ -29,7 +30,7 @@ export interface Task {
 
 export type TaskCreate = Pick<
     Task,
-    'title' | 'position' | 'description' | 'cycleId' | 'boardId' | 'dueDate'
+    'title' | 'position' | 'description' | 'cycleId' | 'boardId' | 'dueDate' | 'link'
 > & {
     assigneeds: Array<{ userId: string }>;
 };

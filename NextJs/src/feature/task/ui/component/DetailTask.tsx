@@ -77,18 +77,20 @@ const DetailTask = ({
                                     />
                                     <p className="text-xs font-medium text-slate-500">Count Down</p>
                                 </div>
-                                {task.createdAt && task.createdAt && task.dueDate ? (
-                                    <div className="text-center mt-1 text-sm font-medium text-slate-800">
-                                        {Math.ceil(
-                                            (new Date(task.dueDate).getTime() -
-                                                new Date(task.createdAt).getTime()) /
-                                                (1000 * 60 * 60 * 24)
-                                        )}{' '}
-                                        days
-                                    </div>
-                                ) : (
-                                    '- day'
-                                )}
+                                <div>
+                                    {task.createdAt && task.createdAt && task.dueDate ? (
+                                        <div className="text-center mt-1 text-sm font-medium text-slate-800">
+                                            {Math.ceil(
+                                                (new Date(task.dueDate).getTime() -
+                                                    new Date(task.createdAt).getTime()) /
+                                                    (1000 * 60 * 60 * 24)
+                                            )}{' '}
+                                            days
+                                        </div>
+                                    ) : (
+                                        '- day'
+                                    )}
+                                </div>
                             </div>
                             <div className="w-1/3 justify-items-center">
                                 <div className="flex gap-2 p-1">

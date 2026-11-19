@@ -10,11 +10,8 @@ export default function PagePreviewCient({
     project: any;
     actionId: string;
 }) {
-    console.log(project);
     const handleActionInvite = async () => {
         const result: any = await acceptInviteProject(actionId);
-
-        console.log(result);
 
         if (result.success) {
             redirect(`/projects/${project.uuid}`);

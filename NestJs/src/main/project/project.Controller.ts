@@ -49,7 +49,7 @@ export class projectController {
     @UserId() actorId: string,
   ) {
     const data = await this.Service.addMember(projectUuid, userId, actorId);
-    this.Notification.handleToEntity(userId, data.noti);
+    this.Notification.payloadUserActives(userId, data.noti);
     return { success: true };
   }
 

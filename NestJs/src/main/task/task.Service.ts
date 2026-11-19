@@ -1,22 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { TaskDto } from './task.Dto.js';
 import { TaskRepository } from './task.Repository.js';
+import { NotificationService } from '../notification/notification.Service.js';
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly Repository: TaskRepository) {}
+  constructor(
+    private readonly taskRepository: TaskRepository,
+    private readonly notificationService: NotificationService,
+  ) {}
   async create(dataRequest: TaskDto, userId: string) {
-    return this.Repository.create(dataRequest, userId);
+    try {
+      const result = await this.taskRepository.create(dataRequest, userId);
+
+      if (result) {
+        const createdTask = JSON.parse(result) as {
+          id: string;
+          title: string;
+        };
+        await this.notificationService.handleAssigneeds(
+          userId,
+          createdTask,
+          dataRequest.assigneeds,
+        );
+      }
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async get(boardId: bigint) {
-    return await this.Repository.get(boardId);
+    return await this.taskRepository.get(boardId);
   }
 
   async update(id: bigint, data: any, userId: bigint) {
     // Kiểm tra user có quyền update task không? if không thì throw error
 
-    return await this.Repository.update(id, data);
+    return await this.taskRepository.update(id, data);
   }
 
   async changePosition(data: {
@@ -24,6 +45,6 @@ export class TaskService {
     cycleId: bigint;
     position: number;
   }) {
-    return await this.Repository.changePosition(data);
+    return await this.taskRepository.changePosition(data);
   }
 }
