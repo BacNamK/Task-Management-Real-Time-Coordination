@@ -18,10 +18,12 @@ export class TaskService {
           id: string;
           title: string;
         };
+        // Thông báo
         await this.notificationService.handleAssigneeds(
           userId,
           createdTask,
           dataRequest.assigneeds,
+          dataRequest.link ?? '',
         );
       }
       return result;

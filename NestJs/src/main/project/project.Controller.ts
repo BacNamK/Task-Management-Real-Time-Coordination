@@ -16,7 +16,7 @@ import { NotificationGateway } from '../realtime/con1/notification/notification.
 export class projectController {
   constructor(
     private readonly Service: projectService,
-    private readonly Notification: NotificationGateway,
+    private readonly NotificationGateway: NotificationGateway,
   ) {}
 
   @Post('/create')
@@ -49,7 +49,8 @@ export class projectController {
     @UserId() actorId: string,
   ) {
     const data = await this.Service.addMember(projectUuid, userId, actorId);
-    this.Notification.payloadUserActives(userId, data.noti);
+    // Gửi thông báo đến người được mời tham gia dự án
+    this.NotificationGateway.payloadUserActives(userId, data.noti);
     return { success: true };
   }
 

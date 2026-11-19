@@ -21,14 +21,17 @@ export class NotificationService {
     actorId: string,
     task: { id: bigint | string; title: string },
     assigneeds: Array<{ userId: string }>,
+    link: string,
   ) {
     if (!assigneeds.length) return;
 
-    const notifications = await this.notifiactionRepository.notificationAssigneeds(
-      actorId,
-      task,
-      assigneeds.map(({ userId }) => userId),
-    );
+    const notifications =
+      await this.notifiactionRepository.notificationAssigneeds(
+        actorId,
+        task,
+        assigneeds.map(({ userId }) => userId),
+        link,
+      );
 
     if (notifications?.length) {
       this.notificationGateway.handleAssigneeds(notifications);

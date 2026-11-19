@@ -23,6 +23,8 @@ export class NotificationRepository {
             title: true,
             message: true,
             createdAt: true,
+            metadata: true,
+            type: true,
 
             user: {
               select: {
@@ -42,16 +44,20 @@ export class NotificationRepository {
 
     return receipts.map(({ notification, actionrequest, isRead, readAt }) => ({
       id: notification.id,
-      actionrequestId: actionrequest[0]?.id ?? null,
       title: notification.title,
       message: notification.message,
+      type: notification.type,
+      metadata: notification.metadata,
       createdAt: notification.createdAt.toISOString(),
-      metadata: actionrequest[0]?.metadata ?? null,
-      expiredAt: actionrequest[0]?.expiresAt || null,
-      status: actionrequest[0]?.status,
       sender: notification.user,
       isRead,
       readAt,
+      actionrequest: {
+        id: actionrequest[0]?.id ?? null,
+        metadata: actionrequest[0]?.metadata ?? null,
+        expiredAt: actionrequest[0]?.expiresAt || null,
+        status: actionrequest[0]?.status,
+      },
     }));
   }
 
@@ -128,6 +134,7 @@ export class NotificationRepository {
     actorId: string,
     task: { id: bigint | string; title: string },
     assigneeIds: string[],
+    link: string,
   ) {
     const recipients = [...new Set(assigneeIds)].filter((id) => id !== actorId);
     if (!recipients.length) return;
@@ -138,11 +145,10 @@ export class NotificationRepository {
           data: {
             type: 'TASK_ASSIGNED',
             actorId: BigInt(actorId),
-            title: 'You have been assigned a task.',
-            message: `You have been assigned to task "${task.title}".`,
+            title: `You have been assigned to task /${task.title}/.`,
             entityType: 'TASK',
             entityId: task.id.toString(),
-            metadata: { taskId: task.id.toString() },
+            metadata: { link: link, target: task.title },
             receipts: {
               create: { recipientId: BigInt(recipientId) },
             },

@@ -219,7 +219,6 @@ export class projectRepository {
   }
 
   async addMember(projectUuid: string, userId: string, actorId: string) {
-    if (!projectUuid) throw new NotFoundException('PROJECT_NOT_FOUND');
     const project = await prisma.project.findUnique({
       where: { uuid: projectUuid },
       select: { id: true, uuid: true },
@@ -229,8 +228,8 @@ export class projectRepository {
       const noti = await tx.notification.create({
         data: {
           type: 'MEMBER_JOINED',
-          title: 'You have an invitation to join a project',
-          entityType: 'project',
+          title: 'invites you to join the project.',
+          entityType: 'PROJECT',
           entityId: project.id.toString(),
           actorId: BigInt(actorId),
         },
@@ -249,7 +248,7 @@ export class projectRepository {
           senderId: BigInt(actorId),
           receiptId: receipt.id,
           type: 'PROJECT_INVITATION',
-          entityType: 'project',
+          entityType: 'PROJECT',
           entityId: project.id.toString(),
           metadata: `/projects/${project.uuid}/preview`,
           expiresAt: new Date(Date.now() + 3 * 60 * 60 * 24 * 1000),

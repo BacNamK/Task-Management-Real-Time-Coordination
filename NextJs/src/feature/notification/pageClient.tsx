@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { CheckCheck, Eye, UsersRound } from 'lucide-react';
 import { useNotifications } from '../../components/context/ContextProvide';
-import type { NotificationInboxItem } from './service/notification.type';
+import type { NotificationData, NotificationInboxItem } from './service/notification.type';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { updateSatatus } from './service/notification.action';
@@ -49,18 +49,32 @@ export const PageClient = ({
               )
             : notifications;
 
-    const markAsRead = async (id: string) => {
+    const markAsRead = async (notification: NotificationData) => {
         // sử lí UI ở giao diện
-        setReadNotifications((current) => (current.includes(id) ? current : [...current, id]));
+        setReadNotifications((current) =>
+            current.includes(notification.id) ? current : [...current, notification.id]
+        );
 
         // gửi api cập nhập lại trạng thái thông báo
-        await updateSatatus([id]);
-    };
+        await updateSatatus([notification.id]);
 
-    const hanldeRedirect = (link: string, id: string) => {
-        const param = new URLSearchParams({ id });
+        if (notification.type === 'MEMBER_JOINED') {
+            const path = notification.actionrequest?.metadata.path;
+            if (path) router.push(path);
+            return;
+        }
 
-        router.push(`${link}?${param.toString()}`);
+        // nếu trường hơp là thông báo nhiệm vụ được giao
+        const metadataPath = notification.metadata?.path;
+        if (!metadataPath) return;
+
+        const [path, query = ''] = metadataPath.split('?');
+        const params = new URLSearchParams(query);
+
+        const target = notification.metadata?.target;
+        if (target) params.set('target', target);
+
+        router.push(params.size ? `${path}?${params.toString()}` : path);
     };
 
     return (
@@ -139,7 +153,7 @@ export const PageClient = ({
                             return (
                                 <article
                                     key={notification.id}
-                                    onClick={() => markAsRead(notification.id)}
+                                    onClick={() => markAsRead(notification)}
                                     className={`flex items-center gap-4 shadow p-4 rounded-md ${
                                         isRead ? '' : 'bg-blue-50'
                                     }`}
@@ -163,24 +177,38 @@ export const PageClient = ({
                                     <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                         <div className="min-w-0">
                                             <h2 className="text-sm leading-5 text-slate-900">
-                                                {notification.title}
+                                                {notification.type !== 'TASK_ASSIGNED' && (
+                                                    <span className="font-bold">
+                                                        {notification.sender.name}
+                                                    </span>
+                                                )}{' '}
+                                                <span>
+                                                    {notification.title
+                                                        ?.split(/(\/[^/]+\/)/g)
+                                                        .filter(Boolean)
+                                                        .map((part, index) => {
+                                                            const isMarked =
+                                                                part.startsWith('/') &&
+                                                                part.endsWith('/');
+                                                            const text = isMarked
+                                                                ? part.slice(1, -1)
+                                                                : part;
+
+                                                            return isMarked ? (
+                                                                <strong
+                                                                    key={index}
+                                                                    className="font-bold"
+                                                                >
+                                                                    {text}
+                                                                </strong>
+                                                            ) : (
+                                                                <span key={index}>{text}</span>
+                                                            );
+                                                        })}
+                                                </span>
                                             </h2>
 
                                             <div className="mt-2 flex items-center gap-4">
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        hanldeRedirect(
-                                                            notification?.metadata,
-                                                            notification?.actionrequestId
-                                                        )
-                                                    }
-                                                    className="inline-flex items-center gap-1 rounded text-xs font-medium text-slate-600 transition hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                                >
-                                                    <Eye aria-hidden="true" size={13} />
-                                                    Preview
-                                                </button>
-
                                                 <span className="text-sm text-slate-500">
                                                     {date}
                                                 </span>

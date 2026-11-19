@@ -17,18 +17,14 @@ import { changePositionTask as saveTaskPosition } from '../../../task/service/ta
 import type { BoardView, Cycle } from '../../service/board.type';
 import type { TaskChangePosition } from '../../../task/service/task.type';
 import type { Task } from '../../../task/service/task.type';
+import { useSearchParams } from 'next/navigation';
 
-export const Model = ({
-    board,
-    projectUuid,
-    targetName,
-}: {
-    board: BoardView;
-    projectUuid: string;
-    targetName?: string;
-}) => {
+export const Model = ({ board, projectUuid }: { board: BoardView; projectUuid: string }) => {
     const [tasks, setTasks] = useState<Task[]>(board.tasks);
 
+    const searchParams = useSearchParams();
+
+    const targetName = searchParams.get('target');
     const queuePositionChange = (change: {
         id: string;
         cycleId: string | null;
@@ -153,11 +149,7 @@ export const Model = ({
                         {taskQueue.length > 0 ? (
                             taskQueue.map((task, index) => (
                                 <div key={task.id ?? index} className="w-56 shrink-0">
-                                    <DraggableTask
-                                        task={task}
-                                        cycleColumns={[]}
-                                        targetName={targetName}
-                                    />
+                                    <DraggableTask task={task} cycleColumns={[]} targetName={targetName ?? undefined} />
                                 </div>
                             ))
                         ) : (

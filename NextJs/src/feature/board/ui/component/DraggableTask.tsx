@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DetailTask from '../../../task/ui/component/DetailTask';
 import { Target } from 'lucide-react';
 import type { Task } from '../../../task/service/task.type';
@@ -16,9 +16,11 @@ function DraggableTask({
 }) {
     const [showTaskDetail, setShowTaskDetail] = useState(false);
 
-    if (targetName) {
-        task.title === targetName ? setShowTaskDetail(true) : '';
-    }
+    useEffect(() => {
+        if (targetName && task.title === targetName) {
+            setShowTaskDetail(true);
+        }
+    }, [targetName, task.title]);
 
     const { ref, isDragging } = useDraggable({
         id: task.id,

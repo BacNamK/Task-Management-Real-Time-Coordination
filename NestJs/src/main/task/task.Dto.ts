@@ -38,6 +38,9 @@ export class TaskDto {
   @IsDateString()
   readonly dueDate?: string | null;
 
+  @IsString()
+  readonly link: string | null;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TaskAssigneeDto)

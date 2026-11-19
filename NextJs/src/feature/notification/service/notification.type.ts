@@ -7,9 +7,16 @@ export type NotificationData = {
     entityId: string | null;
     entityType: string | null;
     id: string;
-    actionrequestId: string;
+    actionrequest: {
+        metadata: {
+            path: string;
+        };
+    };
     message: string | null;
-    metadata: string | null;
+    metadata: {
+        path: string | null;
+        target: string;
+    };
     title: string;
     type: string;
 };
